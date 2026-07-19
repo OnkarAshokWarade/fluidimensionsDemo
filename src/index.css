@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #071B3A;
+  --color-secondary: #0F4C81;
+  --color-accent: #FF6B00;
+  --color-accent-dark: #E05E00;
+  --color-brand-bg: #F8FAFC;
+  --color-dark: #111827;
+  --color-light-text: #6B7280;
+  --color-heading: #111827;
+  --color-border: #E5E7EB;
+  --color-card: #FFFFFF;
+  
+  --font-heading: 'Poppins', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* Base resets & styles */
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-body);
+}
+
+body {
+  background-color: var(--color-brand-bg);
+  color: var(--color-dark);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Swiper navigation custom styles */
+.swiper-pagination-bullet-active {
+  background: var(--color-accent) !important;
+}
+
+/* Custom flow grid utility for CFD effect */
+.cfd-grid {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(15, 76, 129, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(15, 76, 129, 0.05) 1px, transparent 1px);
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
