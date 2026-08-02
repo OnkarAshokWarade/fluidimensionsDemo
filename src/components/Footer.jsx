@@ -18,22 +18,27 @@ export default function Footer() {
 
   return (
     <footer className="bg-primary text-white border-t border-white/5 relative overflow-hidden">
-      {/* Decorative lines */}
       <div className="absolute inset-0 cfd-grid opacity-5 pointer-events-none" />
 
-      {/* Main Footer Links */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-20 pb-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-16">
           
           {/* Col 1: Logo & Newsletter */}
           <div className="lg:col-span-2 text-left pr-0 lg:pr-8">
-            <div className="flex items-center space-x-2 mb-6">
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-primary to-secondary flex items-center justify-center border border-white/20">
-                <span className="font-heading font-black text-white text-base">F</span>
-              </div>
+            <div className="flex items-center space-x-3 mb-6">
+              {/* Logo – original colors (no filter) */}
+              <img
+                src="/logo.png"
+                alt="Fluidimensions"
+                className="h-10 w-auto"
+              />
               <div className="flex flex-col">
-                <span className="font-heading font-black text-base text-white tracking-tight leading-none">FLUIDIMENSIONS</span>
-                <span className="text-[9px] text-accent font-bold tracking-widest uppercase mt-0.5">Simulation & Consulting</span>
+                <span className="font-heading font-black text-base text-white tracking-tight leading-none">
+                  FLUIDIMENSIONS
+                </span>
+                <span className="text-[9px] text-accent font-bold tracking-widest uppercase mt-0.5">
+                  Simulation & Consulting
+                </span>
               </div>
             </div>
             
@@ -41,7 +46,6 @@ export default function Footer() {
               Providing premium, high-fidelity engineering simulations and thermodynamic designs to streamline industrial hardware scales worldwide.
             </p>
 
-            {/* Newsletter form */}
             <form onSubmit={(e) => e.preventDefault()} className="space-y-3 max-w-sm">
               <label className="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">
                 Subscribe to Simulation Insights
@@ -113,7 +117,6 @@ export default function Footer() {
             © {new Date().getFullYear()} Fluidimensions. All rights reserved. Designed for elite industrial consulting.
           </span>
           
-          {/* Social Icons */}
           <div className="flex space-x-4">
             {[
               { icon: <FaLinkedin size={18} />, href: 'https://linkedin.com' },

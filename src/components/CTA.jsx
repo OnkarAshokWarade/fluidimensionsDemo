@@ -54,26 +54,40 @@ export default function CTA() {
 
               {/* Direct Info Links */}
               <div className="space-y-4">
-                <a href="mailto:info@fluidimensions.com" className="flex items-center space-x-3 text-gray-300 hover:text-accent transition-colors">
-                  <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
-                    <HiOutlineMail size={20} />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Email Inquiry</span>
-                    <span className="font-body text-sm font-semibold">info@fluidimensions.com</span>
-                  </div>
-                </a>
+  <a
+    href="mailto:info@fluidimensions.com"
+    className="flex items-center space-x-3 text-gray-300 hover:text-accent transition-colors"
+  >
+    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
+      <HiOutlineMail size={20} />
+    </div>
+    <div className="flex flex-col">
+      <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+        Email Inquiry
+      </span>
+      <span className="font-body text-sm font-semibold text-white">
+        info@fluidimensions.com
+      </span>
+    </div>
+  </a>
 
-                <div className="flex items-center space-x-3 text-gray-300">
-                  <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
-                    <HiOutlineLocationMarker size={20} />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Engineering Center</span>
-                    <span className="font-body text-sm font-semibold">Pune, Maharashtra, India</span>
-                  </div>
-                </div>
-              </div>
+  <div className="flex items-start space-x-3 text-gray-300">
+    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 flex-shrink-0 mt-0.5">
+      <HiOutlineLocationMarker size={20} />
+    </div>
+    <div className="flex flex-col">
+      <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+        Engineering Center
+      </span>
+      <address className="not-italic font-body text-sm font-semibold text-white leading-relaxed">
+        66, Gulmohar,<br />
+        off Pancard Club Road,<br />
+        Veerbhadra Nagar, Baner,<br />
+        Pune, Maharashtra 411069
+      </address>
+    </div>
+  </div>
+</div>
             </motion.div>
           </div>
 
@@ -116,7 +130,7 @@ export default function CTA() {
                       required
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder="John Doe"
+                      placeholder="Onkar Warade"
                       className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-sm font-body text-primary focus:outline-none focus:bg-white focus:border-accent transition-colors"
                     />
                   </div>
@@ -133,7 +147,7 @@ export default function CTA() {
                       required
                       value={formData.email}
                       onChange={handleInputChange}
-                      placeholder="j.doe@company.com"
+                      placeholder="o.warade@company.com"
                       className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-sm font-body text-primary focus:outline-none focus:bg-white focus:border-accent transition-colors"
                     />
                   </div>

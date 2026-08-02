@@ -5,20 +5,21 @@ import { Link, useLocation } from 'react-router-dom';
 
 const navLinks = [
   { name: 'Home', href: '/', isInternal: true },
-  { name: 'About', href: '#about', isInternal: false },
-  { name: 'Services', href: '#services', isInternal: false },
-  { name: 'Industries', href: '#industries', isInternal: false },
-  { name: 'Workflow', href: '#workflow', isInternal: false },
-  { name: 'Projects', href: '#projects', isInternal: false },
+  { name: 'About', href: '/#about', isInternal: false },    // ← hash links
+  { name: 'Services', href: '/#services', isInternal: false },
+  { name: 'Industries', href: '/#industries', isInternal: false },
+  { name: 'Workflow', href: '/#workflow', isInternal: false },
+  { name: 'Projects', href: '/#projects', isInternal: false },
 ];
 
-export default function Navbar() {
+export default function NavbarLight() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const location = useLocation();
   const isHome = location.pathname === '/';
 
+  // Detect scroll to update navbar style and active section (only on homepage)
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -44,34 +45,13 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isHome]);
 
-  const handleLinkClick = (e, href) => {
-    if (href.startsWith('#')) {
-      e.preventDefault();
-      setIsOpen(false);
-      const targetId = href.substring(1);
-      const element = document.getElementById(targetId);
-      if (element) {
-        const offset = 80;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-      }
-    } else {
-      setIsOpen(false);
-    }
-  };
-
   return (
     <>
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-white/90 backdrop-blur-md shadow-md border-b border-gray-100 py-4'
-            : 'bg-transparent py-6'
-        }`}
+        className="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100 py-4"
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
           {/* Logo */}
@@ -82,13 +62,7 @@ export default function Navbar() {
           >
             <img src="/logo.png" alt="Fluidimensions" className="h-10 w-auto" />
             <div className="flex flex-col">
-              <span
-                className={`font-heading font-black text-lg tracking-tight leading-none ${
-                  isScrolled
-                    ? 'text-primary'
-                    : 'bg-gradient-to-r from-slate-100 via-white to-orange-500 bg-clip-text text-transparent'
-                }`}
-              >
+              <span className="font-heading font-black text-lg tracking-tight leading-none text-primary">
                 FLUIDIMENSIONS
               </span>
               <span className="text-[10px] text-accent font-bold tracking-widest uppercase">
@@ -97,11 +71,11 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Nav Links */}
+          {/* Desktop Nav Links – All use Link with hash for non‑internal */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => {
               const isActive = isHome && !link.isInternal
-                ? activeSection === link.href.substring(1)
+                ? activeSection === link.href.substring(2) // remove "/#"
                 : false;
 
               if (link.isInternal) {
@@ -109,11 +83,7 @@ export default function Navbar() {
                   <Link
                     key={link.name}
                     to={link.href}
-                    className={`font-body font-medium text-sm transition-colors duration-200 relative py-1 ${
-                      isScrolled
-                        ? 'text-primary hover:text-accent'
-                        : 'text-white/80 hover:text-white'
-                    }`}
+                    className="font-body font-medium text-sm transition-colors duration-200 relative py-1 text-primary hover:text-accent"
                     onClick={() => setIsOpen(false)}
                   >
                     {link.name}
@@ -122,17 +92,13 @@ export default function Navbar() {
               }
 
               return (
-                <a
+                <Link
                   key={link.name}
-                  href={link.href}
-                  onClick={(e) => handleLinkClick(e, link.href)}
+                  to={link.href}
                   className={`font-body font-medium text-sm transition-colors duration-200 relative py-1 ${
-                    isActive
-                      ? 'text-accent'
-                      : isScrolled
-                      ? 'text-primary hover:text-accent'
-                      : 'text-white/80 hover:text-white'
+                    isActive ? 'text-accent' : 'text-gray-600 hover:text-accent'
                   }`}
+                  onClick={() => setIsOpen(false)}
                 >
                   {link.name}
                   {isActive && (
@@ -142,28 +108,26 @@ export default function Navbar() {
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
-                </a>
+                </Link>
               );
             })}
           </div>
 
-          {/* CTA Button – changed back to <a> with scroll behavior */}
+          {/* CTA Button – also uses Link to /#contact */}
           <div className="hidden md:block">
-            <a
-              href="#contact"
-              onClick={(e) => handleLinkClick(e, '#contact')}
+            <Link
+              to="/#contact"
               className="inline-flex items-center justify-center px-6 py-2.5 font-heading text-sm font-semibold rounded-full text-white bg-accent hover:bg-accent-dark shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5"
+              onClick={() => setIsOpen(false)}
             >
               Get In Touch
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`md:hidden p-2 rounded-lg focus:outline-none transition-colors ${
-              isScrolled ? 'text-primary hover:bg-gray-100' : 'text-white hover:bg-white/10'
-            }`}
+            className="md:hidden p-2 rounded-lg focus:outline-none transition-colors text-primary hover:bg-gray-100"
           >
             {isOpen ? <HiX size={26} /> : <HiMenu size={26} />}
           </button>
@@ -195,32 +159,25 @@ export default function Navbar() {
                   );
                 }
                 return (
-                  <a
+                  <Link
                     key={link.name}
-                    href={link.href}
-                    onClick={(e) => {
-                      handleLinkClick(e, link.href);
-                      setIsOpen(false);
-                    }}
+                    to={link.href}
                     className={`font-body font-semibold text-lg py-2 border-b border-gray-50 transition-colors ${
-                      activeSection === link.href.substring(1) ? 'text-accent' : 'text-primary'
+                      activeSection === link.href.substring(2) ? 'text-accent' : 'text-primary'
                     }`}
+                    onClick={() => setIsOpen(false)}
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 );
               })}
-              {/* Mobile CTA – changed back to <a> with scroll behavior */}
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  handleLinkClick(e, '#contact');
-                  setIsOpen(false);
-                }}
+              <Link
+                to="/#contact"
                 className="w-full text-center px-6 py-3 font-heading text-base font-semibold rounded-xl text-white bg-accent hover:bg-accent-dark shadow-md transition-all duration-300"
+                onClick={() => setIsOpen(false)}
               >
                 Get In Touch
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}

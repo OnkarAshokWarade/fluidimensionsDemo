@@ -1,165 +1,270 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { HiArrowSmRight } from 'react-icons/hi';
-import { 
-  IoAnalyticsOutline, 
-  IoCubeOutline, 
-  IoFlameOutline, 
-  IoColorFilterOutline, 
-  IoSyncOutline, 
-  IoHardwareChipOutline, 
-  IoCodeWorkingOutline, 
-  IoTrendingUpOutline, 
-  IoSchoolOutline 
-} from 'react-icons/io5';
 
-const servicesData = [
-  {
-    icon: <IoAnalyticsOutline size={24} />,
-    title: 'CFD Analysis',
-    desc: 'Numerical simulation of fluid flow patterns, velocity distributions, and vortex shedding for complex geometry profiles.',
-    color: 'from-blue-500 to-sky-400'
-  },
-  {
-    icon: <IoCubeOutline size={24} />,
-    title: 'CFD Modeling',
-    desc: 'Creation of high-fidelity mathematical representations for multi-phase interfaces, granular phases, and boundary flow fields.',
-    color: 'from-accent to-amber-500'
-  },
-  {
-    icon: <IoFlameOutline size={24} />,
-    title: 'Heat Transfer',
-    desc: 'Analysis of conduction, convection, and radiation flows inside furnaces, cooling jackets, and high-temperature thermal zones.',
-    color: 'from-rose-500 to-orange-400'
-  },
-  {
-    icon: <IoColorFilterOutline size={24} />,
-    title: 'Reaction Engineering',
-    desc: 'Coupling chemical reaction kinetics with transport models to optimize spatial conversions inside catalytic and packed beds.',
-    color: 'from-emerald-500 to-teal-400'
-  },
-  {
-    icon: <IoSyncOutline size={24} />,
-    title: 'Mixing Optimization',
-    desc: 'Simulation of impellers, draft tubes, and baffled tanks to maximize blending rates and avoid stagnant dead zones.',
-    color: 'from-purple-500 to-violet-400'
-  },
-  {
-    icon: <IoHardwareChipOutline size={24} />,
-    title: 'Equipment Design',
-    desc: 'Customized geometry layout optimization for cyclonic separators, headers, distributors, nozzles, and spray dryers.',
-    color: 'from-sky-500 to-indigo-400'
-  },
-  {
-    icon: <IoCodeWorkingOutline size={24} />,
-    title: 'CFD Automation',
-    desc: 'Custom macro scripts and software pipelines to automate mesh generation, solver runs, and report exports.',
-    color: 'from-orange-500 to-accent'
-  },
-  {
-    icon: <IoTrendingUpOutline size={24} />,
-    title: 'Process Optimization',
-    desc: 'Applying design of experiments (DoE) and numerical optimization bounds to identify ideal setpoints and feed locations.',
-    color: 'from-teal-500 to-emerald-400'
-  },
-  {
-    icon: <IoSchoolOutline size={24} />,
-    title: 'Industrial Training',
-    desc: 'Tailored courses on CFD modeling, open-source OpenFOAM solvers, and physical validation methodologies for engineering teams.',
-    color: 'from-indigo-500 to-purple-400'
-  }
-];
+// Swiper imports
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+// Import shared data and icon map
+import { servicesData, iconMap } from '../data/services';
+
+// Custom hook for media query
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = (event) => setMatches(event.matches);
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, [matches, query]);
+
+  return matches;
+}
 
 const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const cardVariants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
-    transition: { type: 'spring', stiffness: 100, damping: 15 }
-  }
+    transition: { type: 'spring', stiffness: 100, damping: 15 },
+  },
 };
 
 export default function Services() {
+  const isMobile = useMediaQuery('(max-width: 767px)');
+
+  // Refs for custom navigation buttons
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
+  const [swiperInstance, setSwiperInstance] = useState(null);
+
+  // Update navigation when swiper is ready and refs are available
+  useEffect(() => {
+    if (swiperInstance && prevRef.current && nextRef.current) {
+      swiperInstance.params.navigation.prevEl = prevRef.current;
+      swiperInstance.params.navigation.nextEl = nextRef.current;
+      swiperInstance.navigation.init();
+      swiperInstance.navigation.update();
+    }
+  }, [swiperInstance]);
+
   return (
-    <section id="services" className="py-24 md:py-32 bg-white relative">
+    <section id="services" className="py-16 sm:py-20 md:py-24 lg:py-32 bg-white relative">
       {/* Decorative Grid Lines */}
       <div className="absolute inset-0 cfd-grid opacity-25 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-        
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
-          <span className="text-xs font-bold text-accent uppercase tracking-widest">Our Services</span>
-          <h2 className="font-heading font-black text-3xl md:text-4xl text-primary mt-2 mb-4 leading-tight">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+          <span className="text-xs font-bold text-accent uppercase tracking-widest">
+            Our Services
+          </span>
+          <h2 className="font-heading font-black text-2xl sm:text-3xl md:text-4xl text-primary mt-2 mb-3 sm:mb-4 leading-tight">
             High-Performance Simulation Solutions
           </h2>
-          <p className="font-body text-base text-gray-500 leading-relaxed">
-            From granular multiphase models to thermal boundary simulations, we deliver precise predictive engineering outputs to refine designs before hardware prototyping.
+          <p className="font-body text-sm sm:text-base text-gray-500 leading-relaxed px-4 sm:px-0">
+            From granular multiphase models to thermal boundary simulations, we deliver precise
+            predictive engineering outputs to refine designs before hardware prototyping.
           </p>
         </div>
 
-        {/* Services Card Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-50px' }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {servicesData.map((service, index) => (
-            <motion.div
-              key={index}
-              variants={cardVariants}
-              whileHover={{ y: -8 }}
-              className="group relative bg-white border border-gray-100 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between"
-            >
-              {/* Top gradient glow overlay */}
-              <div className="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-secondary/10 to-accent/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none" />
-
-              <div>
-                {/* Icon Container with colorful gradient backing */}
-                <div className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${service.color} p-0.5 flex items-center justify-center text-white shadow-md mb-6 transition-transform duration-300 group-hover:scale-110`}>
-                  <div className="w-full h-full bg-white/10 rounded-[14px] flex items-center justify-center backdrop-blur-sm">
-                    {service.icon}
-                  </div>
-                </div>
-
-                {/* Service Title */}
-                <h3 className="font-heading font-bold text-xl text-primary mb-3">
-                  {service.title}
-                </h3>
-
-                {/* Service Description */}
-                <p className="font-body text-sm text-gray-500 leading-relaxed mb-8">
-                  {service.desc}
-                </p>
-              </div>
-
-              {/* Bottom Learn More link */}
-              <div className="border-t border-gray-50 pt-4 flex items-center justify-between mt-auto">
-                <a
-                  href="#contact"
-                  className="inline-flex items-center gap-1 text-xs font-heading font-bold text-secondary group-hover:text-accent transition-colors"
+        {/* Desktop: Grid Layout */}
+        {!isMobile && (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {servicesData.map((service, index) => {
+              const IconComponent = iconMap[service.icon];
+              return (
+                <motion.div
+                  key={service.id}
+                  variants={cardVariants}
+                  whileHover={{ y: -8 }}
+                  className="group relative bg-white border border-gray-100 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between h-full"
                 >
-                  Request Consultation <HiArrowSmRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
-                </a>
-                <span className="text-[10px] font-heading font-black text-gray-200 group-hover:text-accent/20 transition-colors">
-                  0{index + 1}
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-secondary/10 to-accent/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none" />
 
+                  <div>
+                    {/* Icon Container */}
+                    <div
+                      className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${service.color} p-0.5 flex items-center justify-center text-white shadow-md mb-5 transition-transform duration-300 group-hover:scale-110`}
+                    >
+                      <div className="w-full h-full bg-white/10 rounded-[14px] flex items-center justify-center backdrop-blur-sm">
+                        <IconComponent size={24} />
+                      </div>
+                    </div>
+
+                    <h3 className="font-heading font-bold text-lg sm:text-xl text-primary mb-2">
+                      {service.title}
+                    </h3>
+                    <p className="font-body text-sm text-gray-500 leading-relaxed mb-6">
+                      {service.shortDesc}
+                    </p>
+                  </div>
+
+                  {/* Orange "Learn More" Button – matches Navbar CTA style */}
+                  <div className="border-t border-gray-50 pt-4 mt-auto">
+                    <Link
+                      to={`/services/${service.id}`}
+                      className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 font-heading text-xs font-semibold rounded-full text-white bg-accent hover:bg-accent-dark shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5"
+                    >
+                      Learn More
+                      <HiArrowSmRight size={14} className="transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        )}
+
+        {/* Mobile: Swiper Carousel with Professional Custom Navigation */}
+        {isMobile && (
+          <div className="relative">
+            <Swiper
+              modules={[Navigation, Pagination, Autoplay]}
+              spaceBetween={20}
+              slidesPerView={1}
+              pagination={{ clickable: true }}
+              autoplay={{ delay: 5000, disableOnInteraction: false }}
+              className="pb-12"
+              onSwiper={setSwiperInstance}
+            >
+              {servicesData.map((service, index) => {
+                const IconComponent = iconMap[service.icon];
+                return (
+                  <SwiperSlide key={service.id} className="h-auto">
+                    <div className="group relative bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between h-full">
+                      <div className="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-secondary/10 to-accent/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none" />
+
+                      <div>
+                        <div
+                          className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${service.color} p-0.5 flex items-center justify-center text-white shadow-md mb-5 transition-transform duration-300 group-hover:scale-110`}
+                        >
+                          <div className="w-full h-full bg-white/10 rounded-[14px] flex items-center justify-center backdrop-blur-sm">
+                            <IconComponent size={24} />
+                          </div>
+                        </div>
+
+                        <h3 className="font-heading font-bold text-lg text-primary mb-2">
+                          {service.title}
+                        </h3>
+                        <p className="font-body text-sm text-gray-500 leading-relaxed mb-6">
+                          {service.shortDesc}
+                        </p>
+                      </div>
+
+                      {/* Orange "Learn More" Button – matches Navbar CTA style */}
+                      <div className="border-t border-gray-50 pt-4 mt-auto">
+                        <Link
+                          to={`/services/${service.id}`}
+                          className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 font-heading text-xs font-semibold rounded-full text-white bg-accent hover:bg-accent-dark shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5"
+                        >
+                          Learn More
+                          <HiArrowSmRight size={14} className="transition-transform group-hover:translate-x-1" />
+                        </Link>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+
+            {/* Custom Navigation Buttons – using refs for reliable click */}
+            <button
+              ref={prevRef}
+              className="group absolute left-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200/80 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-primary hover:bg-accent hover:text-white hover:border-accent hover:scale-105 -ml-3.5"
+              aria-label="Previous slide"
+            >
+              <svg
+                className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            <button
+              ref={nextRef}
+              className="group absolute right-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200/80 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-primary hover:bg-accent hover:text-white hover:border-accent hover:scale-105 -mr-3.5"
+              aria-label="Next slide"
+            >
+              <svg
+                className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            {/* Styles */}
+            <style jsx>{`
+              .swiper-pagination-bullet {
+                background: #d1d5db;
+                opacity: 1;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                transition: all 0.3s ease;
+              }
+              .swiper-pagination-bullet-active {
+                background: #ff6b00;
+                width: 24px;
+                border-radius: 4px;
+              }
+              @media (max-width: 480px) {
+                .swiper-button-prev-custom,
+                .swiper-button-next-custom {
+                  width: 36px;
+                  height: 36px;
+                }
+                .swiper-button-prev-custom svg,
+                .swiper-button-next-custom svg {
+                  width: 16px;
+                  height: 16px;
+                }
+                .swiper-button-prev-custom {
+                  margin-left: -8px;
+                }
+                .swiper-button-next-custom {
+                  margin-right: -8px;
+                }
+              }
+            `}</style>
+          </div>
+        )}
       </div>
     </section>
   );
