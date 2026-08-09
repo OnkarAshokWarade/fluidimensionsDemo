@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { IoArrowBackOutline, IoArrowForwardOutline } from 'react-icons/io5';
 import { servicesData, iconMap } from '../data/services';
-import NavbarLight from '../components/NavbarLight'; // ← Correct import
+import NavbarLight from '../components/NavbarLight';
 
 export default function ServiceDetail() {
   const { slug } = useParams();
@@ -11,10 +11,15 @@ export default function ServiceDetail() {
   const otherServices = servicesData.filter((_, idx) => idx !== currentIndex);
   const [activeTab, setActiveTab] = useState('overview');
 
+  // 🔄 Scroll to top when service changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [slug]);
+
   if (!service) {
     return (
       <>
-        <NavbarLight />  {/* ← Use NavbarLight */}
+        <NavbarLight />
         <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6">
           <h1 className="text-3xl sm:text-4xl font-heading font-black text-primary text-center">Service Not Found</h1>
           <p className="text-gray-500 mt-4 text-center">The service you're looking for doesn't exist.</p>
@@ -64,7 +69,7 @@ export default function ServiceDetail() {
 
   return (
     <>
-      <NavbarLight />  {/* ← Use NavbarLight */}
+      <NavbarLight />
       <div className="pt-20 sm:pt-24 pb-12 sm:pb-16 bg-brand-bg min-h-screen">
         {/* Decorative background elements – hidden on mobile */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">

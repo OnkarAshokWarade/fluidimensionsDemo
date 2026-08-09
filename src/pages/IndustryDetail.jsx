@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // ← added useEffect
 import { useParams, Link } from 'react-router-dom';
 import { IoArrowBackOutline, IoArrowForwardOutline } from 'react-icons/io5';
 import { industriesData, iconMap } from '../data/industries';
-import NavbarLight from '../components/NavbarLight'; // ← Correct import
+import NavbarLight from '../components/NavbarLight';
 import * as Icons from 'react-icons/gi';
 
 // Icon mapping (if not using iconMap from data)
@@ -25,10 +25,15 @@ export default function IndustryDetail() {
   const otherIndustries = industriesData.filter((_, idx) => idx !== currentIndex);
   const [activeTab, setActiveTab] = useState('overview');
 
+  // 🔄 Scroll to top when industry changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [slug]);
+
   if (!industry) {
     return (
       <>
-        <NavbarLight />  {/* ← Use NavbarLight */}
+        <NavbarLight />
         <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6">
           <h1 className="text-3xl sm:text-4xl font-heading font-black text-primary text-center">Industry Not Found</h1>
           <p className="text-gray-500 mt-4 text-center">The industry you're looking for doesn't exist.</p>
@@ -78,7 +83,7 @@ export default function IndustryDetail() {
 
   return (
     <>
-      <NavbarLight />  {/* ← Use NavbarLight */}
+      <NavbarLight />
       <div className="pt-20 sm:pt-24 pb-12 sm:pb-16 bg-brand-bg min-h-screen">
         {/* Decorative background elements – hidden on mobile */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -87,7 +92,7 @@ export default function IndustryDetail() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative z-10">
-        
+          {/* Breadcrumb */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-6 sm:mb-8 text-xs sm:text-sm">
             <Link to="/" className="text-gray-400 hover:text-accent transition-colors">Home</Link>
             <span className="text-gray-300">/</span>
