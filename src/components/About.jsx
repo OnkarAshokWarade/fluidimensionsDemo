@@ -46,12 +46,12 @@ export default function About() {
   const activeData = tabContent.find((tab) => tab.id === activeTab);
 
   return (
-    <section id="about" className="py-24 md:py-32 bg-brand-bg relative overflow-hidden">
+    <section id="about" className="relative overflow-hidden bg-brand-bg py-20 sm:py-24 lg:py-32">
       {/* Background shapes */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-72 h-72 bg-secondary/5 rounded-full blur-[80px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="flex flex-col lg:flex-row gap-16 items-center">
+      <div className="site-container">
+        <div className="flex flex-col items-center gap-10 sm:gap-14 lg:flex-row lg:gap-16">
           
           {/* Left Column: Visual schematic – now full width on mobile */}
           <div className="w-full lg:w-1/2 flex justify-center relative">
@@ -60,10 +60,10 @@ export default function About() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: '-100px' }}
               transition={{ duration: 0.8 }}
-              className="relative w-full max-w-[480px] aspect-[4/3] md:aspect-square bg-gradient-to-tr from-primary to-secondary rounded-3xl p-1 overflow-hidden shadow-2xl"
+              className="relative aspect-[4/3] w-full max-w-[480px] overflow-hidden rounded-2xl bg-gradient-to-tr from-primary to-secondary p-1 shadow-2xl sm:rounded-3xl lg:aspect-square"
             >
               <div className="absolute inset-0 cfd-grid opacity-30" />
-              <div className="relative w-full h-full bg-primary/95 rounded-[22px] flex items-center justify-center p-8 overflow-hidden">
+              <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[14px] bg-primary/95 p-4 sm:rounded-[22px] sm:p-8">
                 <svg className="w-full h-full text-white/20" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect x="120" y="80" width="160" height="240" rx="20" stroke="currentColor" strokeWidth="4" strokeDasharray="8 4" />
                   <line x1="200" y1="80" x2="200" y2="320" stroke="currentColor" strokeWidth="2" strokeDasharray="4 2" />
@@ -78,12 +78,12 @@ export default function About() {
                   </g>
                   <path d="M 70 120 Q 150 120 170 170 T 250 250 T 330 280" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.6" className="animate-[dash_4s_linear_infinite]" strokeDasharray="100" strokeDashoffset="100" />
                 </svg>
-                <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md border border-white/15 p-4 rounded-xl flex items-center justify-between text-left">
+                <div className="absolute inset-x-3 bottom-3 flex items-center justify-between gap-3 rounded-xl border border-white/15 bg-white/10 p-3 text-left backdrop-blur-md sm:inset-x-6 sm:bottom-6 sm:p-4">
                   <div>
                     <span className="text-[10px] text-accent uppercase font-bold tracking-widest leading-none">Process Telemetry</span>
                     <h5 className="font-heading font-extrabold text-white text-sm mt-0.5">High Turbulence Model</h5>
                   </div>
-                  <span className="text-white/60 font-body text-xs font-semibold">k-epsilon model</span>
+                  <span className="hidden font-body text-xs font-semibold text-white/60 min-[400px]:block">k-epsilon model</span>
                 </div>
               </div>
             </motion.div>
@@ -103,12 +103,15 @@ export default function About() {
               </h2>
 
               {/* Tabs – wrap on mobile, reduce padding */}
-              <div className="flex flex-wrap gap-1 sm:gap-2 border-b border-gray-200 pb-px mb-8">
+              <div className="mb-7 flex gap-1 overflow-x-auto border-b border-gray-200 pb-px sm:mb-8 sm:flex-wrap sm:gap-2" role="tablist" aria-label="About Fluidimensions">
                 {tabContent.map((tab) => (
                   <button
                     key={tab.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeTab === tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 font-heading text-xs sm:text-sm font-semibold border-b-2 transition-all relative outline-none cursor-pointer ${
+                    className={`relative flex min-h-11 shrink-0 items-center gap-1.5 border-b-2 px-3 py-2 font-heading text-xs font-semibold transition-all sm:gap-2 sm:px-4 sm:py-3 sm:text-sm ${
                       activeTab === tab.id
                         ? 'border-accent text-accent'
                         : 'border-transparent text-gray-400 hover:text-primary'

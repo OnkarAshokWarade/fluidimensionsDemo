@@ -1,248 +1,62 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { HiArrowSmRight } from 'react-icons/hi';
-import { industriesData } from '../data/industries';
+import { industriesData, iconMap } from '../data/industries';
+import chemicalImage from '../assets/industries/chemical.webp';
+import pharmaceuticalImage from '../assets/industries/pharmaceutical.webp';
+import agroImage from '../assets/industries/agro.webp';
+import paintsImage from '../assets/industries/paints-pigments.webp';
+import metalsImage from '../assets/industries/metals-metallurgy.webp';
+import foodImage from '../assets/industries/food-beverage.webp';
+import automobileImage from '../assets/industries/automobile.webp';
+import oilGasImage from '../assets/industries/oil-gas.webp';
+import cementImage from '../assets/industries/cement-mining.webp';
 
-import {
-  GiBubblingFlask,
-  GiPill,
-  GiSprout,
-  GiSpray,
-  GiSteelClaws,
-  GiHamburger,
-  GiCarKey,
-  GiOilPump,
-  GiFactory
-} from 'react-icons/gi';
-
-const iconMap = {
-  GiBubblingFlask,
-  GiPill,
-  GiSprout,
-  GiSpray,
-  GiSteelClaws,
-  GiHamburger,
-  GiCarKey,
-  GiOilPump,
-  GiFactory,
+const industryImages = {
+  chemical: chemicalImage,
+  pharmaceutical: pharmaceuticalImage,
+  agro: agroImage,
+  'paints-pigments': paintsImage,
+  'metals-metallurgy': metalsImage,
+  'food-beverage': foodImage,
+  automobile: automobileImage,
+  'oil-gas': oilGasImage,
+  'cement-mining': cementImage,
 };
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.08
-    }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 100, damping: 15 }
-  }
-};
-
-function useMediaQuery(query) {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
-    const listener = (event) => setMatches(event.matches);
-    media.addEventListener('change', listener);
-    return () => media.removeEventListener('change', listener);
-  }, [matches, query]);
-
-  return matches;
-}
 
 export default function Industries() {
-  const isMobile = useMediaQuery('(max-width: 767px)');
-
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
-  const [swiperInstance, setSwiperInstance] = useState(null);
-
-  useEffect(() => {
-    if (swiperInstance && prevRef.current && nextRef.current) {
-      swiperInstance.params.navigation.prevEl = prevRef.current;
-      swiperInstance.params.navigation.nextEl = nextRef.current;
-      swiperInstance.navigation.init();
-      swiperInstance.navigation.update();
-    }
-  }, [swiperInstance]);
-
   return (
-    <section id="industries" className="py-16 sm:py-20 md:py-24 lg:py-32 bg-white relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 md:mb-24">
-          <span className="text-xs font-bold text-accent uppercase tracking-widest">Industries We Serve</span>
-          <h2 className="font-heading font-black text-2xl sm:text-3xl md:text-4xl text-primary mt-2 mb-4 leading-tight">
-            Consulting Tailored to Your Specific Domain
-          </h2>
-          <p className="font-body text-sm sm:text-base text-gray-500 leading-relaxed px-4 sm:px-0">
-            We adapt advanced computational templates to address unique thermodynamics, rheology, and fluid behaviors across distinct sectors.
-          </p>
-        </div>
+    <section id="industries" className="relative overflow-hidden bg-white py-20 sm:py-24 lg:py-32">
+      <div className="site-container relative z-10">
+        <header className="mx-auto mb-12 max-w-3xl text-center sm:mb-16 lg:mb-20">
+          <span className="text-xs font-bold uppercase tracking-widest text-accent">Industry Experience</span>
+          <h2 className="mt-2 font-heading text-[clamp(1.875rem,5vw,2.75rem)] font-black leading-tight text-primary">Simulation Expertise Across Industry</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">Domain-specific models and engineering workflows built around the physics, constraints, and standards of your process.</p>
+        </header>
 
-        {/* Desktop Grid */}
-        {!isMobile && (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {industriesData.map((industry) => {
-              const IconComponent = iconMap[industry.icon] || GiBubblingFlask;
-              return (
-                <motion.div
-                  key={industry.id}
-                  variants={cardVariants}
-                  whileHover="hover"
-                  className="relative h-auto min-h-[360px] rounded-3xl overflow-hidden shadow-md group cursor-pointer"
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-tr ${industry.gradient} transition-transform duration-500 scale-100 group-hover:scale-110`} />
-                  <div className="absolute inset-0 cfd-grid opacity-10 pointer-events-none" />
-                  <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10 text-left bg-gradient-to-t from-black/80 via-black/30 to-transparent">
-                    <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/10 group-hover:bg-accent group-hover:border-transparent transition-all duration-300">
-                      <IconComponent size={32} />
-                    </div>
-                    <div className="flex-1 flex flex-col justify-end mt-4">
-                      <h3 className="font-heading font-bold text-xl text-white mb-2">
-                        {industry.title}
-                      </h3>
-                      <p className="font-body text-xs text-gray-100 leading-relaxed mb-4">
-                        {industry.desc || 'Industry description coming soon.'}
-                      </p>
-                      <Link
-                        to={`/industries/${industry.id}`}
-                        className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 font-heading text-xs font-semibold rounded-full text-white bg-accent hover:bg-accent-dark shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 w-fit"
-                      >
-                        Learn More
-                        <HiArrowSmRight size={14} className="transition-transform group-hover:translate-x-1" />
-                      </Link>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-        )}
-
-        {/* Mobile Swiper */}
-        {isMobile && (
-          <div className="relative">
-            <Swiper
-              modules={[Navigation, Pagination, Autoplay]}
-              spaceBetween={20}
-              slidesPerView={1}
-              pagination={{ clickable: true }}
-              autoplay={{ delay: 5000, disableOnInteraction: false }}
-              className="pb-12"
-              onSwiper={setSwiperInstance}
-            >
-              {industriesData.map((industry) => {
-                const IconComponent = iconMap[industry.icon] || GiBubblingFlask;
-                return (
-                  <SwiperSlide key={industry.id} className="h-auto">
-                    <div className="relative h-auto min-h-[360px] rounded-3xl overflow-hidden shadow-md group cursor-pointer">
-                      <div className={`absolute inset-0 bg-gradient-to-tr ${industry.gradient} transition-transform duration-500 scale-100 group-hover:scale-110`} />
-                      <div className="absolute inset-0 cfd-grid opacity-10 pointer-events-none" />
-                      <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10 text-left bg-gradient-to-t from-black/80 via-black/30 to-transparent">
-                        <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/10 group-hover:bg-accent group-hover:border-transparent transition-all duration-300">
-                          <IconComponent size={32} />
-                        </div>
-                        <div className="flex-1 flex flex-col justify-end mt-4">
-                          <h3 className="font-heading font-bold text-xl text-white mb-2">
-                            {industry.title}
-                          </h3>
-                          <p className="font-body text-xs text-gray-100 leading-relaxed mb-4">
-                            {industry.desc || 'Industry description coming soon.'}
-                          </p>
-                          <Link
-                            to={`/industries/${industry.id}`}
-                            className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 font-heading text-xs font-semibold rounded-full text-white bg-accent hover:bg-accent-dark shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 w-fit"
-                          >
-                            Learn More
-                            <HiArrowSmRight size={14} className="transition-transform group-hover:translate-x-1" />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-
-            {/* Navigation buttons */}
-            <button
-              ref={prevRef}
-              className="group absolute left-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200/80 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-primary hover:bg-accent hover:text-white hover:border-accent hover:scale-105 -ml-3.5"
-              aria-label="Previous slide"
-            >
-              <svg className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              ref={nextRef}
-              className="group absolute right-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200/80 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-primary hover:bg-accent hover:text-white hover:border-accent hover:scale-105 -mr-3.5"
-              aria-label="Next slide"
-            >
-              <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-
-            <style jsx>{`
-              .swiper-pagination-bullet {
-                background: #D1D5DB;
-                opacity: 1;
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                transition: all 0.3s ease;
-              }
-              .swiper-pagination-bullet-active {
-                background: #FF6B00;
-                width: 24px;
-                border-radius: 4px;
-              }
-              @media (max-width: 480px) {
-                .swiper-button-prev-custom,
-                .swiper-button-next-custom {
-                  width: 36px;
-                  height: 36px;
-                }
-                .swiper-button-prev-custom svg,
-                .swiper-button-next-custom svg {
-                  width: 16px;
-                  height: 16px;
-                }
-                .swiper-button-prev-custom {
-                  margin-left: -8px;
-                }
-                .swiper-button-next-custom {
-                  margin-right: -8px;
-                }
-              }
-            `}</style>
-          </div>
-        )}
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-60px' }} variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06 } } }} className="hide-scrollbar -mx-4 grid snap-x snap-mandatory grid-flow-col auto-cols-[84%] gap-4 overflow-x-auto px-4 pb-5 min-[480px]:auto-cols-[62%] sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 xl:gap-8" tabIndex="0" aria-label="Industries served">
+          {industriesData.map((industry) => {
+            const Icon = iconMap[industry.icon];
+            return (
+              <motion.article key={industry.id} variants={{ hidden: { opacity: 0, y: 22 }, visible: { opacity: 1, y: 0 } }} className="group relative flex min-h-[22rem] min-w-0 snap-start flex-col justify-between overflow-hidden rounded-2xl bg-primary p-6 text-white shadow-[0_16px_40px_-20px_rgba(7,27,58,.55)] ring-1 ring-slate-900/5 transition duration-500 hover:-translate-y-1.5 hover:shadow-[0_24px_55px_-22px_rgba(7,27,58,.65)] sm:rounded-3xl sm:p-7 lg:min-h-[24rem] xl:p-8">
+                <img src={industryImages[industry.id]} alt="" loading="lazy" decoding="async" className="pointer-events-none absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.045]" />
+                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(4,18,39,.18)_0%,rgba(4,18,39,.16)_34%,rgba(4,18,39,.9)_72%,rgba(4,18,39,.98)_100%)] transition duration-500 group-hover:bg-[linear-gradient(180deg,rgba(4,18,39,.12)_0%,rgba(4,18,39,.12)_34%,rgba(4,18,39,.88)_72%,rgba(4,18,39,.98)_100%)]" />
+                <div className="pointer-events-none absolute inset-0 cfd-grid opacity-[0.07]" />
+                <div className="relative z-10 flex items-start justify-between">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-slate-950/25 shadow-lg backdrop-blur-md"><Icon size={25} /></div>
+                  <span className="rounded-full border border-white/15 bg-slate-950/25 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-white/80 backdrop-blur-md">Industry 0{industriesData.indexOf(industry) + 1}</span>
+                </div>
+                <div className="relative z-10">
+                  <div className="mb-3 h-0.5 w-8 bg-accent transition-all duration-300 group-hover:w-14" />
+                  <h3 className="font-heading text-xl font-black tracking-tight sm:text-2xl">{industry.title}</h3>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-white/75">{industry.shortDesc}</p>
+                  <Link to={`/industries/${industry.id}`} aria-label={`Explore ${industry.title} expertise`} className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-lg font-heading text-xs font-bold text-white transition hover:text-orange-300">Explore expertise <HiArrowSmRight className="transition-transform group-hover:translate-x-1" size={17} /></Link>
+                </div>
+              </motion.article>
+            );
+          })}
+        </motion.div>
+        <p className="mt-3 text-center text-[11px] text-slate-400 sm:hidden">Swipe to explore industries</p>
       </div>
     </section>
   );

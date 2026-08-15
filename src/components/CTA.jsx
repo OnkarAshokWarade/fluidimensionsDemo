@@ -27,14 +27,14 @@ export default function CTA() {
   };
 
   return (
-    <section id="contact" className="py-24 md:py-32 bg-primary relative overflow-hidden">
+    <section id="contact" className="relative overflow-hidden bg-primary py-20 sm:py-24 lg:py-32">
       {/* Background blobs and grid */}
       <div className="absolute inset-0 cfd-grid opacity-5 pointer-events-none" />
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-accent/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-        <div className="flex flex-col lg:flex-row gap-16 items-center">
+      <div className="site-container relative z-10">
+        <div className="flex flex-col items-start gap-12 lg:flex-row lg:items-center lg:gap-16">
           
           {/* Left Column: CTA Pitch */}
           <div className="w-full lg:w-1/2 text-left">
@@ -45,7 +45,7 @@ export default function CTA() {
               transition={{ duration: 0.6 }}
             >
               <span className="text-xs font-bold text-accent uppercase tracking-widest">Connect With Us</span>
-              <h2 className="font-heading font-black text-3xl md:text-5xl text-white mt-2 mb-6 leading-tight">
+              <h2 className="mt-2 mb-5 font-heading text-[clamp(1.875rem,6vw,3rem)] font-black leading-tight text-white sm:mb-6">
                 Ready to Optimize Your Industrial Process?
               </h2>
               <p className="font-body text-base text-gray-300 leading-relaxed mb-8 max-w-xl">
@@ -65,7 +65,7 @@ export default function CTA() {
       <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
         Email Inquiry
       </span>
-      <span className="font-body text-sm font-semibold text-white">
+      <span className="break-all font-body text-sm font-semibold text-white">
         info@fluidimensions.com
       </span>
     </div>
@@ -98,7 +98,7 @@ export default function CTA() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: '-100px' }}
               transition={{ duration: 0.6, type: 'spring' }}
-              className="bg-white rounded-3xl p-8 md:p-10 shadow-2xl border border-white/10"
+              className="rounded-2xl border border-white/10 bg-white p-5 shadow-2xl min-[480px]:p-7 sm:rounded-3xl md:p-10"
             >
               <h3 className="font-heading font-black text-xl md:text-2xl text-primary text-left mb-6">
                 Request Engineering Scoping
@@ -127,11 +127,12 @@ export default function CTA() {
                       type="text"
                       id="name"
                       name="name"
+                      autoComplete="name"
                       required
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="Onkar Warade"
-                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-sm font-body text-primary focus:outline-none focus:bg-white focus:border-accent transition-colors"
+                      className="min-h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-body text-base text-primary transition-colors focus:border-accent focus:bg-white focus:outline-none"
                     />
                   </div>
 
@@ -144,11 +145,12 @@ export default function CTA() {
                       type="email"
                       id="email"
                       name="email"
+                      autoComplete="email"
                       required
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="o.warade@company.com"
-                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-sm font-body text-primary focus:outline-none focus:bg-white focus:border-accent transition-colors"
+                      className="min-h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-body text-base text-primary transition-colors focus:border-accent focus:bg-white focus:outline-none"
                     />
                   </div>
 
@@ -162,7 +164,7 @@ export default function CTA() {
                       name="industry"
                       value={formData.industry}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-sm font-body text-primary focus:outline-none focus:bg-white focus:border-accent transition-colors"
+                      className="min-h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-body text-base text-primary transition-colors focus:border-accent focus:bg-white focus:outline-none"
                     >
                       <option value="chemical">Chemicals & Mixing</option>
                       <option value="pharma">Pharmaceuticals</option>
@@ -185,14 +187,14 @@ export default function CTA() {
                       value={formData.message}
                       onChange={handleInputChange}
                       placeholder="Describe mixing volumes, nozzle parameters, or temperature bottlenecks..."
-                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-sm font-body text-primary focus:outline-none focus:bg-white focus:border-accent transition-colors resize-none"
+                      className="min-h-28 w-full resize-y rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-body text-base text-primary transition-colors focus:border-accent focus:bg-white focus:outline-none"
                     />
                   </div>
 
                   {/* Submit button */}
                   <button
                     type="submit"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 font-heading text-sm font-semibold rounded-xl text-white bg-accent hover:bg-accent-dark shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer"
+                    className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-accent px-5 font-heading text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-accent-dark hover:shadow-lg"
                   >
                     Send Scoping Request <HiArrowRight size={14} />
                   </button>

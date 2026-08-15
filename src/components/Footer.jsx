@@ -1,141 +1,42 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 import { FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
 
+const companyLinks = [['Home', '/'], ['About', '/#about'], ['Services', '/#services'], ['Industries', '/#industries'], ['Workflow', '/#workflow'], ['Projects', '/#projects']];
+const serviceLinks = [['CFD Analysis', '/services/cfd-analysis'], ['Heat Transfer', '/services/heat-transfer'], ['Reaction Engineering', '/services/reaction-engineering'], ['Mixing Vessels', '/services/mixing-optimization'], ['Equipment Design', '/services/equipment-design']];
+const industryLinks = [['Chemical Processing', '/industries/chemical'], ['Pharmaceuticals', '/industries/pharmaceutical'], ['Metallurgy', '/industries/metallurgy'], ['Oil & Gas', '/industries/oil-gas'], ['Cement & Mining', '/industries/cement-mining']];
+
+function FooterLinks({ title, links }) {
+  return <div><h2 className="mb-5 font-heading text-xs font-bold uppercase tracking-widest text-accent">{title}</h2><ul className="space-y-1 font-body text-sm text-slate-400">{links.map(([label, to]) => <li key={label}><Link to={to} className="inline-flex min-h-11 items-center transition hover:text-white">{label}</Link></li>)}</ul></div>;
+}
+
 export default function Footer() {
-  const handleScrollTo = (e, id) => {
-    e.preventDefault();
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
+  const socials = [
+    { icon: <FaLinkedin size={18} />, href: 'https://linkedin.com', label: 'LinkedIn' },
+    { icon: <FaTwitter size={18} />, href: 'https://twitter.com', label: 'Twitter' },
+    { icon: <FaYoutube size={18} />, href: 'https://youtube.com', label: 'YouTube' },
+  ];
 
   return (
-    <footer className="bg-primary text-white border-t border-white/5 relative overflow-hidden">
-      <div className="absolute inset-0 cfd-grid opacity-5 pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-20 pb-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-16">
-          
-          {/* Col 1: Logo & Newsletter */}
-          <div className="lg:col-span-2 text-left pr-0 lg:pr-8">
-            <div className="flex items-center space-x-3 mb-6">
-              {/* Logo – original colors (no filter) */}
-              <img
-                src="/logo.png"
-                alt="Fluidimensions"
-                className="h-10 w-auto"
-              />
-              <div className="flex flex-col">
-                <span className="font-heading font-black text-base text-white tracking-tight leading-none">
-                  FLUIDIMENSIONS
-                </span>
-                <span className="text-[9px] text-accent font-bold tracking-widest uppercase mt-0.5">
-                  Simulation & Consulting
-                </span>
-              </div>
-            </div>
-            
-            <p className="font-body text-sm text-gray-400 leading-relaxed mb-6 max-w-sm">
-              Providing premium, high-fidelity engineering simulations and thermodynamic designs to streamline industrial hardware scales worldwide.
-            </p>
-
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-3 max-w-sm">
-              <label className="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                Subscribe to Simulation Insights
-              </label>
-              <div className="flex">
-                <input
-                  type="email"
-                  required
-                  placeholder="newsletter@company.com"
-                  className="flex-grow px-4 py-2.5 rounded-l-xl bg-white/5 border border-white/10 text-xs font-body text-white focus:outline-none focus:border-accent transition-colors"
-                />
-                <button
-                  type="submit"
-                  className="px-5 py-2.5 rounded-r-xl bg-accent hover:bg-accent-dark text-xs font-heading font-bold transition-colors cursor-pointer"
-                >
-                  Join
-                </button>
-              </div>
+    <footer className="relative overflow-hidden border-t border-white/5 bg-primary text-white">
+      <div className="pointer-events-none absolute inset-0 cfd-grid opacity-5" />
+      <div className="site-container relative z-10 pb-10 pt-16 sm:pb-12 sm:pt-20">
+        <div className="mb-12 grid grid-cols-1 gap-10 min-[480px]:grid-cols-2 lg:mb-16 lg:grid-cols-5 lg:gap-8">
+          <div className="min-w-0 min-[480px]:col-span-2 lg:pr-8">
+            <Link to="/" className="mb-6 flex w-fit items-center gap-3 rounded-lg"><img src="/logo.png" alt="" className="h-10 w-auto" /><div><span className="block font-heading text-base font-black leading-none">FLUIDIMENSIONS</span><span className="mt-1 block text-[9px] font-bold uppercase tracking-widest text-accent">Simulation & Consulting</span></div></Link>
+            <p className="mb-6 max-w-sm text-sm leading-6 text-slate-400">High-fidelity engineering simulation and thermodynamic design for safer, more efficient industrial processes.</p>
+            <form onSubmit={(event) => event.preventDefault()} className="max-w-sm" aria-label="Newsletter subscription">
+              <label htmlFor="newsletter-email" className="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-400">Simulation insights</label>
+              <div className="flex min-w-0"><input id="newsletter-email" type="email" autoComplete="email" required placeholder="you@company.com" className="min-h-12 min-w-0 flex-1 rounded-l-xl border border-white/10 bg-white/5 px-3 text-base text-white focus:border-accent focus:outline-none" /><button type="submit" className="min-h-12 shrink-0 rounded-r-xl bg-accent px-4 font-heading text-xs font-bold transition hover:bg-accent-dark sm:px-5">Join</button></div>
             </form>
           </div>
-
-          {/* Col 2: Navigation Links */}
-          <div className="text-left">
-            <h4 className="font-heading font-bold text-xs uppercase tracking-widest text-accent mb-6">Company</h4>
-            <ul className="space-y-3 font-body text-sm text-gray-400">
-              {['Home', 'About', 'Services', 'Industries', 'Workflow', 'Projects'].map((link) => (
-                <li key={link}>
-                  <a
-                    href={`#${link.toLowerCase()}`}
-                    onClick={(e) => handleScrollTo(e, link.toLowerCase())}
-                    className="hover:text-white transition-colors"
-                  >
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Col 3: Services Links */}
-          <div className="text-left">
-            <h4 className="font-heading font-bold text-xs uppercase tracking-widest text-accent mb-6">Services</h4>
-            <ul className="space-y-3 font-body text-sm text-gray-400">
-              <li><a href="#services" onClick={(e) => handleScrollTo(e, 'services')} className="hover:text-white transition-colors">CFD Analysis</a></li>
-              <li><a href="#services" onClick={(e) => handleScrollTo(e, 'services')} className="hover:text-white transition-colors">Heat Transfer</a></li>
-              <li><a href="#services" onClick={(e) => handleScrollTo(e, 'services')} className="hover:text-white transition-colors">Reaction Engineering</a></li>
-              <li><a href="#services" onClick={(e) => handleScrollTo(e, 'services')} className="hover:text-white transition-colors">Mixing Vessels</a></li>
-              <li><a href="#services" onClick={(e) => handleScrollTo(e, 'services')} className="hover:text-white transition-colors">Equipment Design</a></li>
-            </ul>
-          </div>
-
-          {/* Col 4: Industries Links */}
-          <div className="text-left">
-            <h4 className="font-heading font-bold text-xs uppercase tracking-widest text-accent mb-6">Industries</h4>
-            <ul className="space-y-3 font-body text-sm text-gray-400">
-              <li><a href="#industries" onClick={(e) => handleScrollTo(e, 'industries')} className="hover:text-white transition-colors">Chemical Processing</a></li>
-              <li><a href="#industries" onClick={(e) => handleScrollTo(e, 'industries')} className="hover:text-white transition-colors">Pharmaceuticals</a></li>
-              <li><a href="#industries" onClick={(e) => handleScrollTo(e, 'industries')} className="hover:text-white transition-colors">Metallurgy</a></li>
-              <li><a href="#industries" onClick={(e) => handleScrollTo(e, 'industries')} className="hover:text-white transition-colors">Oil & Gas</a></li>
-              <li><a href="#industries" onClick={(e) => handleScrollTo(e, 'industries')} className="hover:text-white transition-colors">Cement & Rotary Kilns</a></li>
-            </ul>
-          </div>
-
+          <FooterLinks title="Company" links={companyLinks} />
+          <FooterLinks title="Services" links={serviceLinks} />
+          <FooterLinks title="Industries" links={industryLinks} />
         </div>
-
-        {/* Bottom copyright & socials */}
-        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <span className="font-body text-xs text-gray-500 text-left">
-            © {new Date().getFullYear()} Fluidimensions. All rights reserved. Designed for elite industrial consulting.
-          </span>
-          
-          <div className="flex space-x-4">
-            {[
-              { icon: <FaLinkedin size={18} />, href: 'https://linkedin.com' },
-              { icon: <FaTwitter size={18} />, href: 'https://twitter.com' },
-              { icon: <FaYoutube size={18} />, href: 'https://youtube.com' }
-            ].map((social, idx) => (
-              <a
-                key={idx}
-                href={social.href}
-                target="_blank"
-                rel="noreferrer"
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white transition-all duration-300"
-              >
-                {social.icon}
-              </a>
-            ))}
-          </div>
+        <div className="flex flex-col items-center justify-between gap-6 border-t border-white/5 pt-8 text-center sm:flex-row sm:text-left">
+          <span className="text-xs leading-5 text-slate-500">© {new Date().getFullYear()} Fluidimensions. All rights reserved.</span>
+          <div className="flex gap-3">{socials.map((social) => <a key={social.label} href={social.href} target="_blank" rel="noreferrer" aria-label={`Visit Fluidimensions on ${social.label}`} className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-400 transition hover:border-white/30 hover:bg-white/10 hover:text-white">{social.icon}</a>)}</div>
         </div>
-
       </div>
     </footer>
   );

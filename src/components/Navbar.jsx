@@ -1,228 +1,106 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { HiMenu, HiX } from 'react-icons/hi';
 import { Link, useLocation } from 'react-router-dom';
 
 const navLinks = [
-  { name: 'Home', href: '/', isInternal: true },
-  { name: 'About', href: '#about', isInternal: false },
-  { name: 'Services', href: '#services', isInternal: false },
-  { name: 'Industries', href: '#industries', isInternal: false },
-  { name: 'Workflow', href: '#workflow', isInternal: false },
-  { name: 'Projects', href: '#projects', isInternal: false },
+  ['Home', 'home'],
+  ['About', 'about'],
+  ['Services', 'services'],
+  ['Industries', 'industries'],
+  ['Workflow', 'workflow'],
+  ['Projects', 'projects'],
 ];
 
-export default function Navbar() {
+export default function Navbar({ light = false }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const solid = light || isScrolled || isOpen;
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-      if (isHome) {
-        const sections = ['home', 'about', 'services', 'industries', 'workflow', 'projects'];
-        let currentSection = 'home';
-        for (const section of sections) {
-          const element = document.getElementById(section);
-          if (element) {
-            const rect = element.getBoundingClientRect();
-            if (rect.top <= 120 && rect.bottom >= 120) {
-              currentSection = section;
-              break;
-            }
-          }
-        }
-        setActiveSection(currentSection);
-      } else {
-        setActiveSection('');
-      }
+      setIsScrolled(window.scrollY > 18);
+      if (!isHome) return;
+      const current = navLinks.map(([, id]) => id).find((id) => {
+        const element = document.getElementById(id);
+        if (!element) return false;
+        const rect = element.getBoundingClientRect();
+        return rect.top <= 110 && rect.bottom >= 110;
+      });
+      if (current) setActiveSection(current);
     };
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isHome]);
 
-  const handleLinkClick = (e, href) => {
-    if (href.startsWith('#')) {
-      e.preventDefault();
-      setIsOpen(false);
-      const targetId = href.substring(1);
-      const element = document.getElementById(targetId);
-      if (element) {
-        const offset = 80;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-      }
-    } else {
-      setIsOpen(false);
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) setIsOpen(false);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isOpen]);
+
+  const destination = (id) => id === 'home' ? '/' : `/#${id}`;
+  const handleNavigation = (event, id) => {
+    setIsOpen(false);
+    if (!isHome || id === 'home') return;
+    const target = document.getElementById(id);
+    if (target) {
+      event.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.history.replaceState(null, '', `/#${id}`);
     }
   };
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-white/90 backdrop-blur-md shadow-md border-b border-gray-100 py-4'
-            : 'bg-transparent py-6'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            to="/"
-            className="flex items-center space-x-3 group"
-            onClick={() => setIsOpen(false)}
-          >
-            <img src="/logo.png" alt="Fluidimensions" className="h-10 w-auto" />
-            <div className="flex flex-col">
-              <span
-                className={`font-heading font-black text-lg tracking-tight leading-none ${
-                  isScrolled
-                    ? 'text-primary'
-                    : 'bg-gradient-to-r from-slate-100 via-white to-orange-500 bg-clip-text text-transparent'
-                }`}
-              >
-                FLUIDIMENSIONS
-              </span>
-              <span className="text-[10px] text-accent font-bold tracking-widest uppercase">
-                Simulation & Consulting
-              </span>
+      <motion.header initial={{ y: -90 }} animate={{ y: 0 }} transition={{ duration: 0.45 }} className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${solid ? 'border-slate-200/80 bg-white/95 py-3 shadow-sm backdrop-blur-xl' : 'border-transparent bg-transparent py-4 sm:py-5'}`}>
+        <nav className="site-container flex items-center justify-between gap-4" aria-label="Primary navigation">
+          <Link to="/" onClick={() => setIsOpen(false)} className="flex min-h-11 min-w-0 items-center gap-2.5 rounded-lg sm:gap-3" aria-label="Fluidimensions home">
+            <img src="/logo.png" alt="" className="h-9 w-auto shrink-0 sm:h-10" />
+            <div className="min-w-0">
+              <span className={`block truncate font-heading text-sm font-black leading-none tracking-tight min-[380px]:text-base sm:text-lg ${solid ? 'text-primary' : 'text-white'}`}>FLUIDIMENSIONS</span>
+              <span className="mt-1 block truncate text-[8px] font-bold uppercase tracking-[0.16em] text-accent min-[380px]:text-[9px] sm:text-[10px]">Simulation & Consulting</span>
             </div>
           </Link>
 
-          {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => {
-              const isActive = isHome && !link.isInternal
-                ? activeSection === link.href.substring(1)
-                : false;
-
-              if (link.isInternal) {
-                return (
-                  <Link
-                    key={link.name}
-                    to={link.href}
-                    className={`font-body font-medium text-sm transition-colors duration-200 relative py-1 ${
-                      isScrolled
-                        ? 'text-primary hover:text-accent'
-                        : 'text-white/80 hover:text-white'
-                    }`}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.name}
-                  </Link>
-                );
-              }
-
-              return (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={(e) => handleLinkClick(e, link.href)}
-                  className={`font-body font-medium text-sm transition-colors duration-200 relative py-1 ${
-                    isActive
-                      ? 'text-accent'
-                      : isScrolled
-                      ? 'text-primary hover:text-accent'
-                      : 'text-white/80 hover:text-white'
-                  }`}
-                >
-                  {link.name}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeUnderline"
-                      className="absolute bottom-0 left-0 w-full h-[2px] bg-accent"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </a>
-              );
+          <div className="hidden items-center gap-5 lg:flex xl:gap-8">
+            {navLinks.map(([name, id]) => {
+              const active = isHome && activeSection === id;
+              return <Link key={id} to={destination(id)} onClick={(event) => handleNavigation(event, id)} className={`relative rounded-md py-2 font-body text-sm font-medium transition ${active ? 'text-accent' : solid ? 'text-slate-700 hover:text-accent' : 'text-white/80 hover:text-white'}`}>{name}{active && <motion.span layoutId="nav-active" className="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-accent" />}</Link>;
             })}
           </div>
 
-          {/* CTA Button – changed back to <a> with scroll behavior */}
-          <div className="hidden md:block">
-            <a
-              href="#contact"
-              onClick={(e) => handleLinkClick(e, '#contact')}
-              className="inline-flex items-center justify-center px-6 py-2.5 font-heading text-sm font-semibold rounded-full text-white bg-accent hover:bg-accent-dark shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5"
-            >
-              Get In Touch
-            </a>
-          </div>
+          <Link to="/#contact" onClick={(event) => handleNavigation(event, 'contact')} className="ml-auto hidden min-h-11 items-center justify-center rounded-full bg-accent px-5 font-heading text-sm font-semibold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-accent-dark lg:inline-flex xl:px-6">Get in touch</Link>
+          <button type="button" aria-expanded={isOpen} aria-controls="mobile-navigation" aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'} onClick={() => setIsOpen((open) => !open)} className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition lg:hidden ${solid ? 'text-primary hover:bg-slate-100' : 'text-white hover:bg-white/10'}`}>{isOpen ? <HiX size={25} /> : <HiMenu size={25} />}</button>
+        </nav>
+      </motion.header>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className={`md:hidden p-2 rounded-lg focus:outline-none transition-colors ${
-              isScrolled ? 'text-primary hover:bg-gray-100' : 'text-white hover:bg-white/10'
-            }`}
-          >
-            {isOpen ? <HiX size={26} /> : <HiMenu size={26} />}
-          </button>
-        </div>
-      </motion.nav>
-
-      {/* Mobile Menu Drawer */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-x-0 top-[76px] z-40 bg-white shadow-xl border-b border-gray-100 py-6 px-8 md:hidden"
-          >
-            <div className="flex flex-col space-y-4">
-              {navLinks.map((link) => {
-                if (link.isInternal) {
-                  return (
-                    <Link
-                      key={link.name}
-                      to={link.href}
-                      className="font-body font-semibold text-lg py-2 border-b border-gray-50 transition-colors text-primary"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {link.name}
-                    </Link>
-                  );
-                }
-                return (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    onClick={(e) => {
-                      handleLinkClick(e, link.href);
-                      setIsOpen(false);
-                    }}
-                    className={`font-body font-semibold text-lg py-2 border-b border-gray-50 transition-colors ${
-                      activeSection === link.href.substring(1) ? 'text-accent' : 'text-primary'
-                    }`}
-                  >
-                    {link.name}
-                  </a>
-                );
-              })}
-              {/* Mobile CTA – changed back to <a> with scroll behavior */}
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  handleLinkClick(e, '#contact');
-                  setIsOpen(false);
-                }}
-                className="w-full text-center px-6 py-3 font-heading text-base font-semibold rounded-xl text-white bg-accent hover:bg-accent-dark shadow-md transition-all duration-300"
-              >
-                Get In Touch
-              </a>
-            </div>
-          </motion.div>
+          <>
+            <motion.button type="button" aria-label="Close navigation menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsOpen(false)} className="fixed inset-0 z-40 cursor-default bg-primary/45 backdrop-blur-sm lg:hidden" />
+            <motion.div id="mobile-navigation" initial={{ opacity: 0, y: -14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.22 }} className="fixed inset-x-3 top-[4.75rem] z-50 max-h-[calc(100dvh-6rem)] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl sm:inset-x-5 lg:hidden">
+              {navLinks.map(([name, id]) => <Link key={id} to={destination(id)} onClick={(event) => handleNavigation(event, id)} className={`flex min-h-12 items-center rounded-xl px-4 font-heading text-base font-semibold transition ${isHome && activeSection === id ? 'bg-accent/10 text-accent' : 'text-primary hover:bg-slate-50'}`}>{name}</Link>)}
+              <Link to="/#contact" onClick={(event) => handleNavigation(event, 'contact')} className="mt-2 flex min-h-12 items-center justify-center rounded-xl bg-accent px-5 font-heading text-sm font-semibold text-white">Get in touch</Link>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>

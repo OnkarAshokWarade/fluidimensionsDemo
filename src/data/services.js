@@ -1,15 +1,3 @@
-import {
-  IoAnalyticsOutline,
-  IoCubeOutline,
-  IoFlameOutline,
-  IoColorFilterOutline,
-  IoSyncOutline,
-  IoHardwareChipOutline,
-  IoCodeWorkingOutline,
-  IoTrendingUpOutline,
-  IoSchoolOutline,
-} from 'react-icons/io5';
-
 export const servicesData = [
   {
     id: 'cfd-analysis',

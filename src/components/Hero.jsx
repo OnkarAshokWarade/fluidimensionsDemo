@@ -195,7 +195,7 @@ export default function Hero() {
   };
 
   return (
-    <section id="home" className="relative min-h-screen bg-primary flex items-center overflow-hidden">
+    <section id="home" className="relative flex min-h-[100svh] items-center overflow-hidden bg-primary">
       {/* Dynamic Simulation Background Canvas */}
       <canvas
         ref={canvasRef}
@@ -207,37 +207,37 @@ export default function Hero() {
       <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 w-96 h-96 bg-accent/15 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Content Container */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-28 pb-16 flex flex-col md:flex-row items-center relative z-10 w-full">
+      <div className="site-container relative z-10 flex w-full flex-col items-center pb-16 pt-28 sm:pt-32 lg:min-h-[48rem] lg:flex-row lg:py-32">
         {/* Left side text column */}
-        <div className="w-full md:w-1/2 text-left pr-0 md:pr-8">
+        <div className="w-full text-left lg:w-[56%] lg:pr-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             {/* Tagline Badge */}
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold text-accent uppercase tracking-widest mb-6">
+            <span className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-accent backdrop-blur-md sm:mb-6 sm:px-4 sm:text-xs">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               Next-Gen Engineering Simulation
             </span>
 
             {/* Main Title */}
-            <h1 className="font-heading font-black text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
-              Delivering <br />
+            <h1 className="mb-5 max-w-3xl font-heading text-[clamp(2.25rem,9.5vw,4.5rem)] font-black leading-[1.08] text-white sm:mb-6">
+              Delivering <span className="hidden sm:inline"><br /></span>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-orange-400">
                 Innovation
               </span>{' '}
-              Through <br />
+              Through <span className="hidden sm:inline"><br /></span>
               Simulation
             </h1>
 
             {/* Subtitle / Bullet Points */}
-            <p className="font-body text-base md:text-lg text-gray-300 mb-8 max-w-xl leading-relaxed">
+            <p className="mb-7 max-w-xl font-body text-[15px] leading-7 text-gray-300 sm:mb-8 sm:text-base lg:text-lg">
               We empower global manufacturers with advanced Computational Fluid Dynamics (CFD), process optimization, and custom equipment designs to boost reliability, efficiency, and scale.
             </p>
 
             {/* Bullet grid */}
-            <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="mb-8 grid grid-cols-1 gap-3 min-[430px]:grid-cols-2 sm:gap-4">
               {[
                 'Computational Fluid Dynamics',
                 'Process Optimization',
@@ -252,16 +252,16 @@ export default function Hero() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col gap-3 min-[480px]:flex-row sm:gap-4">
               <button
                 onClick={() => scrollToSection('services')}
-                className="inline-flex items-center gap-2 px-8 py-3.5 font-heading text-sm font-semibold rounded-xl text-white bg-accent hover:bg-accent-dark shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 cursor-pointer"
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-accent px-6 font-heading text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-dark hover:shadow-xl min-[480px]:w-auto sm:px-8"
               >
                 Explore Services <HiArrowRight size={16} />
               </button>
               <button
                 onClick={() => scrollToSection('contact')}
-                className="inline-flex items-center px-8 py-3.5 font-heading text-sm font-semibold rounded-xl text-white border border-white/20 hover:bg-white/10 hover:border-white transition-all duration-300 cursor-pointer"
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-white/20 px-6 font-heading text-sm font-semibold text-white transition-all duration-300 hover:border-white hover:bg-white/10 min-[480px]:w-auto sm:px-8"
               >
                 Contact Us
               </button>
@@ -270,13 +270,13 @@ export default function Hero() {
         </div>
 
         {/* Right side floating industrial cards & animation focus */}
-        <div className="w-full md:w-1/2 mt-16 md:mt-0 flex justify-end relative h-[380px] md:h-[450px]">
+        <div className="relative mt-10 hidden h-72 w-full justify-end min-[480px]:flex sm:mt-12 sm:h-80 lg:mt-0 lg:h-[450px] lg:w-[44%]">
           {/* Overlay Tech Card 1 */}
           <motion.div
             initial={{ opacity: 0, x: 50, y: -20 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="absolute top-10 right-4 md:right-12 bg-white/10 backdrop-blur-md border border-white/10 p-5 rounded-2xl shadow-2xl max-w-[220px]"
+            className="absolute right-0 top-4 max-w-[min(78vw,220px)] rounded-2xl border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur-md sm:right-8 sm:top-8 sm:p-5 lg:right-0"
           >
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-bold text-accent tracking-widest uppercase">Solver Status</span>
@@ -293,7 +293,7 @@ export default function Hero() {
             initial={{ opacity: 0, x: -30, y: 50 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="absolute bottom-10 left-4 md:left-12 bg-white/10 backdrop-blur-md border border-white/10 p-5 rounded-2xl shadow-2xl max-w-[240px]"
+            className="absolute bottom-4 left-0 max-w-[min(82vw,240px)] rounded-2xl border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur-md sm:bottom-8 sm:left-8 sm:p-5 lg:left-0"
           >
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-bold text-sky-400 tracking-widest uppercase">Flow Vectors</span>
@@ -312,7 +312,7 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center">
+      <div className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 flex-col items-center lg:flex">
         <span className="text-white text-[10px] uppercase font-bold tracking-widest mb-2">Scroll Down</span>
         <motion.div
           animate={{ y: [0, 8, 0] }}

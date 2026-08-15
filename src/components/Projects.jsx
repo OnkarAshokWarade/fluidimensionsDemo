@@ -1,310 +1,133 @@
-import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { HiArrowSmRight } from 'react-icons/hi';
+import { HiArrowRight, HiOutlineClock } from 'react-icons/hi';
+import reactorImage from '../assets/case-studies/reactor-mixing.jpg';
+import cycloneImage from '../assets/case-studies/cyclone-separator.jpg';
+import bioreactorImage from '../assets/case-studies/bioreactor-mixing.jpg';
 
-// Swiper imports
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-
-const projectsData = [
+const projects = [
   {
-    title: 'Stirred Tank Reactor Yield Optimization',
-    industry: 'Chemical Process',
-    challenge: 'Inefficient impeller shear distribution caused high reagent accumulation, creating hotspots and reducing active conversion yields.',
-    solution: 'Engineered a dual-stage pitched-blade hydrofoil configuration, optimizing radial flow fields and impeller clearance via velocity sweep models.',
-    result: '18% increase in overall reaction conversion yield; eliminated thermal hotspots and reduced drive motor electrical power draw by 12%.',
-    gradient: 'from-blue-600 to-indigo-900',
-    stats: '+18% Yield'
+    id: 'reactor-yield',
+    title: 'Stirred-Tank Reactor Yield Optimization',
+    industry: 'Chemical Processing',
+    image: reactorImage,
+    alt: 'Stainless-steel stirred-tank reactor with CFD flow-path visualization',
+    objective: 'Improve reaction conversion while removing thermal non-uniformity and excessive shaft power demand.',
+    challenge: 'Plant data indicated persistent reagent accumulation above the lower impeller and localized temperature excursions near the feed zone. The existing configuration produced weak axial circulation and inconsistent residence time.',
+    approach: 'A transient multiphase CFD model compared impeller diameter, blade pitch, spacing, feed location, and rotational speed. Grid independence and torque predictions were checked against operating measurements before design screening.',
+    outcome: 'The selected dual-stage hydrofoil configuration strengthened top-to-bottom circulation, eliminated the principal stagnation region, and lowered the required operating speed.',
+    metrics: [
+      { value: '+18%', label: 'Conversion yield' },
+      { value: '-12%', label: 'Motor power' },
+      { value: '0', label: 'Critical hot spots' },
+    ],
+    methods: ['Transient CFD', 'Multiphase flow', 'Design sweep'],
+    duration: '6-week study',
   },
   {
-    title: 'Cyclonic Separator Particulate Extraction',
-    industry: 'Cement & Mining',
-    challenge: 'High velocity dust carrier flows caused rapid localized casing wear and particulate escape rates exceeding environmental thresholds.',
-    solution: 'Designed custom inlet volutes and extended vortex finders to control axial velocity distributions and maximize centrifugal force containment.',
-    result: 'Reduced particulate escape by 87%; reduced boundary casing shear stress by 45%, extending operating maintenance cycles by 2 years.',
-    gradient: 'from-accent to-amber-700',
-    stats: '-87% Escapes'
+    id: 'cyclone-separator',
+    title: 'Cyclone Separator Performance Upgrade',
+    industry: 'Cement & Minerals',
+    image: cycloneImage,
+    alt: 'Industrial cyclone separator with airflow and particle-trajectory visualization',
+    objective: 'Increase fine-particle capture while controlling pressure loss and high-wear regions.',
+    challenge: 'Uneven inlet loading and a short-circuiting gas path allowed fine dust to reach the clean-gas outlet. High near-wall velocities also accelerated erosion along the cone and inlet transition.',
+    approach: 'Eulerian-Lagrangian particle tracking was used to evaluate inlet volute shape, vortex-finder penetration, cone angle, and operating flow rate across the measured particle-size distribution.',
+    outcome: 'The optimized inlet and vortex finder stabilized the internal vortex, improved particle residence time, and reduced localized wall shear without an unacceptable pressure-drop penalty.',
+    metrics: [
+      { value: '-87%', label: 'Particle escape' },
+      { value: '-45%', label: 'Peak wall shear' },
+      { value: '+2 yr', label: 'Service interval' },
+    ],
+    methods: ['Particle tracking', 'Erosion mapping', 'Geometry optimization'],
+    duration: '8-week study',
   },
   {
-    title: 'Bioreactor Laminar Mixing Audit',
-    industry: 'Pharmaceuticals',
-    challenge: 'Shear-sensitive microbial cells suffered high mortality rates from conventional high-speed blending impeller configurations.',
-    solution: 'Configured a gentle low-shear anchor impeller with customized scraping walls, auditing shear rates across all flow boundary layers.',
-    result: 'Cell viability increased to 99.4%; achieved uniform nutrient concentration distribution without local cell-wall rupture.',
-    gradient: 'from-teal-600 to-emerald-900',
-    stats: '99.4% Viability'
-  }
+    id: 'bioreactor-mixing',
+    title: 'Low-Shear Bioreactor Mixing Validation',
+    industry: 'Pharmaceutical & Biotech',
+    image: bioreactorImage,
+    alt: 'Pharmaceutical bioreactor with smooth low-shear flow visualization',
+    objective: 'Achieve uniform nutrient distribution while protecting shear-sensitive biological material.',
+    challenge: 'The original high-speed impeller created narrow high-shear zones linked to loss of cell viability, while low-speed operation produced unacceptable blend times and dissolved-oxygen gradients.',
+    approach: 'A non-Newtonian mixing model mapped shear exposure, circulation time, and species uniformity for multiple low-shear impellers. The preferred design was checked against mixing-time and power-number correlations.',
+    outcome: 'A low-speed anchor configuration delivered uniform bulk circulation with substantially lower peak shear, supporting stable scale-up and repeatable batch performance.',
+    metrics: [
+      { value: '99.4%', label: 'Cell viability' },
+      { value: '<3%', label: 'Concentration variation' },
+      { value: '-31%', label: 'Peak shear' },
+    ],
+    methods: ['Non-Newtonian CFD', 'Species transport', 'Scale-up study'],
+    duration: '5-week study',
+  },
 ];
 
-// Custom hook for media query
-function useMediaQuery(query) {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
-    const listener = (event) => setMatches(event.matches);
-    media.addEventListener('change', listener);
-    return () => media.removeEventListener('change', listener);
-  }, [matches, query]);
-
-  return matches;
-}
+const reveal = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0 },
+};
 
 export default function Projects() {
-  const isMobile = useMediaQuery('(max-width: 767px)');
-
-  // Refs for custom navigation buttons
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
-  const [swiperInstance, setSwiperInstance] = useState(null);
-
-  useEffect(() => {
-    if (swiperInstance && prevRef.current && nextRef.current) {
-      swiperInstance.params.navigation.prevEl = prevRef.current;
-      swiperInstance.params.navigation.nextEl = nextRef.current;
-      swiperInstance.navigation.init();
-      swiperInstance.navigation.update();
-    }
-  }, [swiperInstance]);
-
   return (
-    <section id="projects" className="py-16 sm:py-20 md:py-24 lg:py-32 bg-white relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative z-10">
-        
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 md:mb-24">
-          <span className="text-xs font-bold text-accent uppercase tracking-widest">Case Studies</span>
-          <h2 className="font-heading font-black text-2xl sm:text-3xl md:text-4xl text-primary mt-2 mb-4 leading-tight">
-            Featured Simulation Successes
-          </h2>
-          <p className="font-body text-sm sm:text-base text-gray-500 leading-relaxed px-4 sm:px-0">
-            Real engineering challenges resolved using high-fidelity simulations. Inspect the qualitative and quantitative impact metrics.
-          </p>
+    <section id="projects" className="relative overflow-hidden bg-white py-20 sm:py-24 lg:py-32">
+      <div className="pointer-events-none absolute inset-0 cfd-grid opacity-[0.025]" />
+      <div className="site-container relative z-10">
+        <motion.header initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} variants={reveal} transition={{ duration: 0.6 }} className="mx-auto mb-12 max-w-3xl text-center sm:mb-16 lg:mb-20">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Engineering case studies</span>
+          <h2 className="mt-3 font-heading text-3xl font-black leading-tight text-primary sm:text-4xl lg:text-5xl">From complex physics to measurable plant impact</h2>
+          <p className="mt-5 text-sm leading-7 text-slate-500 sm:text-base">A closer look at how validated simulation, design exploration, and engineering judgment turn operating challenges into practical improvements.</p>
+        </motion.header>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+          className="hide-scrollbar -mx-4 grid snap-x snap-mandatory grid-flow-col auto-cols-[86%] gap-4 overflow-x-auto px-4 pb-5 min-[480px]:auto-cols-[64%] sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 xl:gap-8"
+          tabIndex="0"
+          aria-label="Engineering case studies"
+        >
+          {projects.map((project) => (
+            <motion.article
+              key={project.id}
+              variants={reveal}
+              className="group flex min-w-0 snap-start flex-col overflow-hidden rounded-2xl border border-slate-200 bg-brand-bg shadow-sm transition duration-300 hover:-translate-y-1 hover:border-accent/25 hover:shadow-xl sm:rounded-3xl"
+            >
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <img src={project.image} alt={project.alt} loading="lazy" width="1600" height="1067" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/5 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-4 text-white sm:p-5">
+                    <span className="rounded-full border border-white/20 bg-primary/50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest backdrop-blur">{project.industry}</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-1 flex-col p-5 sm:p-6">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-400"><HiOutlineClock /> {project.duration}</div>
+                  <h3 className="mt-3 font-heading text-lg font-black leading-snug text-primary sm:text-xl">{project.title}</h3>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-500">{project.objective}</p>
+
+                  <div className="mt-5 grid grid-cols-3 gap-2 border-y border-slate-200 py-4">
+                    {project.metrics.map((metric) => (
+                      <div key={metric.label} className="min-w-0">
+                        <strong className="block font-heading text-base font-black text-accent sm:text-lg">{metric.value}</strong>
+                        <span className="mt-1 block text-[9px] font-semibold uppercase leading-3 tracking-wide text-slate-400">{metric.label}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                </div>
+            </motion.article>
+          ))}
+        </motion.div>
+
+        <p className="mt-3 text-center text-[11px] text-slate-400 sm:hidden">Swipe to explore case studies</p>
+
+        <div className="mt-8 flex justify-center sm:mt-10">
+          <a href="#contact" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 font-heading text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-accent">
+            Discuss a project <HiArrowRight />
+          </a>
         </div>
 
-        {/* Desktop: Grid Layout */}
-        {!isMobile && (
-          <div className="space-y-12">
-            {projectsData.map((project, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.7, delay: idx * 0.1 }}
-                className="bg-brand-bg border border-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 p-8 md:p-12 flex flex-col lg:flex-row items-stretch gap-8 relative"
-              >
-                {/* Left Column: Visual Highlight Card */}
-                <div className={`w-full lg:w-1/3 rounded-2xl bg-gradient-to-tr ${project.gradient} p-8 flex flex-col justify-between text-white relative overflow-hidden min-h-[220px] lg:min-h-auto shadow-inner`}>
-                  <div className="absolute inset-0 cfd-grid opacity-15 pointer-events-none" />
-                  <div>
-                    <span className="text-[10px] uppercase font-bold tracking-widest bg-white/10 px-3 py-1 rounded-full border border-white/10">
-                      {project.industry}
-                    </span>
-                  </div>
-                  <div className="relative z-10">
-                    <h4 className="font-heading font-black text-4xl leading-tight">
-                      {project.stats}
-                    </h4>
-                    <p className="font-body text-xs text-white/70 mt-1">Validated performance metric</p>
-                  </div>
-                </div>
-
-                {/* Right Column: Challenge, Solution, Result Detail */}
-                <div className="w-full lg:w-2/3 flex flex-col justify-between text-left">
-                  <div>
-                    <h3 className="font-heading font-extrabold text-xl md:text-2xl text-primary mb-6">
-                      {project.title}
-                    </h3>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-8 border-b border-gray-100 pb-8">
-                      <div>
-                        <h5 className="text-xs uppercase font-heading font-bold text-accent mb-2">Challenge</h5>
-                        <p className="font-body text-sm text-gray-500 leading-relaxed">
-                          {project.challenge}
-                        </p>
-                      </div>
-                      <div>
-                        <h5 className="text-xs uppercase font-heading font-bold text-secondary mb-2">Simulation</h5>
-                        <p className="font-body text-sm text-gray-500 leading-relaxed">
-                          {project.solution}
-                        </p>
-                      </div>
-                      <div>
-                        <h5 className="text-xs uppercase font-heading font-bold text-emerald-600 mb-2">Result</h5>
-                        <p className="font-body text-sm text-gray-600 font-medium leading-relaxed">
-                          {project.result}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end">
-                    <a
-                      href="#contact"
-                      className="inline-flex items-center gap-1 text-xs font-heading font-bold text-primary hover:text-accent transition-colors cursor-pointer"
-                    >
-                      Request Case Study Details <HiArrowSmRight size={16} />
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-
-        {/* Mobile: Swiper Carousel */}
-        {isMobile && (
-          <div className="relative">
-            <Swiper
-              modules={[Navigation, Pagination, Autoplay]}
-              spaceBetween={20}
-              slidesPerView={1}
-              pagination={{ clickable: true }}
-              autoplay={{ delay: 5000, disableOnInteraction: false }}
-              className="pb-12"
-              onSwiper={setSwiperInstance}
-            >
-              {projectsData.map((project, idx) => (
-                <SwiperSlide key={idx} className="h-auto">
-                  <div className="bg-brand-bg border border-gray-100 rounded-3xl overflow-hidden shadow-sm transition-all duration-300 p-6 flex flex-col items-stretch gap-6 relative">
-                    {/* Left Column: Visual Highlight Card */}
-                    <div className={`w-full rounded-2xl bg-gradient-to-tr ${project.gradient} p-6 flex flex-col justify-between text-white relative overflow-hidden min-h-[180px] shadow-inner`}>
-                      <div className="absolute inset-0 cfd-grid opacity-15 pointer-events-none" />
-                      <div>
-                        <span className="text-[10px] uppercase font-bold tracking-widest bg-white/10 px-3 py-1 rounded-full border border-white/10">
-                          {project.industry}
-                        </span>
-                      </div>
-                      <div className="relative z-10">
-                        <h4 className="font-heading font-black text-3xl leading-tight">
-                          {project.stats}
-                        </h4>
-                        <p className="font-body text-xs text-white/70 mt-1">Validated performance metric</p>
-                      </div>
-                    </div>
-
-                    {/* Right Column: Details */}
-                    <div className="w-full flex flex-col justify-between text-left">
-                      <div>
-                        <h3 className="font-heading font-extrabold text-xl text-primary mb-4">
-                          {project.title}
-                        </h3>
-
-                        <div className="space-y-4 mb-6 border-b border-gray-100 pb-6">
-                          <div>
-                            <h5 className="text-xs uppercase font-heading font-bold text-accent mb-1">Challenge</h5>
-                            <p className="font-body text-sm text-gray-500 leading-relaxed">
-                              {project.challenge}
-                            </p>
-                          </div>
-                          <div>
-                            <h5 className="text-xs uppercase font-heading font-bold text-secondary mb-1">Simulation</h5>
-                            <p className="font-body text-sm text-gray-500 leading-relaxed">
-                              {project.solution}
-                            </p>
-                          </div>
-                          <div>
-                            <h5 className="text-xs uppercase font-heading font-bold text-emerald-600 mb-1">Result</h5>
-                            <p className="font-body text-sm text-gray-600 font-medium leading-relaxed">
-                              {project.result}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-end">
-                        <a
-                          href="#contact"
-                          className="inline-flex items-center gap-1 text-xs font-heading font-bold text-primary hover:text-accent transition-colors cursor-pointer"
-                        >
-                          Request Case Study Details <HiArrowSmRight size={16} />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-
-            {/* Custom Navigation Buttons */}
-            <button
-              ref={prevRef}
-              className="group absolute left-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200/80 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-primary hover:bg-accent hover:text-white hover:border-accent hover:scale-105 -ml-3.5"
-              aria-label="Previous slide"
-            >
-              <svg
-                className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-
-            <button
-              ref={nextRef}
-              className="group absolute right-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200/80 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-primary hover:bg-accent hover:text-white hover:border-accent hover:scale-105 -mr-3.5"
-              aria-label="Next slide"
-            >
-              <svg
-                className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-
-            <style jsx>{`
-              .swiper-pagination-bullet {
-                background: #D1D5DB;
-                opacity: 1;
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                transition: all 0.3s ease;
-              }
-              .swiper-pagination-bullet-active {
-                background: #FF6B00;
-                width: 24px;
-                border-radius: 4px;
-              }
-              @media (max-width: 480px) {
-                .swiper-button-prev-custom,
-                .swiper-button-next-custom {
-                  width: 36px;
-                  height: 36px;
-                }
-                .swiper-button-prev-custom svg,
-                .swiper-button-next-custom svg {
-                  width: 16px;
-                  height: 16px;
-                }
-                .swiper-button-prev-custom {
-                  margin-left: -8px;
-                }
-                .swiper-button-next-custom {
-                  margin-right: -8px;
-                }
-              }
-            `}</style>
-          </div>
-        )}
+        <p className="mx-auto mt-8 max-w-3xl text-center text-[11px] leading-5 text-slate-400 sm:mt-10">Project descriptions are representative. Commercially sensitive geometry, operating data, and client identities are generalized.</p>
       </div>
     </section>
   );
