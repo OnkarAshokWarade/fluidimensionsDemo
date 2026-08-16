@@ -1,19 +1,46 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HiArrowRight, HiOutlineChartBar, HiOutlineCheckCircle, HiOutlineChip, HiOutlineClipboardCheck, HiOutlineCube, HiOutlineDocumentText } from 'react-icons/hi';
+import { servicesData, iconMap } from '../data/services';
 
-const steps = [
-  { number: '01', eyebrow: 'Define', title: 'Problem Framing', icon: HiOutlineClipboardCheck, summary: 'We translate the operating challenge into measurable engineering objectives, constraints, and acceptance criteria.', activities: ['Technical discovery', 'Scope & assumptions', 'Success criteria'], output: 'Approved simulation brief' },
-  { number: '02', eyebrow: 'Prepare', title: 'Data & Geometry', icon: HiOutlineCube, summary: 'CAD, material properties, operating data, and boundary conditions are cleaned, checked, and made analysis-ready.', activities: ['CAD preparation', 'Property validation', 'Boundary conditions'], output: 'Analysis-ready model' },
-  { number: '03', eyebrow: 'Resolve', title: 'Physics & Simulation', icon: HiOutlineChip, summary: 'Fit-for-purpose physics, mesh strategy, and solver controls are applied with convergence monitored throughout.', activities: ['Model selection', 'Mesh independence', 'Solver convergence'], output: 'Verified solution field' },
-  { number: '04', eyebrow: 'Improve', title: 'Design Optimization', icon: HiOutlineChartBar, summary: 'Design variants and operating scenarios are compared to expose trade-offs and identify the highest-value changes.', activities: ['Parametric studies', 'Performance ranking', 'Risk trade-offs'], output: 'Optimized design direction' },
-  { number: '05', eyebrow: 'Prove', title: 'Validation & QA', icon: HiOutlineCheckCircle, summary: 'Results are challenged against plant, pilot, or published data and reviewed for sensitivity and uncertainty.', activities: ['Data correlation', 'Sensitivity analysis', 'Engineering review'], output: 'Evidence-backed confidence' },
-  { number: '06', eyebrow: 'Deliver', title: 'Decision Support', icon: HiOutlineDocumentText, summary: 'Complex results become clear engineering recommendations, visual evidence, and an implementation-ready roadmap.', activities: ['Design recommendations', 'Technical reporting', 'Implementation plan'], output: 'Actionable engineering package' },
-];
+const workflowProfiles = {
+  'cfd-analysis': ['Flow objectives', 'Data & geometry', 'Physics & simulation', 'Design optimization', 'Validation & QA', 'Decision support'],
+  'cfd-modeling': ['Physics requirements', 'Domain definition', 'Model construction', 'Sensitivity study', 'Model validation', 'Reusable model handover'],
+  'heat-transfer': ['Thermal objectives', 'Heat-path data', 'Thermal model', 'Efficiency study', 'Hotspot validation', 'Thermal design guidance'],
+  'reaction-engineering': ['Reaction targets', 'Kinetics & data', 'Transport model', 'Operating study', 'Conversion validation', 'Scale-up guidance'],
+  'mixing-optimization': ['Mixing targets', 'Tank & impeller data', 'Mixer model', 'Design variants', 'Homogeneity validation', 'Optimized mixing plan'],
+  'equipment-design': ['Equipment criteria', 'Concept geometry', 'Performance model', 'Design comparison', 'Risk validation', 'Refined equipment design'],
+  'cfd-automation': ['Workflow audit', 'Input standards', 'Automation build', 'Batch execution', 'Quality checks', 'Team-scale handover'],
+  'process-optimization': ['Optimization targets', 'Process data', 'Scenario model', 'Design-space study', 'Robustness checks', 'Implementation roadmap'],
+  'industrial-training': ['Capability goals', 'Course planning', 'Core methods', 'Project practice', 'Competency review', 'Team enablement plan'],
+};
+
+const stepIcons = [HiOutlineClipboardCheck, HiOutlineCube, HiOutlineChip, HiOutlineChartBar, HiOutlineCheckCircle, HiOutlineDocumentText];
+const stepEyebrows = ['Define', 'Prepare', 'Resolve', 'Improve', 'Prove', 'Deliver'];
+
+function createSteps(serviceId) {
+  const titles = workflowProfiles[serviceId];
+  return titles.map((title, index) => ({
+    number: `0${index + 1}`,
+    eyebrow: stepEyebrows[index],
+    title,
+    icon: stepIcons[index],
+    summary: `This stage focuses on ${title.toLowerCase()} for the selected service, using appropriate engineering inputs, review gates, and practical decision criteria.`,
+    activities: index === 0 ? ['Technical discovery', 'Scope & assumptions', 'Success criteria'] : index === 5 ? ['Design recommendations', 'Technical reporting', 'Implementation plan'] : ['Service-specific inputs', 'Engineering review', 'Quality controls'],
+    output: index === 5 ? 'Decision-ready engineering package' : `${title} complete`,
+  }));
+}
 
 export default function Workflow() {
+  const [activeServiceId, setActiveServiceId] = useState('cfd-analysis');
   const [activeIndex, setActiveIndex] = useState(0);
+  const steps = createSteps(activeServiceId);
   const activeStep = steps[activeIndex];
+
+  const selectService = (serviceId) => {
+    setActiveServiceId(serviceId);
+    setActiveIndex(0);
+  };
 
   return (
     <section id="workflow" className="relative overflow-hidden bg-[#061a38] py-12 sm:py-20 lg:py-24">
@@ -23,10 +50,28 @@ export default function Workflow() {
       <div className="site-container relative z-10">
         <div className="mb-6 grid gap-4 sm:mb-8 sm:gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
           <div className="max-w-3xl">
-            <div className="mb-3 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-orange-400"><span className="h-px w-8 bg-orange-400" /> Engineering methodology</div>
-            <h2 className="max-w-[18ch] font-heading text-[clamp(1.75rem,8vw,3.25rem)] font-bold leading-[1.08] tracking-[-0.035em] text-white">From engineering question to confident decision.</h2>
+            <div className="mb-3 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-orange-400"><span className="h-px w-8 bg-orange-400" /> Service workflows</div>
+            <h2 className="max-w-[22ch] font-heading text-[clamp(1.75rem,8vw,3.25rem)] font-bold leading-[1.08] tracking-[-0.035em] text-white">A workflow tailored to every engineering service.</h2>
           </div>
-          <p className="max-w-md text-sm leading-6 text-slate-300 lg:text-right">A gated, traceable workflow built around sound physics, measurable quality, and practical outcomes.</p>
+          <p className="max-w-md text-sm leading-6 text-slate-300 lg:text-right">Select a service to see its focused engineering workflow, quality gates, and decision-ready outcome.</p>
+        </div>
+
+        <div className="hide-scrollbar -mx-4 mb-8 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3 sm:mx-0 sm:grid sm:grid-cols-3 sm:px-0 lg:grid-cols-5">
+          {servicesData.map((service) => {
+            const Icon = iconMap[service.icon];
+            const isActive = service.id === activeServiceId;
+            return (
+              <button key={service.id} type="button" onClick={() => selectService(service.id)} aria-pressed={isActive} className={`flex min-h-20 min-w-44 snap-start items-center gap-3 rounded-xl border p-3 text-left transition sm:min-w-0 ${isActive ? 'border-white bg-white text-primary shadow-lg shadow-black/20' : 'border-white/10 bg-white/[0.055] text-white hover:border-white/30 hover:bg-white/[0.1]'}`}>
+                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-tr ${service.color} text-white shadow-sm`}><Icon size={18} aria-hidden="true" /></span>
+                <span className="font-heading text-xs font-semibold leading-tight">{service.title}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div><span className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange-400">{servicesData.find((service) => service.id === activeServiceId)?.title} workflow</span><p className="mt-1 text-sm text-slate-300">A service-specific path from scope to implementation.</p></div>
+          <span className="rounded-full border border-white/15 bg-white/[0.07] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-300">Select a stage</span>
         </div>
 
         <div className="relative mb-3 sm:mb-4">

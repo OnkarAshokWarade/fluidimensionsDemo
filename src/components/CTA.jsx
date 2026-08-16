@@ -55,7 +55,7 @@ export default function CTA() {
               {/* Direct Info Links */}
               <div className="space-y-4">
   <a
-    href="mailto:info@fluidimensions.com"
+    href="mailto:vivek@fluidimensions.com"
     className="flex items-center space-x-3 text-gray-300 hover:text-accent transition-colors"
   >
     <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
@@ -66,7 +66,7 @@ export default function CTA() {
         Email Inquiry
       </span>
       <span className="break-all font-body text-sm font-semibold text-white">
-        info@fluidimensions.com
+        vivek@fluidimensions.com
       </span>
     </div>
   </a>

@@ -6,15 +6,15 @@ import {
 } from 'react-icons/hi';
 
 const features = [
-  [HiOutlineUserGroup, 'Specialist Engineering Team', 'Advanced expertise in fluid dynamics, heat transfer, reaction engineering, and multiphase modeling.', '20+ years experience'],
-  [HiOutlineLightningBolt, 'Efficient Delivery', 'Parallel compute workflows and focused model planning support faster, decision-ready simulation cycles.', 'Rapid iteration'],
-  [HiOutlineChartBar, 'Validation-Led Accuracy', 'Grid independence, model sensitivity, and operating-data correlation are built into the workflow.', 'Evidence based'],
-  [HiOutlineCog, 'Simulation-Driven Design', 'Physics insight enters early enough to reduce trial-and-error and improve equipment decisions before fabrication.', 'Lower design risk'],
-  [HiOutlineDatabase, 'Cross-Industry Knowledge', 'Experience across chemical, pharmaceutical, metallurgical, energy, food, and process industries.', '9 sectors'],
-  [HiOutlineAdjustments, 'Tailored Solver Workflows', 'Custom boundary profiles, automation scripts, and user-defined models are selected for the actual process.', 'Fit for purpose'],
-  [HiOutlineGlobeAlt, 'Scalable Collaboration', 'Clear inputs, review gates, and reporting make projects effective across distributed engineering teams.', 'Global delivery'],
-  [HiOutlineCheckCircle, 'Actionable Outcomes', 'Every study connects simulation findings to operating, geometry, or scale-up recommendations.', 'Decision ready'],
-  [HiOutlineTrendingUp, 'Modern Methodologies', 'Parametric studies, surrogate models, digital twins, and automation extend traditional CFD capability.', 'Future focused'],
+  [HiOutlineUserGroup, 'Specialist Engineering Team', 'Advanced expertise in fluid dynamics, heat transfer, reaction engineering, and multiphase modeling.', '20+ years experience', 'from-blue-500 to-sky-400'],
+  [HiOutlineLightningBolt, 'Efficient Delivery', 'Parallel compute workflows and focused model planning support faster, decision-ready simulation cycles.', 'Rapid iteration', 'from-accent to-amber-500'],
+  [HiOutlineChartBar, 'Validation-Led Accuracy', 'Grid independence, model sensitivity, and operating-data correlation are built into the workflow.', 'Evidence based', 'from-rose-500 to-orange-400'],
+  [HiOutlineCog, 'Simulation-Driven Design', 'Physics insight enters early enough to reduce trial-and-error and improve equipment decisions before fabrication.', 'Lower design risk', 'from-emerald-500 to-teal-400'],
+  [HiOutlineDatabase, 'Cross-Industry Knowledge', 'Experience across chemical, pharmaceutical, metallurgical, energy, food, and process industries.', '9 sectors', 'from-purple-500 to-violet-400'],
+  [HiOutlineAdjustments, 'Tailored Solver Workflows', 'Custom boundary profiles, automation scripts, and user-defined models are selected for the actual process.', 'Fit for purpose', 'from-sky-500 to-indigo-400'],
+  [HiOutlineGlobeAlt, 'Scalable Collaboration', 'Clear inputs, review gates, and reporting make projects effective across distributed engineering teams.', 'Global delivery', 'from-orange-500 to-accent'],
+  [HiOutlineCheckCircle, 'Actionable Outcomes', 'Every study connects simulation findings to operating, geometry, or scale-up recommendations.', 'Decision ready', 'from-teal-500 to-emerald-400'],
+  [HiOutlineTrendingUp, 'Modern Methodologies', 'Parametric studies, surrogate models, digital twins, and automation extend traditional CFD capability.', 'Future focused', 'from-indigo-500 to-purple-400'],
 ];
 
 export default function WhyChooseUs() {
@@ -28,9 +28,9 @@ export default function WhyChooseUs() {
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">A rigorous, collaborative approach designed to deliver credible models and practical recommendations.</p>
         </header>
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-60px' }} variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05 } } }} className="hide-scrollbar -mx-4 grid snap-x snap-mandatory grid-flow-col auto-cols-[84%] gap-4 overflow-x-auto px-4 pb-5 min-[480px]:auto-cols-[62%] sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 xl:gap-8" tabIndex="0" aria-label="Reasons to choose Fluidimensions">
-          {features.map(([Icon, title, description, metric]) => (
+          {features.map(([Icon, title, description, metric, color]) => (
             <motion.article key={title} variants={{ hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0 } }} className="group min-w-0 snap-start rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-accent/25 hover:shadow-xl sm:rounded-3xl sm:p-7 xl:p-8">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white transition group-hover:bg-accent"><Icon size={24} /></div>
+              <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr ${color} text-white shadow-md`}><Icon size={24} /></div>
               <h3 className="mt-6 font-heading text-lg font-bold text-primary sm:text-xl">{title}</h3>
               <p className="mt-3 text-sm leading-6 text-slate-500">{description}</p>
               <div className="mt-6 border-t border-slate-100 pt-4 text-xs font-bold uppercase tracking-wider text-secondary">{metric}</div>

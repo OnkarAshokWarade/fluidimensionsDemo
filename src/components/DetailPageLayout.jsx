@@ -35,10 +35,9 @@ export default function DetailPageLayout({
   sectionHash,
   colorKey,
   technicalPoints,
+  backgroundImage,
 }) {
   const [activeTab, setActiveTab] = useState('overview');
-  const currentIndex = items.findIndex((entry) => entry.id === item.id);
-  const nextItem = items[(currentIndex + 1) % items.length];
   const relatedItems = items.filter((entry) => entry.id !== item.id).slice(0, 4);
   const Icon = iconMap[item.icon];
   const gradient = item[colorKey];
@@ -70,6 +69,9 @@ export default function DetailPageLayout({
 
       <main>
         <section className="relative overflow-hidden bg-primary pt-28 sm:pt-32 lg:pt-40 pb-16 sm:pb-20 lg:pb-28 text-white">
+          {backgroundImage && <img src={backgroundImage} alt="" className="pointer-events-none absolute inset-0 h-full w-full object-cover" />}
+          {backgroundImage && <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,rgba(4,18,39,.97)_0%,rgba(4,18,39,.84)_42%,rgba(4,18,39,.48)_100%)]" />}
+          {backgroundImage && <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_22%,rgba(249,115,22,.20),transparent_30%),linear-gradient(0deg,rgba(4,18,39,.38),transparent_45%)]" />}
           <div className="absolute inset-0 cfd-grid opacity-10" />
           <motion.div
             className={`absolute -right-24 top-16 h-80 w-80 rounded-full bg-gradient-to-br ${gradient} opacity-30 blur-[100px] sm:h-[30rem] sm:w-[30rem]`}
@@ -226,15 +228,8 @@ export default function DetailPageLayout({
                   );
                 })}
               </div>
+              <p className="mt-3 text-center text-[11px] text-slate-400 sm:hidden">Swipe to explore {type === 'Service' ? 'services' : 'industries'}</p>
             </section>
-
-            <Link to={`${basePath}/${nextItem.id}`} className="group mt-16 flex items-center justify-between gap-5 rounded-3xl border border-slate-200 bg-white p-6 transition hover:border-accent/30 hover:shadow-lg sm:p-8">
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Next {type.toLowerCase()}</span>
-                <h3 className="mt-1 font-heading text-lg font-black sm:text-2xl">{nextItem.title}</h3>
-              </div>
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-white transition group-hover:translate-x-1 group-hover:bg-accent"><IoArrowForwardOutline /></span>
-            </Link>
 
             <Link to={`/${sectionHash}`} className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-accent"><IoArrowBackOutline /> Back to all {sectionHash}</Link>
           </div>
