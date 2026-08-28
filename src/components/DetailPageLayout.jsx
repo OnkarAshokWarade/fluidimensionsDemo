@@ -11,6 +11,7 @@ import {
 } from 'react-icons/io5';
 import NavbarLight from './NavbarLight';
 import Footer from './Footer';
+import IconBadge from './IconBadge';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -83,9 +84,7 @@ export default function DetailPageLayout({
             <motion.div initial="hidden" animate="visible" transition={{ staggerChildren: 0.12 }} className="grid items-end gap-10 lg:grid-cols-[1fr_auto]">
               <div className="max-w-4xl">
                 <motion.div variants={fadeUp} transition={{ duration: 0.55 }} className="mb-6 flex items-center gap-4">
-                  <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${gradient} shadow-xl sm:h-16 sm:w-16`}>
-                    <Icon size={30} aria-hidden="true" />
-                  </div>
+                  <IconBadge tone={`${type.toLowerCase()}.${item.id}`} size="lg" className="sm:h-16 sm:w-16"><Icon size={30} aria-hidden="true" /></IconBadge>
                   <span className="text-xs font-bold uppercase tracking-[0.22em] text-accent">{type} expertise</span>
                 </motion.div>
                 <motion.h1 variants={fadeUp} transition={{ duration: 0.55 }} className="font-heading text-4xl font-black leading-[1.08] sm:text-5xl lg:text-7xl">
@@ -206,14 +205,14 @@ export default function DetailPageLayout({
                   <span className="text-xs font-bold uppercase tracking-[0.18em] text-accent">Explore more</span>
                   <h2 className="mt-2 font-heading text-2xl font-black sm:text-3xl">Related {type === 'Service' ? 'services' : 'industries'}</h2>
                 </div>
-                <Link to={`/${sectionHash}`} className="hidden items-center gap-2 text-sm font-semibold text-secondary hover:text-accent sm:flex">View all <IoArrowForwardOutline /></Link>
+                <Link to={`/#${sectionHash}`} className="hidden items-center gap-2 text-sm font-semibold text-secondary hover:text-accent sm:flex">View all <IoArrowForwardOutline /></Link>
               </div>
               <div className="hide-scrollbar -mx-4 mt-8 grid snap-x snap-mandatory grid-flow-col auto-cols-[82%] gap-4 overflow-x-auto px-4 pb-4 min-[480px]:auto-cols-[58%] sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
                 {relatedItems.map((related) => {
                   const RelatedIcon = iconMap[related.icon];
                   return (
                     <Link key={related.id} to={`${basePath}/${related.id}`} className="group min-w-0 snap-start rounded-2xl border border-slate-200 bg-white p-5 transition duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-lg">
-                      <div className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${related[colorKey]} text-white`}><RelatedIcon size={21} /></div>
+                      <IconBadge tone={`${type.toLowerCase()}.${related.id}`} size="sm"><RelatedIcon size={21} /></IconBadge>
                       <h3 className="mt-5 font-heading text-sm font-bold group-hover:text-accent">{related.title}</h3>
                       <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">{related.shortDesc}</p>
                     </Link>
@@ -223,7 +222,7 @@ export default function DetailPageLayout({
               <p className="mt-3 text-center text-[11px] text-slate-400 sm:hidden">Swipe to explore {type === 'Service' ? 'services' : 'industries'}</p>
             </section>
 
-            <Link to={`/${sectionHash}`} className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-accent"><IoArrowBackOutline /> Back to all {sectionHash}</Link>
+            <Link to={`/#${sectionHash}`} className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-accent"><IoArrowBackOutline /> Back to all {sectionHash}</Link>
           </div>
         </section>
       </main>

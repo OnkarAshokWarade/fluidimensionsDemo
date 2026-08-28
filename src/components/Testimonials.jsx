@@ -42,7 +42,7 @@ export default function Testimonials() {
 
         {/* Header */}
         <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-16 lg:mb-20">
-          <span className="text-xs font-bold text-accent uppercase tracking-widest">Testimonials</span>
+          <span className="text-sm font-bold text-accent uppercase tracking-widest">Testimonials</span>
           <h2 className="mt-2 mb-4 font-heading text-[clamp(1.875rem,5vw,2.75rem)] font-black leading-tight text-primary">
             Trusted by Engineering Leaders
           </h2>

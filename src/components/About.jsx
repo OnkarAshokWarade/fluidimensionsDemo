@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiOutlineLightBulb, HiOutlineCheckCircle, HiOutlineGlobe } from 'react-icons/hi';
+import IconBadge from './IconBadge';
 
 const tabContent = [
   {
     id: 'overview',
     title: 'Overview',
-    icon: <HiOutlineGlobe size={20} />,
+    icon: HiOutlineGlobe,
+    tone: 'about.overview',
     headline: 'Engineering Simulation & Design Specialists',
     text: 'Fluidimensions is a premier engineering consulting organization specializing in advanced simulation, CFD modeling, and process optimization. We translate complex physical phenomena into mathematical insights that enable precise industrial scale-up, troubleshooting, and custom equipment designs.',
     points: [
@@ -18,7 +20,8 @@ const tabContent = [
   {
     id: 'mission',
     title: 'Mission & Vision',
-    icon: <HiOutlineLightBulb size={20} />,
+    icon: HiOutlineLightBulb,
+    tone: 'about.mission',
     headline: 'Empowering Industry Through Simulation',
     text: 'Our mission is to minimize operational risk and maximize thermodynamic efficiency in chemical and industrial processing. We envision a future where every process layout is digitally optimized before fabrication, eliminating design bottlenecks and environmental footprint.',
     points: [
@@ -30,7 +33,8 @@ const tabContent = [
   {
     id: 'strengths',
     title: 'Core Strength',
-    icon: <HiOutlineCheckCircle size={20} />,
+    icon: HiOutlineCheckCircle,
+    tone: 'about.strengths',
     headline: 'High-Fidelity Modeling & Validation',
     text: 'We combine theoretical thermodynamics, advanced numerical methods, and structural coding to build tailored custom solvers. We do not just run templates; we script custom boundary profiles, mesh algorithms, and turbulence solvers specifically tailored to your geometry.',
     points: [
@@ -97,15 +101,16 @@ export default function About() {
               viewport={{ once: true, margin: '-100px' }}
               transition={{ duration: 0.6 }}
             >
-              <span className="text-xs font-bold text-accent uppercase tracking-widest">Who We Are</span>
+              <span className="text-sm font-bold text-accent uppercase tracking-widest">Who We Are</span>
               <h2 className="font-heading font-black text-2xl sm:text-3xl md:text-4xl text-primary mt-2 mb-6 leading-tight">
                 Pioneering the Future of Process Simulation
               </h2>
 
               {/* Tabs – wrap on mobile, reduce padding */}
               <div className="mb-7 flex gap-1 overflow-x-auto border-b border-gray-200 pb-px sm:mb-8 sm:flex-wrap sm:gap-2" role="tablist" aria-label="About Fluidimensions">
-                {tabContent.map((tab) => (
-                  <button
+                {tabContent.map((tab) => {
+                  const TabIcon = tab.icon;
+                  return <button
                     key={tab.id}
                     type="button"
                     role="tab"
@@ -117,10 +122,10 @@ export default function About() {
                         : 'border-transparent text-gray-400 hover:text-primary'
                     }`}
                   >
-                    {tab.icon}
+                    <IconBadge tone={tab.tone} size="sm" className="scale-75"><TabIcon size={18} /></IconBadge>
                     {tab.title}
                   </button>
-                ))}
+                })}
               </div>
 
               {/* Tab content – ensure min-height adapts */}

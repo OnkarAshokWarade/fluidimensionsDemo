@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { HiArrowRight, HiOutlineClock } from 'react-icons/hi';
+import IconBadge from './IconBadge';
 import reactorImage from '../assets/case-studies/reactor-mixing.jpg';
 import cycloneImage from '../assets/case-studies/cyclone-separator.jpg';
 import bioreactorImage from '../assets/case-studies/bioreactor-mixing.jpg';
@@ -72,7 +73,7 @@ export default function Projects() {
       <div className="pointer-events-none absolute inset-0 cfd-grid opacity-[0.025]" />
       <div className="site-container relative z-10">
         <motion.header initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} variants={reveal} transition={{ duration: 0.6 }} className="mx-auto mb-12 max-w-3xl text-center sm:mb-16 lg:mb-20">
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Engineering case studies</span>
+          <span className="text-sm font-bold uppercase tracking-[0.2em] text-accent">Engineering case studies</span>
           <h2 className="mt-3 font-heading text-3xl font-black leading-tight text-primary sm:text-4xl lg:text-5xl">From complex physics to measurable plant impact</h2>
           <p className="mt-5 text-sm leading-7 text-slate-500 sm:text-base">A closer look at how validated simulation, design exploration, and engineering judgment turn operating challenges into practical improvements.</p>
         </motion.header>
@@ -101,7 +102,7 @@ export default function Projects() {
                 </div>
 
                 <div className="flex flex-1 flex-col p-5 sm:p-6">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-400"><HiOutlineClock /> {project.duration}</div>
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-400"><IconBadge tone="project.duration" size="sm" className="scale-75"><HiOutlineClock size={16} /></IconBadge>{project.duration}</div>
                   <h3 className="mt-3 font-heading text-lg font-black leading-snug text-primary sm:text-xl">{project.title}</h3>
                   <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-500">{project.objective}</p>
 

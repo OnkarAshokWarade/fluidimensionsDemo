@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { servicesData, iconMap } from '../data/services';
+import IconBadge from '../components/IconBadge';
 import { HiArrowSmRight } from 'react-icons/hi';
 import NavbarLight from '../components/NavbarLight';
 import Footer from '../components/Footer';
@@ -27,9 +28,7 @@ export default function ServicesPage() {
                 to={`/services/${service.id}`}
                 className="group rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:rounded-3xl sm:p-7 xl:p-8"
               >
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-tr ${service.color} flex items-center justify-center text-white shadow-md mb-5`}>
-                  <IconComponent size={28} />
-                </div>
+                <IconBadge tone={`service.${service.id}`} size="lg" className="mb-5"><IconComponent size={28} /></IconBadge>
                 <h3 className="font-heading font-bold text-xl text-primary mb-2 group-hover:text-accent transition-colors">
                   {service.title}
                 </h3>

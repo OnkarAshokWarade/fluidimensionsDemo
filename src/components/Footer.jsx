@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
+import IconBadge from './IconBadge';
 
 const companyLinks = [['Home', '/'], ['About', '/#about'], ['Services', '/#services'], ['Industries', '/#industries'], ['Workflow', '/#workflow'], ['Projects', '/#projects']];
 const serviceLinks = [['CFD Analysis', '/services/cfd-analysis'], ['Heat Transfer', '/services/heat-transfer'], ['Reaction Engineering', '/services/reaction-engineering'], ['Mixing Vessels', '/services/mixing-optimization'], ['Equipment Design', '/services/equipment-design']];
@@ -11,9 +12,9 @@ function FooterLinks({ title, links }) {
 
 export default function Footer() {
   const socials = [
-    { icon: <FaLinkedin size={18} />, href: 'https://linkedin.com', label: 'LinkedIn' },
-    { icon: <FaTwitter size={18} />, href: 'https://twitter.com', label: 'Twitter' },
-    { icon: <FaYoutube size={18} />, href: 'https://youtube.com', label: 'YouTube' },
+    { icon: <FaLinkedin size={18} />, href: 'https://linkedin.com', label: 'LinkedIn', tone: 'social.linkedin' },
+    { icon: <FaTwitter size={18} />, href: 'https://twitter.com', label: 'Twitter', tone: 'social.twitter' },
+    { icon: <FaYoutube size={18} />, href: 'https://youtube.com', label: 'YouTube', tone: 'social.youtube' },
   ];
 
   return (
@@ -35,7 +36,7 @@ export default function Footer() {
         </div>
         <div className="flex flex-col items-center justify-between gap-6 border-t border-white/5 pt-8 text-center sm:flex-row sm:text-left">
           <span className="text-xs leading-5 text-slate-500">© {new Date().getFullYear()} Fluidimensions. All rights reserved.</span>
-          <div className="flex gap-3">{socials.map((social) => <a key={social.label} href={social.href} target="_blank" rel="noreferrer" aria-label={`Visit Fluidimensions on ${social.label}`} className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-400 transition hover:border-white/30 hover:bg-white/10 hover:text-white">{social.icon}</a>)}</div>
+          <div className="flex gap-3">{socials.map((social) => <a key={social.label} href={social.href} target="_blank" rel="noreferrer" aria-label={`Visit Fluidimensions on ${social.label}`} className="transition hover:-translate-y-0.5"><IconBadge tone={social.tone} size="sm">{social.icon}</IconBadge></a>)}</div>
         </div>
       </div>
     </footer>

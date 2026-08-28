@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HiArrowRight, HiOutlineChartBar, HiOutlineCheckCircle, HiOutlineChip, HiOutlineClipboardCheck, HiOutlineCube, HiOutlineDocumentText } from 'react-icons/hi';
 import { servicesData, iconMap } from '../data/services';
+import { getIconGradient } from '../data/iconStyles';
 
 const workflowProfiles = {
   'cfd-analysis': ['Flow objectives', 'Data & geometry', 'Physics & simulation', 'Design optimization', 'Validation & QA', 'Decision support'],
@@ -50,7 +51,7 @@ export default function Workflow() {
       <div className="site-container relative z-10">
         <div className="mb-6 grid gap-4 sm:mb-8 sm:gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
           <div className="max-w-3xl">
-            <div className="mb-3 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-orange-400"><span className="h-px w-8 bg-orange-400" /> Service workflows</div>
+            <div className="mb-3 flex items-center gap-3 text-sm font-bold uppercase tracking-[0.2em] text-orange-400"><span className="h-px w-8 bg-orange-400" /> Service workflows</div>
             <h2 className="max-w-[22ch] font-heading text-[clamp(1.75rem,8vw,3.25rem)] font-bold leading-[1.08] tracking-[-0.035em] text-white">A workflow tailored to every engineering service.</h2>
           </div>
           <p className="max-w-md text-sm leading-6 text-slate-300 lg:text-right">Select a service to see its focused engineering workflow, quality gates, and decision-ready outcome.</p>
@@ -62,7 +63,7 @@ export default function Workflow() {
             const isActive = service.id === activeServiceId;
             return (
               <button key={service.id} type="button" onClick={() => selectService(service.id)} aria-pressed={isActive} className={`flex min-h-20 min-w-44 snap-start items-center gap-3 rounded-xl border p-3 text-left transition sm:min-w-0 ${isActive ? 'border-white bg-white text-primary shadow-lg shadow-black/20' : 'border-white/10 bg-white/[0.055] text-white hover:border-white/30 hover:bg-white/[0.1]'}`}>
-                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-tr ${service.color} text-white shadow-sm`}><Icon size={18} aria-hidden="true" /></span>
+                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-tr text-white shadow-sm ${getIconGradient(`service.${service.id}`)}`}><Icon size={18} aria-hidden="true" /></span>
                 <span className="font-heading text-xs font-semibold leading-tight">{service.title}</span>
               </button>
             );
@@ -84,7 +85,7 @@ export default function Workflow() {
                 <button key={step.number} type="button" onClick={() => setActiveIndex(index)} aria-pressed={isActive} className={`group relative min-h-28 min-w-[148px] snap-start rounded-xl border p-3 text-left transition duration-200 sm:min-w-0 sm:p-3.5 ${isActive ? 'border-orange-400 bg-white text-primary shadow-xl shadow-black/20' : 'border-white/10 bg-white/[0.055] text-white hover:border-white/25 hover:bg-white/[0.09]'}`}>
                   <div className="mb-3 flex items-center justify-between sm:mb-5">
                     <span className={`text-[10px] font-bold tracking-[0.16em] ${isActive ? 'text-accent' : 'text-slate-400'}`}>{step.number}</span>
-                    <span className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-lg ${isActive ? 'bg-accent text-white' : 'bg-white/10 text-slate-300'}`}><Icon size={17} aria-hidden="true" /></span>
+                    <span className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr text-white ${getIconGradient(`workflow.${step.eyebrow.toLowerCase()}`)}`}><Icon size={17} aria-hidden="true" /></span>
                   </div>
                   <span className={`block text-[9px] font-bold uppercase tracking-[0.18em] ${isActive ? 'text-slate-500' : 'text-slate-400'}`}>{step.eyebrow}</span>
                   <span className="mt-1 block break-words font-heading text-[13px] font-semibold leading-tight sm:text-sm">{step.title}</span>
@@ -107,7 +108,7 @@ export default function Workflow() {
               <div className="flex flex-wrap gap-2">{activeStep.activities.map((activity) => <span key={activity} className="rounded-md border border-white/10 bg-black/10 px-2.5 py-1.5 text-xs font-medium text-slate-200">{activity}</span>)}</div>
             </div>
             <div className="flex min-w-0 items-center gap-3 border-t border-white/10 bg-white/[0.045] p-4 sm:p-6 lg:min-w-56 lg:border-l lg:border-t-0">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-400/15 text-emerald-300"><HiOutlineCheckCircle size={20} aria-hidden="true" /></span>
+              <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr text-white ${getIconGradient('workflow.outcome')}`}><HiOutlineCheckCircle size={20} aria-hidden="true" /></span>
               <div><div className="text-[9px] font-bold uppercase tracking-[0.18em] text-slate-400">Stage output</div><div className="mt-1 text-sm font-semibold text-white">{activeStep.output}</div></div>
             </div>
           </motion.div>

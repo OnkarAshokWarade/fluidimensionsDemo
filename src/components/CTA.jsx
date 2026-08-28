@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { HiOutlineMail, HiOutlineLocationMarker, HiArrowRight } from 'react-icons/hi';
+import IconBadge from './IconBadge';
 
 export default function CTA() {
   const [formData, setFormData] = useState({
@@ -44,7 +45,7 @@ export default function CTA() {
               viewport={{ once: true, margin: '-100px' }}
               transition={{ duration: 0.6 }}
             >
-              <span className="text-xs font-bold text-accent uppercase tracking-widest">Connect With Us</span>
+              <span className="text-sm font-bold text-accent uppercase tracking-widest">Connect With Us</span>
               <h2 className="mt-2 mb-5 font-heading text-[clamp(1.875rem,6vw,3rem)] font-black leading-tight text-white sm:mb-6">
                 Ready to Optimize Your Industrial Process?
               </h2>
@@ -58,9 +59,7 @@ export default function CTA() {
     href="mailto:vivek@fluidimensions.com"
     className="flex items-center space-x-3 text-gray-300 hover:text-accent transition-colors"
   >
-    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
-      <HiOutlineMail size={20} />
-    </div>
+    <IconBadge tone="contact.email" size="sm"><HiOutlineMail size={20} /></IconBadge>
     <div className="flex flex-col">
       <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
         Email Inquiry
@@ -72,9 +71,7 @@ export default function CTA() {
   </a>
 
   <div className="flex items-start space-x-3 text-gray-300">
-    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 flex-shrink-0 mt-0.5">
-      <HiOutlineLocationMarker size={20} />
-    </div>
+    <IconBadge tone="contact.location" size="sm" className="mt-0.5"><HiOutlineLocationMarker size={20} /></IconBadge>
     <div className="flex flex-col">
       <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
         Engineering Center
