@@ -56,10 +56,10 @@ export default function Navbar({ light = false }) {
     };
   }, [isOpen]);
 
-  const destination = (id) => id === 'home' ? '/' : `/#${id}`;
+  const destination = (id) => `/#${id}`;
   const handleNavigation = (event, id) => {
     setIsOpen(false);
-    if (!isHome || id === 'home') return;
+    if (!isHome) return;
     const target = document.getElementById(id);
     if (target) {
       event.preventDefault();

@@ -38,7 +38,7 @@ export default function DetailPageLayout({
   backgroundImage,
 }) {
   const [activeTab, setActiveTab] = useState('overview');
-  const relatedItems = items.filter((entry) => entry.id !== item.id).slice(0, 4);
+  const relatedItems = items.filter((entry) => entry.id !== item.id);
   const Icon = iconMap[item.icon];
   const gradient = item[colorKey];
   useEffect(() => {
@@ -80,14 +80,6 @@ export default function DetailPageLayout({
           />
 
           <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-            <nav aria-label="Breadcrumb" className="mb-10 flex flex-wrap items-center gap-2 text-xs text-white/55 sm:text-sm">
-              <Link to="/" className="transition hover:text-white">Home</Link>
-              <span>/</span>
-              <Link to={`/${sectionHash}`} className="transition hover:text-white">{type === 'Service' ? 'Services' : 'Industries'}</Link>
-              <span>/</span>
-              <span className="text-white">{item.title}</span>
-            </nav>
-
             <motion.div initial="hidden" animate="visible" transition={{ staggerChildren: 0.12 }} className="grid items-end gap-10 lg:grid-cols-[1fr_auto]">
               <div className="max-w-4xl">
                 <motion.div variants={fadeUp} transition={{ duration: 0.55 }} className="mb-6 flex items-center gap-4">

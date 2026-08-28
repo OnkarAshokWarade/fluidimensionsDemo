@@ -313,14 +313,14 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 flex-col items-center lg:flex">
-        <span className="text-white text-[10px] uppercase font-bold tracking-widest mb-2">Scroll Down</span>
+        <span className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-white">Scroll Down</span>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
+          animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 1.5 }}
-          className="w-5 h-9 rounded-full border-2 border-white/20 flex justify-center pt-1.5 cursor-pointer"
+          className="flex h-11 w-7 cursor-pointer justify-center rounded-full border-2 border-white/25 pt-2"
           onClick={() => scrollToSection('stats')}
         >
-          <div className="w-1 h-2 bg-accent rounded-full" />
+          <div className="h-2.5 w-1.5 rounded-full bg-accent" />
         </motion.div>
       </div>
     </section>
