@@ -5,9 +5,12 @@ import {
   IoArrowBackOutline,
   IoArrowForwardOutline,
   IoCheckmarkCircleOutline,
+  IoEyeOutline,
   IoFlashOutline,
   IoLayersOutline,
   IoShieldCheckmarkOutline,
+  IoTrendingUpOutline,
+  IoConstructOutline,
 } from 'react-icons/io5';
 import NavbarLight from './NavbarLight';
 import Footer from './Footer';
@@ -47,9 +50,9 @@ export default function DetailPageLayout({
   }, [item.id]);
 
   const tabs = [
-    { id: 'overview', label: 'Overview' },
-    { id: 'benefits', label: 'Business impact' },
-    { id: 'technical', label: 'Technical approach' },
+    { id: 'overview', label: 'Overview', icon: IoEyeOutline },
+    { id: 'benefits', label: 'Business impact', icon: IoTrendingUpOutline },
+    { id: 'technical', label: 'Technical approach', icon: IoConstructOutline },
   ];
 
   const handleTabKeyDown = (event, index) => {
@@ -117,8 +120,11 @@ export default function DetailPageLayout({
               <motion.article initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="min-w-0 overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-xl shadow-slate-900/5">
                 <div className="overflow-x-auto border-b border-slate-100 px-4 sm:px-8">
                   <div className="flex min-w-max gap-2" role="tablist" aria-label={`${type} information`}>
-                    {tabs.map((tab, index) => (
-                      <button
+                    {tabs.map((tab, index) => {
+                      const TabIcon = tab.icon;
+                      const isActive = activeTab === tab.id;
+                      return (
+                        <button
                         key={tab.id}
                         type="button"
                         role="tab"
@@ -126,12 +132,14 @@ export default function DetailPageLayout({
                         tabIndex={activeTab === tab.id ? 0 : -1}
                         onKeyDown={(event) => handleTabKeyDown(event, index)}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`relative px-3 py-5 font-heading text-xs font-semibold transition sm:px-5 sm:text-sm ${activeTab === tab.id ? 'text-accent' : 'text-slate-400 hover:text-primary'}`}
+                        className={`relative my-2 inline-flex items-center gap-2 rounded-xl px-3 py-3 font-heading text-xs font-semibold transition sm:px-4 sm:text-sm ${isActive ? 'bg-orange-50 text-accent shadow-sm ring-1 ring-orange-100' : 'text-slate-400 hover:bg-slate-50 hover:text-primary'}`}
                       >
+                        <TabIcon className="text-base sm:text-lg" aria-hidden="true" />
                         {tab.label}
-                        {activeTab === tab.id && <motion.span layoutId="detail-tab" className="absolute inset-x-2 bottom-0 h-0.5 rounded-full bg-accent" />}
+                        {isActive && <motion.span layoutId="detail-tab" className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-accent" />}
                       </button>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 

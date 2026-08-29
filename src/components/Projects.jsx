@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { HiArrowRight, HiOutlineClock } from 'react-icons/hi';
-import IconBadge from './IconBadge';
+import { HiArrowRight } from 'react-icons/hi';
 import reactorImage from '../assets/case-studies/reactor-mixing.jpg';
 import cycloneImage from '../assets/case-studies/cyclone-separator.jpg';
 import bioreactorImage from '../assets/case-studies/bioreactor-mixing.jpg';
@@ -16,13 +15,8 @@ const projects = [
     challenge: 'Plant data indicated persistent reagent accumulation above the lower impeller and localized temperature excursions near the feed zone. The existing configuration produced weak axial circulation and inconsistent residence time.',
     approach: 'A transient multiphase CFD model compared impeller diameter, blade pitch, spacing, feed location, and rotational speed. Grid independence and torque predictions were checked against operating measurements before design screening.',
     outcome: 'The selected dual-stage hydrofoil configuration strengthened top-to-bottom circulation, eliminated the principal stagnation region, and lowered the required operating speed.',
-    metrics: [
-      { value: '+18%', label: 'Conversion yield' },
-      { value: '-12%', label: 'Motor power' },
-      { value: '0', label: 'Critical hot spots' },
-    ],
-    methods: ['Transient CFD', 'Multiphase flow', 'Design sweep'],
-    duration: '6-week study',
+    focus: ['CFD mixing', 'Multiphase flow', 'Reactor design'],
+
   },
   {
     id: 'cyclone-separator',
@@ -34,13 +28,9 @@ const projects = [
     challenge: 'Uneven inlet loading and a short-circuiting gas path allowed fine dust to reach the clean-gas outlet. High near-wall velocities also accelerated erosion along the cone and inlet transition.',
     approach: 'Eulerian-Lagrangian particle tracking was used to evaluate inlet volute shape, vortex-finder penetration, cone angle, and operating flow rate across the measured particle-size distribution.',
     outcome: 'The optimized inlet and vortex finder stabilized the internal vortex, improved particle residence time, and reduced localized wall shear without an unacceptable pressure-drop penalty.',
-    metrics: [
-      { value: '-87%', label: 'Particle escape' },
-      { value: '-45%', label: 'Peak wall shear' },
-      { value: '+2 yr', label: 'Service interval' },
-    ],
-    methods: ['Particle tracking', 'Erosion mapping', 'Geometry optimization'],
-    duration: '8-week study',
+    focus: ['Particle capture', 'Erosion control', 'Gas-solid flow'],
+
+
   },
   {
     id: 'bioreactor-mixing',
@@ -52,13 +42,8 @@ const projects = [
     challenge: 'The original high-speed impeller created narrow high-shear zones linked to loss of cell viability, while low-speed operation produced unacceptable blend times and dissolved-oxygen gradients.',
     approach: 'A non-Newtonian mixing model mapped shear exposure, circulation time, and species uniformity for multiple low-shear impellers. The preferred design was checked against mixing-time and power-number correlations.',
     outcome: 'A low-speed anchor configuration delivered uniform bulk circulation with substantially lower peak shear, supporting stable scale-up and repeatable batch performance.',
-    metrics: [
-      { value: '99.4%', label: 'Cell viability' },
-      { value: '<3%', label: 'Concentration variation' },
-      { value: '-31%', label: 'Peak shear' },
-    ],
-    methods: ['Non-Newtonian CFD', 'Species transport', 'Scale-up study'],
-    duration: '5-week study',
+    focus: ['Low-shear mixing', 'Cell viability', 'Scale-up'],
+
   },
 ];
 
@@ -102,25 +87,23 @@ export default function Projects() {
                 </div>
 
                 <div className="flex flex-1 flex-col p-5 sm:p-6">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-400"><IconBadge tone="project.duration" size="sm" className="scale-75"><HiOutlineClock size={16} /></IconBadge>{project.duration}</div>
-                  <h3 className="mt-3 font-heading text-lg font-black leading-snug text-primary sm:text-xl">{project.title}</h3>
+                  <h3 className="font-heading text-lg font-black leading-snug text-primary sm:text-xl">{project.title}</h3>
                   <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-500">{project.objective}</p>
-
-                  <div className="mt-5 grid grid-cols-3 gap-2 border-y border-slate-200 py-4">
-                    {project.metrics.map((metric) => (
-                      <div key={metric.label} className="min-w-0">
-                        <strong className="block font-heading text-base font-black text-accent sm:text-lg">{metric.value}</strong>
-                        <span className="mt-1 block text-[9px] font-semibold uppercase leading-3 tracking-wide text-slate-400">{metric.label}</span>
-                      </div>
+                  <div className="mt-5 flex flex-wrap gap-2" aria-label={`${project.title} focus areas`}>
+                    {project.focus.map((focus) => (
+                      <span key={focus} className="rounded-full bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-secondary ring-1 ring-slate-200">
+                        {focus}
+                      </span>
                     ))}
                   </div>
+
 
                 </div>
             </motion.article>
           ))}
         </motion.div>
 
-        <p className="mt-3 text-center text-[11px] text-slate-400 sm:hidden">Swipe to explore case studies</p>
+        <p className="mt-3 text-center text-[13px] text-slate-400 sm:hidden">Swipe to explore case studies</p>
 
         <div className="mt-8 flex justify-center sm:mt-10">
           <a href="#contact" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 font-heading text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-accent">
@@ -128,7 +111,7 @@ export default function Projects() {
           </a>
         </div>
 
-        <p className="mx-auto mt-8 max-w-3xl text-center text-[11px] leading-5 text-slate-400 sm:mt-10">Project descriptions are representative. Commercially sensitive geometry, operating data, and client identities are generalized.</p>
+        <p className="mx-auto mt-8 max-w-3xl text-center text-[13px] leading-5 text-slate-400 sm:mt-10">Project descriptions are representative. Commercially sensitive geometry, operating data, and client identities are generalized.</p>
       </div>
     </section>
   );
