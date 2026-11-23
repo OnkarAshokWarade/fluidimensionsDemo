@@ -73,8 +73,8 @@ export const valuesSection = {
 
 export const cafeSection = {
   heading: 'Bring a Challenge. Share an Idea. Explore a Solution.',
-  body: 'Engineering Café is an open, informal space for technical conversations, exchange of ideas and exploration of engineering possibilities. You do not need a fully defined project.',
-  cta: 'Visit Engineering Café',
+  body: 'Engineering Cafe is an open, informal space for technical conversations, exchange of ideas and exploration of engineering possibilities. You do not need a fully defined project.',
+  cta: 'Visit Engineering Cafe',
   to: cafePage.path,
 };
 

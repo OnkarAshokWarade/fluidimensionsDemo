@@ -35,7 +35,7 @@ a specific project, client, result or product.
 |---|---|
 | About Us | Philosophy cards (Understand / Optimise / Innovate) are my reading of the tagline; confirm wording. Add team, experience and publications when approved. |
 | Engineering Technologies & Software | No platform or Siemens product is named. Confirm partner scope, then fill the "Platforms" section. |
-| Engineering Café | Confirm this "open conversation" form is the intended format (threaded discussion is not built). |
+| Engineering Cafe | Confirm this "open conversation" form is the intended format (threaded discussion is not built). |
 | Contact | Set `PUBLIC_FORM_ENDPOINT` (forms say "not connected" until then) and confirm `PUBLIC_CONTACT_EMAIL`. Resume upload needs a form service/plan that accepts attachments. Add a privacy policy page and link it. |
 
 ## Privacy Policy (`/privacy-policy/`, draft, `noindex`)
@@ -57,5 +57,5 @@ Pages now carry real content condensed from your document. These need your sign-
 - [ ] Remove any claim you cannot support; condensed copy is in `src/data/doc.js`.
 
 ## Publishing status
-Published (indexable, in the sitemap): Home, About, all five Engineering pages, Technologies & Software, Chemical & Process, Pharmaceuticals, Cement, Oil & Gas, Engineering Café, Contact, Privacy Policy, Blog.
+Published (indexable, in the sitemap): Home, About, all five Engineering pages, Technologies & Software, Chemical & Process, Pharmaceuticals, Cement, Oil & Gas, Engineering Cafe, Contact, Privacy Policy, Blog.
 Still `draft` (noindex, not in the sitemap): Steel & Metals, Automotive, Aerospace, Marine, Food & Beverage. Remove `draft: true` for a page in `src/data/site.js` once it has real content.

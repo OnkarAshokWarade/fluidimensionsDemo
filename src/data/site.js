@@ -186,9 +186,9 @@ export const technologiesPage = {
 
 export const cafePage = {
   path: '/engineering-cafe/',
-  label: 'Engineering Café',
-  h1: 'Engineering Café',
-  title: `Engineering Café: Technical Conversations${suffix}`,
+  label: 'Engineering Cafe',
+  h1: 'Engineering Cafe',
+  title: `Engineering Cafe: Technical Conversations${suffix}`,
   description:
     'A space for engineering conversations, technical questions and the exchange of ideas on process, modelling and equipment challenges.',
   intro:

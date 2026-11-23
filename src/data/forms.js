@@ -1,4 +1,4 @@
-// Enquiry form definitions for the Contact page (four routes) and the Engineering Café.
+// Enquiry form definitions for the Contact page (four routes) and the Engineering Cafe.
 // Field spec: { name, label, type, required, options, placeholder, autocomplete, accept, rows, hint }
 
 const industryOptions = [
@@ -76,7 +76,7 @@ export const cafeForm = {
   type: 'cafe',
   title: 'Start a conversation',
   intro: 'No project brief needed. Share a question, a challenge or an idea. Add an email if you would like us to reply.',
-  submit: 'Share with the Café',
+  submit: 'Share with the Cafe',
   fields: [
     { name: 'message', group: 'Your conversation', label: 'Your question or idea', type: 'textarea', required: true, rows: 5, placeholder: 'For example: we see uneven gas distribution in a vessel and wonder how to approach it...' },
     { name: 'name', group: 'About you (optional)', label: 'Name', type: 'text', autocomplete: 'name' },

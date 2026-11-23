@@ -3,7 +3,7 @@ import { Icon } from 'astro-icon/components';
 import { capabilityPages, industryPages } from '../data/site';
 
 const columns = [
-  { title: 'Company', links: [['Home', '/'], ['About Us', '/about-us/'], ['Technologies & Software', '/engineering-technologies-software/'], ['Engineering Café', '/engineering-cafe/'], ['Blog', '/blog/'], ['Contact', '/contact/']] },
+  { title: 'Company', links: [['Home', '/'], ['About Us', '/about-us/'], ['Technologies & Software', '/engineering-technologies-software/'], ['Engineering Cafe', '/engineering-cafe/'], ['Blog', '/blog/'], ['Contact', '/contact/']] },
   { title: 'Engineering', links: capabilityPages.map((page) => [page.label, page.path]) },
   { title: 'Industries', links: [...industryPages.slice(0, 6).map((page) => [page.label, page.path]), ['All industries', '/#industries']] },
 ];
