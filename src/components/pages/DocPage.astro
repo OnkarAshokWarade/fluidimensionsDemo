@@ -188,6 +188,7 @@ const body = 'font-body text-base leading-relaxed text-slate-700';
           <p class={eyebrow}>Overview</p>
           <h2 class={`${h2} mt-2`}>Understanding the engineering behind performance</h2>
           <div class={`${body} mt-4 space-y-3`}>{industry.intro.map((p) => <p>{p}</p>)}</div>
+          {(industry as any).basis && <p class="mt-5 flex gap-3 rounded-xl border border-slate-300 bg-white p-4 font-body text-sm text-slate-600"><Icon name="ion:information-circle-outline" class="mt-0.5 h-5 w-5 shrink-0 text-secondary" aria-hidden="true" />{(industry as any).basis}</p>}
         </section>
         <div class="space-y-8">
           {industry.areas.map((a, i) => (

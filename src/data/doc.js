@@ -147,3 +147,62 @@ export const STUB_AREAS = {
   marine: ['Ship hull hydrodynamics', 'Coastal wave mechanics', 'Thermal and fluid systems on vessels'],
   food: ['Process optimisation, product quality prediction and performance monitoring (machine learning)', 'Emulsion and foam stability in food and beverage products', 'Mixing, thermal processing and equipment performance'],
 };
+
+// Capability-based pages for industries the document only names. They apply capabilities the document
+// describes to the industry; they do NOT claim completed projects. `basis` is shown on the page.
+const BASIS = 'This page describes how our documented engineering capabilities apply to this industry. It is not a list of completed projects. Project examples will be added as they are confirmed and approved for publication.';
+
+IND.steel = {
+  basis: BASIS,
+  intro: ['Steel and metals production depends on high-temperature thermal processes, where combustion, heat transfer and equipment condition govern energy use, product quality and uptime.', 'Our combustion, heat and mass transfer, structural and data-driven capabilities apply to furnaces, kilns and other thermal processing systems.'],
+  areas: [
+    { t: 'Furnace combustion and thermal performance', p: ['Non-uniform temperature distribution and localised hot spots', 'Combustion efficiency and fuel utilisation', 'Flame shape, stability and heat release in reheating furnaces and kilns'], d: ['Combustion and thermal performance assessments', 'Temperature and heat-flux distribution analysis', 'Recommendations for burner and operating-condition improvement'] },
+    { t: 'Thermal-structural integrity of equipment', p: ['Thermal stresses, expansion and cycling in furnace components', 'Refractory lining and support-structure behaviour', 'Root-cause investigation of premature damage'], d: ['Thermal-structural assessments using CFD temperatures and FEA', 'Identification of critical regions under thermal and mechanical load', 'Design improvement recommendations'] },
+    { t: 'Thermal process optimisation and monitoring', p: ['Limited visibility of thermal process performance', 'Difficulty predicting operating performance', 'Identifying suitable operating windows'], d: ['Data-driven models of thermal process behaviour', 'Process monitoring and performance indicators', 'Operating-window and sensitivity studies'] },
+    { t: 'Energy efficiency and process consulting', p: ['High energy and utility consumption', 'Recurring operational problems', 'Uncertainty about where performance is lost'], d: ['Energy and utility efficiency studies', 'Root-cause investigation reports', 'Prioritised engineering recommendations'] },
+  ],
+};
+
+IND.automotive = {
+  basis: BASIS,
+  intro: ['Automotive product performance depends on sprays, combustion, thermal management and structural behaviour. Many of these are multiphase and thermal problems that are difficult to measure directly.', 'Our multiphase flow, combustion, heat transfer and structural capabilities apply to the engineering questions behind engines, after-treatment systems and electric drivetrains.'],
+  areas: [
+    { t: 'Fuel sprays and injection systems', p: ['Spray formation, droplet behaviour and mixing in combustion engines', 'Influence of injector geometry and operating conditions', 'Understanding phase interactions that are hard to measure'], d: ['Multiphase CFD studies of spray behaviour', 'Evaluation of design alternatives', 'Engineering recommendations for injector and chamber design'] },
+    { t: 'Urea injection and after-treatment (SCR)', p: ['Droplet evaporation, wall interaction and mixing of urea sprays', 'Uniformity of reductant distribution', 'Deposit risk and flow-related performance limits'], d: ['Spray and mixing analysis for after-treatment systems', 'Comparison of mixer and injection configurations', 'Flow and temperature distribution assessments'] },
+    { t: 'Thermal management and oil-spray cooling for electric motors', p: ['Heat removal from windings and components', 'Spray coverage and temperature uniformity', 'Thermal limits of motor design'], d: ['Coupled flow and heat transfer analysis', 'Evaluation of cooling concepts', 'Inputs for thermal design decisions'] },
+    { t: 'Combustion, emissions and structural analysis', p: ['Combustion efficiency and formation of NOx and CO', 'Thermal stresses and deformation in components', 'Predicting performance across many design variants'], d: ['Combustion and emissions assessments', 'Thermal-structural analysis with FEA', 'Reduced-order and surrogate models for faster design exploration'] },
+  ],
+};
+
+IND.aerospace = {
+  basis: BASIS,
+  intro: ['Aerospace systems demand precision and reliability under extreme conditions, where multiphase flow, thermal loads and structural behaviour interact.', 'Our multiphase, thermal and structural analysis capabilities apply to propulsion, fuel, propellant and icing-related engineering questions.'],
+  areas: [
+    { t: 'Fuel injection and atomisation', p: ['Breakup and distribution of fuel sprays', 'Mixing quality and its effect on combustion', 'Sensitivity to geometry and operating conditions'], d: ['Multiphase CFD analysis of atomisation and spray behaviour', 'Evaluation of injector and chamber configurations', 'Engineering recommendations for design improvement'] },
+    { t: 'Propellant management', p: ['Behaviour of liquids and gases in tanks under changing conditions', 'Phase distribution and sloshing effects', 'Thermal behaviour of cryogenic propellants'], d: ['Multiphase flow and heat transfer assessments', 'Evaluation of tank and feed-system concepts', 'Inputs for design decisions'] },
+    { t: 'Icing and droplet interactions', p: ['Droplet impingement and accumulation on surfaces', 'Dependence on flow conditions and geometry', 'Locations of highest exposure'], d: ['Droplet and multiphase flow analysis', 'Identification of critical regions', 'Comparison of design alternatives'] },
+    { t: 'Thermal-structural analysis and fast models', p: ['Thermal stresses and deformation under combined loads', 'Reliability margins for critical components', 'The cost of running many detailed simulations'], d: ['Thermal-structural assessments using CFD and FEA', 'Identification of critical regions under specified loading', 'Reduced-order models for faster design exploration'] },
+  ],
+};
+
+IND.marine = {
+  basis: BASIS,
+  intro: ['Marine engineering performance depends on how vessels and equipment interact with water, heat and mechanical loads.', 'Our flow, heat transfer, structural and data-driven capabilities apply to hull hydrodynamics and to the fluid and thermal systems on board.'],
+  areas: [
+    { t: 'Ship hull hydrodynamics', p: ['Resistance and flow around hull forms', 'Influence of hull and appendage geometry', 'Comparing design alternatives before physical testing'], d: ['CFD-based hydrodynamic assessments', 'Evaluation of hull and appendage configurations', 'Engineering recommendations for performance improvement'] },
+    { t: 'Onboard fluid and thermal systems', p: ['Cooling and heat-exchange performance', 'Flow distribution and pressure losses in piping and equipment', 'Mixing and separation in process equipment'], d: ['Flow and heat transfer assessments', 'Pressure-drop and distribution evaluations', 'Design and operating recommendations'] },
+    { t: 'Structural and mechanical integrity', p: ['Stress and deformation under operating loads', 'Thermal loading of equipment and supports', 'Root-cause investigation of failures'], d: ['FEA of components and supports', 'Identification of critical regions', 'Design improvement recommendations'] },
+    { t: 'Equipment monitoring and performance prediction', p: ['Detecting performance deterioration early', 'Understanding operating trends', 'Planning maintenance with better information'], d: ['Data-driven equipment monitoring where suitable data exists', 'Performance analysis of onboard systems', 'Dashboards that present insights to engineers and operators'] },
+  ],
+};
+
+IND.food = {
+  basis: BASIS,
+  intro: ['Food and beverage production depends on consistent mixing, heating, drying and handling, where small process differences can change product quality and efficiency.', 'Our process, multiphase, heat and mass transfer and data-driven capabilities apply to production equipment and to quality consistency.'],
+  areas: [
+    { t: 'Mixing, dispersion and emulsions', p: ['Non-uniform mixing and dispersion in vessels', 'Stability of emulsions and foams', 'Scale-up of mixing from development to production'], d: ['Mixing and flow assessments', 'Evaluation of impeller and vessel configurations', 'Scale-up recommendations'] },
+    { t: 'Thermal processing, drying and evaporation', p: ['Uneven heating or cooling', 'Heat and mass transfer limits in dryers, evaporators and condensers', 'Energy consumption of thermal steps'], d: ['Heat and mass transfer assessments', 'Evaluation of equipment configurations and operating conditions', 'Energy efficiency recommendations'] },
+    { t: 'Process optimisation and quality consistency', p: ['Batch-to-batch variation', 'Limited visibility into process performance', 'Predicting product quality from process data'], d: ['Process optimisation and sensitivity studies', 'Product-quality prediction and monitoring with machine learning', 'Golden-batch style benchmarking where batch data exists'] },
+    { t: 'Equipment performance and consulting', p: ['Capacity and throughput limits', 'Recurring operating problems', 'Choosing between equipment or operating alternatives'], d: ['Equipment performance assessments', 'Root-cause investigations', 'Practical recommendations for improvement'] },
+  ],
+};

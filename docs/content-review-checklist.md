@@ -59,3 +59,9 @@ Pages now carry real content condensed from your document. These need your sign-
 ## Publishing status
 Published (indexable, in the sitemap): Home, About, all five Engineering pages, Technologies & Software, Chemical & Process, Pharmaceuticals, Cement, Oil & Gas, Engineering Cafe, Contact, Privacy Policy, Blog.
 Still `draft` (noindex, not in the sitemap): Steel & Metals, Automotive, Aerospace, Marine, Food & Beverage. Remove `draft: true` for a page in `src/data/site.js` once it has real content.
+
+## Capability-based industry pages (written by Claude, still `draft`)
+Steel & Metals, Automotive, Aerospace, Marine and Food & Beverage now have full pages. Your document only names these industries, so each page applies the capabilities the document describes (furnace combustion, FEA, multiphase sprays, heat and mass transfer, machine learning). Each page states that it is not a list of completed projects.
+- [ ] Read each page and remove anything that overstates your experience or does not fit how you work.
+- [ ] Add real project examples where you have them (replace the basis note once a page has approved examples).
+- [ ] When satisfied, delete `draft: true` for that industry in `src/data/site.js` to publish it.
