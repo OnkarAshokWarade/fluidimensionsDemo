@@ -108,7 +108,6 @@ export const industryPages = [
     description:
       'Engineering solutions for steel and metals: thermal process optimisation, furnaces, process monitoring and operating performance.',
     intro: 'Engineering Smarter Production. Strengthening Performance.',
-    draft: true,
   },
   {
     path: '/industries/oil-gas/',
@@ -127,7 +126,6 @@ export const industryPages = [
     description:
       'Engineering analysis for automotive product performance, thermal management, sprays and combustion.',
     intro: 'Engineering Innovation. Advancing Product Performance.',
-    draft: true,
   },
   {
     path: '/industries/aerospace/',
@@ -137,7 +135,6 @@ export const industryPages = [
     description:
       'Engineering analysis for aerospace performance and reliability, from fuel systems to thermal and structural behaviour.',
     intro: 'Engineering Precision. Advancing Performance & Reliability.',
-    draft: true,
   },
   {
     path: '/industries/marine/',
@@ -147,7 +144,6 @@ export const industryPages = [
     description:
       'Engineering analysis for vessel and marine equipment performance, including hydrodynamics and thermal systems.',
     intro: 'Advancing Marine Engineering. Enhancing Vessel Performance.',
-    draft: true,
   },
   {
     path: '/industries/food-beverage/',
@@ -157,7 +153,6 @@ export const industryPages = [
     description:
       'Process optimisation, mixing, thermal processing and quality consistency for food and beverage production.',
     intro: 'Improving Production Efficiency. Ensuring Product Consistency.',
-    draft: true,
   },
 ];
 

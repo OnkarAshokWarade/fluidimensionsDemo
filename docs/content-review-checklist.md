@@ -65,3 +65,6 @@ Steel & Metals, Automotive, Aerospace, Marine and Food & Beverage now have full 
 - [ ] Read each page and remove anything that overstates your experience or does not fit how you work.
 - [ ] Add real project examples where you have them (replace the basis note once a page has approved examples).
 - [ ] When satisfied, delete `draft: true` for that industry in `src/data/site.js` to publish it.
+
+## Publishing status (update)
+All 19 content pages are now published (indexable, in the sitemap), including the five capability-based industry pages. Re-read them and replace the basis note with real project examples as they become available.
