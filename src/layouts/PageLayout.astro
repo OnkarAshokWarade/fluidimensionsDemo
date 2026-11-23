@@ -2,8 +2,8 @@
 import BaseLayout from './BaseLayout.astro';
 import { SITE, capabilityPages } from '../data/site';
 
-interface Props { page: any; lead?: string; banner?: boolean; chips?: string[] }
-const { page, lead, banner = false, chips = [] } = Astro.props;
+interface Props { page: any; lead?: string; banner?: boolean; chips?: string[]; badge?: string }
+const { page, lead, banner = false, chips = [], badge } = Astro.props;
 const noindex = Boolean(page.stub || page.draft);
 const isIndustry = page.path.startsWith('/industries/');
 const section = isIndustry
@@ -37,7 +37,7 @@ const breadcrumbLd = {
               <li aria-current="page" class="font-semibold text-white">{page.label}</li>
             </ol>
           </nav>
-          <span class="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">{isIndustry ? 'Industry solutions' : 'Engineering capability'}</span>
+          <span class="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">{badge ?? (isIndustry ? 'Industry solutions' : 'Engineering capability')}</span>
           <h1 class="mt-4 max-w-4xl font-heading text-[clamp(2rem,4.8vw,3.3rem)] font-bold leading-[1.12] text-white">{page.h1}</h1>
           <p class="mt-5 max-w-3xl font-body text-lg leading-8 text-slate-200">{lead ?? page.intro}</p>
           {chips.length > 0 && (

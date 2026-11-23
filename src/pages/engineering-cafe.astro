@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import PageLayout from '../layouts/PageLayout.astro';
 import EnquiryForm from '../components/EnquiryForm.astro';
 import { cafePage } from '../data/site';
@@ -7,46 +8,139 @@ import { CAFE_TOPICS, CAFE_WHO } from '../data/doc';
 import { getPosts, formatDate } from '../lib/sanity';
 
 const posts = (await getPosts()).slice(0, 3);
-const h2 = 'font-heading text-2xl font-bold text-primary sm:text-3xl';
+const tones = [
+  { chip: 'bg-sky-100 text-sky-900 border-sky-200', num: 'bg-sky-600', head: 'bg-sky-50', border: 'border-sky-200', bar: 'border-t-sky-500', text: 'text-sky-700' },
+  { chip: 'bg-emerald-100 text-emerald-900 border-emerald-200', num: 'bg-emerald-600', head: 'bg-emerald-50', border: 'border-emerald-200', bar: 'border-t-emerald-500', text: 'text-emerald-700' },
+  { chip: 'bg-violet-100 text-violet-900 border-violet-200', num: 'bg-violet-600', head: 'bg-violet-50', border: 'border-violet-200', bar: 'border-t-violet-500', text: 'text-violet-700' },
+  { chip: 'bg-amber-100 text-amber-900 border-amber-200', num: 'bg-amber-600', head: 'bg-amber-50', border: 'border-amber-200', bar: 'border-t-amber-500', text: 'text-amber-700' },
+  { chip: 'bg-rose-100 text-rose-900 border-rose-200', num: 'bg-rose-600', head: 'bg-rose-50', border: 'border-rose-200', bar: 'border-t-rose-500', text: 'text-rose-700' },
+  { chip: 'bg-cyan-100 text-cyan-900 border-cyan-200', num: 'bg-cyan-600', head: 'bg-cyan-50', border: 'border-cyan-200', bar: 'border-t-cyan-500', text: 'text-cyan-700' },
+];
+const t = (i: number) => tones[i % tones.length];
+
+const pillars = [
+  ['ion:search-outline', 'Bring a challenge', 'An observation, an unexpected result, a design concern or a question about how a process or equipment behaves.'],
+  ['ion:bulb-outline', 'Share an idea', 'A new approach, a modelling strategy or a concept you would like a second engineering opinion on.'],
+  ['ion:rocket-outline', 'Explore a solution', 'Look at the problem from different angles and find out what might be possible, without a formal brief.'],
+];
+const topicIcons = ['ion:flask-outline', 'ion:analytics-outline', 'ion:construct-outline', 'ion:git-network-outline', 'ion:telescope-outline'];
+const whoIcons = ['ion:business-outline', 'ion:hardware-chip-outline', 'ion:school-outline', 'ion:person-outline', 'ion:globe-outline'];
+const steps = [
+  ['ion:mail-outline', 'Get in touch', 'Tell us briefly what you would like to discuss.'],
+  ['ion:calendar-outline', 'Find a convenient time', 'We arrange an online or in-person conversation, as appropriate.'],
+  ['ion:chatbubble-ellipses-outline', 'Exchange ideas', 'Discuss your challenge, question or area of interest with our team.'],
+  ['ion:compass-outline', 'Explore possibilities', 'If there is an opportunity, we explore suitable next steps together.'],
+];
+const expect = [
+  ['ion:videocam-outline', 'Online by default', 'In-person discussions can be arranged when appropriate.'],
+  ['ion:time-outline', '30 to 45 minutes', 'A reasonable length for an initial technical conversation.'],
+  ['ion:chatbubbles-outline', 'Informal and open', 'An initial technical discussion, not a commitment to a paid assignment. A detailed investigation can be scoped separately.'],
+  ['ion:lock-closed-outline', 'Confidential', 'Please avoid sharing proprietary documents or sensitive process data until confidentiality arrangements are in place.'],
+];
 const eyebrow = 'text-sm font-bold uppercase tracking-widest text-accent';
-const steps = [['Get in touch', 'Tell us briefly what you would like to discuss.'], ['Find a convenient time', 'We arrange an online or in-person conversation, as appropriate.'], ['Exchange ideas', 'Discuss your challenge, question or area of interest with our team.'], ['Explore possibilities', 'If there is an opportunity, we explore suitable next steps together.']];
+const h2 = 'font-heading text-2xl font-bold text-primary sm:text-3xl';
 ---
-<PageLayout page={cafePage} lead="Bring a challenge. Share an idea. Explore a solution. An open, informal space for technical conversations, exchange of ideas and exploration of engineering possibilities. You do not need a fully defined project.">
-  <section>
+<PageLayout page={cafePage} banner badge="Open conversations" chips={['Challenges', 'Ideas', 'Solutions', 'No project brief needed']} lead="An open, informal space for technical conversations, exchange of ideas and exploration of engineering possibilities. You do not need a fully defined project or a ready-made scope of work.">
+  <!-- Intro -->
+  <section class="grid items-center gap-8 rounded-3xl border border-sky-200 bg-sky-50 p-6 sm:p-10 lg:grid-cols-[1.2fr_0.8fr]">
+    <div>
+      <p class={eyebrow}>Why the Cafe exists</p>
+      <h2 class={`${h2} mt-2`}>Good engineering solutions often start with a good conversation</h2>
+      <p class="mt-4 font-body text-base leading-relaxed text-slate-700">Not every engineering problem begins with a clearly defined solution. Sometimes it starts with an observation, an unexpected result, a design concern or simply a question about how a process or equipment system behaves. Sometimes, all it takes is a conversation with someone who understands the engineering behind the problem.</p>
+    </div>
+    <p class="rounded-2xl bg-white p-6 font-heading text-xl font-bold leading-snug text-primary shadow-sm">“Bring a challenge. Share an idea. Explore a solution.”</p>
+  </section>
+
+  <!-- Three pillars -->
+  <ul class="mt-10 grid gap-5 md:grid-cols-3">
+    {pillars.map(([icon, title, text], i) => (
+      <li class={`rounded-2xl border border-t-4 bg-white p-6 shadow-sm ${t(i).border} ${t(i).bar}`}>
+        <span class={`flex h-12 w-12 items-center justify-center rounded-xl text-white ${t(i).num}`}><Icon name={icon} class="h-6 w-6" aria-hidden="true" /></span>
+        <h3 class="mt-4 font-heading text-lg font-bold text-primary">{title}</h3>
+        <p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{text}</p>
+      </li>
+    ))}
+  </ul>
+
+  <!-- Topics -->
+  <section class="mt-20">
     <p class={eyebrow}>What can we discuss?</p>
     <h2 class={`${h2} mt-2`}>Five conversation areas</h2>
     <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {CAFE_TOPICS.map(([t, d]) => <li class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{d}</p></li>)}
+      {CAFE_TOPICS.map(([title, text], i) => (
+        <li class={`overflow-hidden rounded-2xl border bg-white shadow-sm ${t(i).border}`}>
+          <div class={`flex items-center gap-3 border-b px-5 py-4 ${t(i).head} ${t(i).border}`}><span class={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-white ${t(i).num}`}><Icon name={topicIcons[i]} class="h-5 w-5" aria-hidden="true" /></span><h3 class="font-heading text-base font-bold text-primary">{title}</h3></div>
+          <p class="p-5 font-body text-sm leading-relaxed text-slate-600">{text}</p>
+        </li>
+      ))}
     </ul>
   </section>
 
-  <section class="mt-20 grid items-start gap-12 lg:grid-cols-2">
+  <!-- Who -->
+  <section class="mt-20 rounded-3xl bg-primary px-6 py-12 text-white sm:px-10">
+    <p class="text-sm font-bold uppercase tracking-widest text-accent">Who is it for?</p>
+    <h2 class="mt-2 font-heading text-2xl font-bold sm:text-3xl">Open to curious engineers</h2>
+    <p class="mt-3 max-w-3xl font-body text-base leading-relaxed text-slate-300">We welcome conversations with people who are curious about engineering challenges and interested in exploring new possibilities.</p>
+    <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {CAFE_WHO.map(([title, text], i) => (
+        <li class="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
+          <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/20 text-accent"><Icon name={whoIcons[i]} class="h-5 w-5" aria-hidden="true" /></span>
+          <h3 class="mt-3 font-heading text-sm font-bold text-white">{title}</h3>
+          <p class="mt-1 font-body text-xs leading-relaxed text-slate-300">{text}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- How it works -->
+  <section class="mt-20">
+    <p class={eyebrow}>How does it work?</p>
+    <h2 class={`${h2} mt-2`}>Four simple steps</h2>
+    <ol class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {steps.map(([icon, title, text], i) => (
+        <li class={`relative rounded-2xl border border-t-4 bg-white p-6 shadow-sm ${t(i).border} ${t(i).bar}`}>
+          <div class="flex items-center justify-between"><span class={`flex h-10 w-10 items-center justify-center rounded-full font-heading text-sm font-bold text-white ${t(i).num}`}>{i + 1}</span><Icon name={icon} class={`h-6 w-6 ${t(i).text}`} aria-hidden="true" /></div>
+          <h3 class="mt-4 font-heading text-base font-bold text-primary">{title}</h3>
+          <p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{text}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Why talk to us -->
+  <section class="mt-20 grid gap-8 lg:grid-cols-2">
     <div>
-      <p class={eyebrow}>Who is it for?</p>
-      <h2 class={`${h2} mt-2`}>Open to curious engineers</h2>
-      <ul class="mt-6 space-y-4">{CAFE_WHO.map(([t, d]) => <li class="border-l-4 border-accent pl-4"><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="font-body text-sm leading-relaxed text-slate-600">{d}</p></li>)}</ul>
+      <p class={eyebrow}>Why a conversation with FluiDimensions?</p>
+      <h2 class={`${h2} mt-2`}>Understanding the problem comes first</h2>
     </div>
-    <div>
-      <p class={eyebrow}>How does it work?</p>
-      <h2 class={`${h2} mt-2`}>Four simple steps</h2>
-      <ol class="mt-6 space-y-3">{steps.map(([t, d], i) => <li class="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent font-heading text-sm font-bold text-white">{i + 1}</span><div><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="mt-1 font-body text-sm leading-relaxed text-slate-600">{d}</p></div></li>)}</ol>
+    <div class="space-y-4 font-body text-base leading-relaxed text-slate-700">
+      <p>We work across chemical engineering, process understanding, equipment design, advanced simulation, process modelling, machine learning and software development, across a range of industrial applications and complex problems.</p>
+      <p>Sometimes a conversation may lead to a simulation study or an engineering investigation. At other times, it may open up a completely different way of looking at the problem. The aim is a meaningful technical conversation, without the pressure of a formal project enquiry.</p>
     </div>
   </section>
 
-  <section id="start" class="mt-20 grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
-    <div>
-      <p class={eyebrow}>Let’s start a conversation</p>
-      <h2 class={`${h2} mt-2`}>Let’s talk engineering</h2>
-      <p class="mt-4 font-body text-base leading-relaxed text-slate-600">No elaborate presentations. No need for a fully defined project. Just an open engineering conversation, with a 30 to 45 minute online discussion as a starting point and no commitment to a paid assignment.</p>
-      <p class="mt-5 rounded-xl bg-amber-50 p-4 font-body text-sm leading-relaxed text-amber-900">We respect the confidentiality of our discussions. Please avoid sharing proprietary documents, sensitive process data or confidential customer information until appropriate confidentiality arrangements are in place.</p>
-    </div>
-    <div class="overflow-hidden rounded-2xl border-2 border-slate-300 bg-white shadow-md">
-      <div class="border-b-2 border-slate-300 bg-sky-100 px-6 py-6 sm:px-9">
-        <h3 class="font-heading text-xl font-bold text-primary">{cafeForm.title}</h3>
-        <p class="mt-2 font-body text-sm leading-relaxed text-slate-700">{cafeForm.intro}</p>
-      </div>
-      <div class="p-6 sm:p-9">
-        <EnquiryForm id={cafeForm.id} type={cafeForm.type} fields={cafeForm.fields} submit={cafeForm.submit} successTitle="Thanks for sharing" successText="We have received your message and will join the conversation." />
+  <!-- Form -->
+  <section id="start" class="mt-20 scroll-mt-28">
+    <p class={eyebrow}>Let’s start a conversation</p>
+    <h2 class={`${h2} mt-2`}>Let’s talk engineering</h2>
+    <p class="mt-3 max-w-3xl font-body text-base leading-relaxed text-slate-700">No elaborate presentations. No need for a fully defined project. Tell us what you have in mind and we will get back to you to arrange a convenient time.</p>
+    <div class="mt-8 grid items-start gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+      <ul class="grid gap-4">
+        {expect.map(([icon, title, text], i) => (
+          <li class={`flex gap-4 rounded-2xl border p-5 ${t(i).head} ${t(i).border}`}>
+            <span class={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white ${t(i).num}`}><Icon name={icon} class="h-5 w-5" aria-hidden="true" /></span>
+            <span><span class="block font-heading text-base font-bold text-primary">{title}</span><span class="mt-1 block font-body text-sm leading-relaxed text-slate-700">{text}</span></span>
+          </li>
+        ))}
+      </ul>
+      <div class="overflow-hidden rounded-2xl border-2 border-slate-300 bg-white shadow-md">
+        <div class="border-b-2 border-slate-300 bg-sky-100 px-6 py-6 sm:px-9">
+          <h3 class="font-heading text-xl font-bold text-primary">{cafeForm.title}</h3>
+          <p class="mt-2 font-body text-sm leading-relaxed text-slate-700">{cafeForm.intro}</p>
+        </div>
+        <div class="p-6 sm:p-9">
+          <EnquiryForm id={cafeForm.id} type={cafeForm.type} fields={cafeForm.fields} submit={cafeForm.submit} successTitle="Thanks for sharing" successText="We have received your message and will join the conversation." />
+        </div>
       </div>
     </div>
   </section>
@@ -56,7 +150,7 @@ const steps = [['Get in touch', 'Tell us briefly what you would like to discuss.
       <p class={eyebrow}>From the blog</p>
       <h2 class={`${h2} mt-2`}>Latest articles</h2>
       <ul class="mt-6 grid gap-4 sm:grid-cols-3">
-        {posts.map((post) => <li><a href={`/blog/${post.slug}/`} class="block h-full rounded-xl border border-slate-200 bg-white p-5 transition hover:border-accent/40"><time datetime={post.publishedAt} class="text-xs font-semibold uppercase tracking-wider text-accent">{formatDate(post.publishedAt)}</time><span class="mt-1 block font-heading text-sm font-bold text-primary">{post.title}</span></a></li>)}
+        {posts.map((post) => <li><a href={`/blog/${post.slug}/`} class="block h-full rounded-xl border border-slate-300 bg-white p-5 transition hover:border-accent/40"><time datetime={post.publishedAt} class="text-xs font-semibold uppercase tracking-wider text-accent">{formatDate(post.publishedAt)}</time><span class="mt-1 block font-heading text-sm font-bold text-primary">{post.title}</span></a></li>)}
       </ul>
       <a href="/blog/" class="mt-5 inline-block font-heading text-sm font-semibold text-secondary hover:text-accent">All articles →</a>
     </section>
