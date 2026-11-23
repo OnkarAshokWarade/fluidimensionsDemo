@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { HiArrowLeft } from 'react-icons/hi';
 import NavbarLight from '../components/NavbarLight';
+import Seo from '../components/Seo';
 
 export default function NotFound({ title = 'Page not found', message }) {
   return (
     <div className="min-h-screen bg-brand-bg">
+      <Seo title="Page not found | FluiDimensions" description="The page you are looking for could not be found." path="/404/" noindex />
       <NavbarLight />
       <main className="min-h-screen flex items-center justify-center px-6 pt-24">
         <div className="max-w-xl text-center">

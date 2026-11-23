@@ -61,17 +61,14 @@ body {
 
 img, video, canvas, svg, iframe { max-width: 100%; }
 button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
-button, [role='button'], input, select, textarea { font: inherit; }
+@layer base {
+  button, [role='button'], input, select, textarea { font: inherit; }
+}
 input, select, textarea { max-width: 100%; }
 
 @media (min-width: 480px) { .site-container { width: min(100% - 3rem, 80rem); } }
 @media (min-width: 768px) { .site-container { width: min(100% - 4rem, 80rem); } }
 @media (min-width: 1440px) { .site-container { width: min(100% - 6rem, 84rem); } }
-
-/* Swiper navigation custom styles */
-.swiper-pagination-bullet-active {
-  background: var(--color-accent) !important;
-}
 
 /* Custom flow grid utility for CFD effect */
 .cfd-grid {
