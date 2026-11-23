@@ -31,3 +31,9 @@ Sanity project settings (Members).
 ## Vercel settings
 - Framework preset: Astro (build command `npm run build`, output `dist`).
 - Environment variables: `PUBLIC_SITE_URL` (the real domain). The Sanity variables have working defaults.
+
+## Current setup (done)
+- Vercel project: `fluidimensions-demo-oozu` (Astro preset, build command `npm run build`), connected to `OnkarAshokWarade/fluidimensionsDemo`.
+- Deploy hook `sanity-publish` currently targets branch **`astro-migration`**. When the Astro branch is merged to `main`, change the hook's branch to `main` (Vercel > Settings > Git > Deploy Hooks).
+- Sanity webhook "Rebuild site on post change" (filter `_type == "post"`, create/update/delete) calls that hook.
+- `PUBLIC_SITE_URL` is not set yet: set it once the real domain is chosen, otherwise canonical links and the sitemap use `https://www.fluidimensions.com`.
