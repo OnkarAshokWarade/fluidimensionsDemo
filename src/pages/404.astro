@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+---
+<BaseLayout title="Page not found | FluiDimensions" description="The page you are looking for could not be found." path="/404/" noindex>
+  <main class="flex min-h-screen items-center justify-center px-6 pt-24">
+    <div class="max-w-xl text-center">
+      <span class="font-heading text-7xl font-black text-accent/20 sm:text-8xl" aria-hidden="true">404</span>
+      <h1 class="-mt-4 font-heading text-3xl font-black text-primary sm:text-5xl">Page not found</h1>
+      <p class="mt-5 leading-relaxed text-gray-500">The page may have moved, or the address may be incorrect.</p>
+      <a href="/" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 font-heading text-sm font-semibold text-white shadow-lg shadow-accent/20 transition hover:-translate-y-0.5 hover:bg-accent-dark"><Icon name="ion:arrow-back" class="h-4 w-4" aria-hidden="true" /> Back to homepage</a>
+    </div>
+  </main>
+</BaseLayout>

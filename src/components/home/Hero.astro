@@ -1,0 +1,39 @@
+---
+import { Icon } from 'astro-icon/components';
+import { hero, capabilitiesSection } from '../../data/home';
+import { CONTACT_BUSINESS } from '../../data/site';
+const tiles = capabilitiesSection.cards;
+---
+<section id="home" aria-labelledby="hero-heading" class="relative overflow-hidden bg-primary">
+  <div class="cfd-grid pointer-events-none absolute inset-0 opacity-10" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute -left-24 top-10 h-96 w-96 rounded-full bg-secondary/30 blur-[110px]" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-accent/15 blur-[120px]" aria-hidden="true"></div>
+  <div class="site-container relative z-10 grid items-center gap-12 pb-20 pt-32 sm:pt-36 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:pb-28 lg:pt-40">
+    <div>
+      <p class="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-accent sm:text-sm">{hero.eyebrow}</p>
+      <h1 id="hero-heading" class="font-heading text-[clamp(2.1rem,5.4vw,3.8rem)] font-bold leading-[1.1] text-white">{hero.h1}</h1>
+      <p class="mt-6 max-w-xl font-body text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">{hero.body}</p>
+      <div class="mt-9 flex flex-col gap-3 min-[480px]:flex-row">
+        <a href={CONTACT_BUSINESS} class="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-accent px-7 font-heading text-sm font-semibold text-white shadow-lg transition hover:bg-accent-dark">
+          Discuss an Engineering Challenge <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" />
+        </a>
+        <a href="/#capabilities" class="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/30 px-7 font-heading text-sm font-semibold text-white transition hover:bg-white/10">Explore Our Capabilities</a>
+      </div>
+      <p class="mt-8 font-heading text-sm font-medium tracking-wide text-slate-300">{hero.tagline}</p>
+    </div>
+
+    <div class="rounded-2xl border border-white/15 bg-white/[0.06] p-5 backdrop-blur-sm sm:p-6">
+      <p class="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-slate-300">Our six capability areas</p>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {tiles.map((tile) => (
+          <li>
+            <a href={tile.to} class="flex h-full items-center gap-3 rounded-xl border border-white/10 bg-white/10 p-4 text-white transition hover:border-accent/60 hover:bg-white/15">
+              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/20 text-accent"><Icon name={tile.icon} class="h-5 w-5" aria-hidden="true" /></span>
+              <span class="font-heading text-sm font-semibold leading-snug">{tile.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,23 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionHeading from './SectionHeading.astro';
+import { industriesSection as content } from '../../data/home';
+---
+<section id="industries" aria-labelledby="industries-heading" class="bg-tint py-20 sm:py-24 lg:py-28">
+  <div class="site-container">
+    <SectionHeading id="industries-heading" eyebrow="Industries" title={content.heading} intro={content.intro} />
+    <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {content.cards.map((card, index) => (
+        <li class="reveal" style={`--reveal-delay:${(index % 3) * 0.05}s`}>
+          <a href={card.path} class="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-xl">
+            <h3 class="font-heading text-lg font-bold text-primary transition-colors group-hover:text-accent">{card.label}</h3>
+            <p class="mt-2 flex-1 font-body text-sm leading-relaxed text-slate-600">{card.desc}</p>
+            <span class="mt-5 inline-flex items-center gap-1 font-heading text-xs font-bold text-secondary transition-colors group-hover:text-accent">
+              Industry solutions <Icon name="ion:arrow-forward" class="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

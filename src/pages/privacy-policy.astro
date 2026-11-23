@@ -1,0 +1,111 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { privacyPage } from '../data/site';
+
+// DRAFT policy written to match what this site actually does. It is not legal advice: have it reviewed
+// (see docs/content-review-checklist.md) and keep it in step with any change to forms, analytics or hosting.
+const updated = '23 November 2026';
+const email = import.meta.env.PUBLIC_CONTACT_EMAIL || '';
+
+const sections = [
+  {
+    id: 'who',
+    title: 'Who we are',
+    body: [
+      'This website is operated by FluiDimensions ("we", "us"). This policy explains what personal information we collect through the website, why, and what choices you have.',
+    ],
+  },
+  {
+    id: 'collect',
+    title: 'What we collect',
+    list: [
+      'Enquiry forms: the details you type into the Contact forms (name, email address, company, industry, and your message). For careers enquiries, also your role of interest, a link to your resume or profile, and an optional cover note.',
+      'Engineering Cafe: your message, and your name and email address only if you choose to give them.',
+      'Technical data: like most websites, our hosting provider records standard server logs such as IP address, browser type, pages requested and time of visit.',
+      'Analytics: only if website analytics is switched on (see "Cookies and analytics"). We do not use advertising or tracking pixels.',
+    ],
+  },
+  {
+    id: 'use',
+    title: 'How we use it',
+    list: [
+      'To read and reply to your enquiry or application.',
+      'To keep the website secure, working and understandable (for example, which pages are useful).',
+      'To meet legal obligations.',
+    ],
+    after: 'We do not sell your personal information and we do not send marketing email unless you ask us to.',
+  },
+  {
+    id: 'share',
+    title: 'Who we share it with',
+    body: ['We use a small number of service providers who handle information on our behalf:'],
+    list: [
+      'Web3Forms: receives what you submit in our forms and emails it to us.',
+      'Vercel: hosts the website and keeps the server logs described above.',
+      'Google Analytics: only if analytics is enabled; it receives usage data about how the site is used.',
+    ],
+    after: 'These providers may process information outside your country. We may also disclose information if the law requires it.',
+  },
+  {
+    id: 'cookies',
+    title: 'Cookies and analytics',
+    body: [
+      'The website itself does not set cookies. If we enable Google Analytics, it may set cookies to measure visits and may record that a contact form was submitted. You can block cookies in your browser settings or use a browser extension that blocks analytics.',
+    ],
+  },
+  {
+    id: 'retention',
+    title: 'How long we keep it',
+    body: [
+      'We keep enquiries for as long as needed to respond and for reasonable record-keeping, and careers applications for as long as needed to consider you for current and future roles. After that we delete or anonymise them.',
+    ],
+  },
+  {
+    id: 'rights',
+    title: 'Your rights',
+    body: [
+      'Depending on where you live, and under laws such as India\'s Digital Personal Data Protection Act, 2023 and, where applicable, the GDPR, you may have the right to ask us for a copy of your information, to correct or delete it, to object to or restrict how we use it, and to withdraw consent. To make a request, contact us as described below.',
+    ],
+  },
+  {
+    id: 'security',
+    title: 'Security and children',
+    body: [
+      'We take reasonable steps to protect information, and the website is served over HTTPS. No method of transmission or storage is completely secure. The website is intended for business visitors and is not directed at children.',
+    ],
+  },
+  {
+    id: 'contact',
+    title: 'Contact us',
+    body: [],
+    custom: true,
+  },
+  {
+    id: 'changes',
+    title: 'Changes to this policy',
+    body: [`We may update this policy from time to time. The date at the top shows when it was last changed.`],
+  },
+];
+---
+<PageLayout page={privacyPage}>
+  <p class="mt-4 font-body text-sm text-slate-500">Last updated: {updated}</p>
+  <div class="mt-10 max-w-3xl space-y-10">
+    {sections.map((section) => (
+      <section aria-labelledby={`${section.id}-heading`}>
+        <h2 id={`${section.id}-heading`} class="font-heading text-xl font-bold text-primary sm:text-2xl">{section.title}</h2>
+        {section.body?.map((paragraph) => <p class="mt-4 font-body text-base leading-relaxed text-slate-600">{paragraph}</p>)}
+        {section.list && (
+          <ul class="mt-4 list-disc space-y-2 pl-5 font-body text-base leading-relaxed text-slate-600 marker:text-accent">
+            {section.list.map((item) => <li>{item}</li>)}
+          </ul>
+        )}
+        {section.after && <p class="mt-4 font-body text-base leading-relaxed text-slate-600">{section.after}</p>}
+        {section.custom && (
+          <p class="mt-4 font-body text-base leading-relaxed text-slate-600">
+            For questions about this policy or to make a request about your information, use the <a href="/contact/#general-enquiries" class="text-secondary underline underline-offset-2 hover:text-accent">General enquiries form</a> on our Contact page{email && <> or email <a href={`mailto:${email}`} class="text-secondary underline underline-offset-2 hover:text-accent">{email}</a></>}.
+          </p>
+        )}
+      </section>
+    ))}
+  </div>
+</PageLayout>

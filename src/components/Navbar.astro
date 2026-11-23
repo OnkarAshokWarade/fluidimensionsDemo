@@ -1,0 +1,132 @@
+---
+import { Icon } from 'astro-icon/components';
+import { NAV, NAV_CTA } from '../data/site';
+
+const pathname = Astro.url.pathname;
+const isHome = pathname === '/';
+const isActive = (to: string) => (to === '/' ? isHome : pathname.startsWith(to.replace(/\/$/, '')));
+const groupActive = (item: any) => item.children?.some((child: any) => isActive(child.path));
+const slug = (label: string) => label.toLowerCase().replace(/\W+/g, '-');
+---
+<header class="site-header" data-solid={isHome ? 'false' : 'true'} data-home={isHome ? 'true' : 'false'} id="site-header">
+  <nav class="site-container flex items-center justify-between gap-4" aria-label="Primary navigation">
+    <a href="/" class="flex min-h-11 min-w-0 items-center gap-2.5 rounded-lg sm:gap-3" aria-label="FluiDimensions home">
+      <img src="/logo.png" alt="" width="40" height="40" class="h-9 w-auto shrink-0 sm:h-10" />
+      <div class="min-w-0">
+        <span class="brand-name block truncate font-heading text-sm font-black leading-none tracking-tight min-[380px]:text-base sm:text-lg">FLUIDIMENSIONS</span>
+        <span class="mt-1 block truncate text-[8px] font-bold uppercase tracking-[0.16em] text-accent min-[380px]:text-[9px] sm:text-[10px]">Understand. Optimise. Innovate.</span>
+      </div>
+    </a>
+
+    <ul class="hidden items-center gap-5 xl:flex 2xl:gap-7">
+      {NAV.map((item) => item.children ? (
+        <li class="dd relative">
+          <button type="button" class="dd-btn nav-link flex items-center gap-1 rounded-md py-2 font-body text-sm font-medium transition" aria-expanded="false" aria-haspopup="true" aria-controls={`dd-${slug(item.label)}`} aria-current={groupActive(item) ? 'page' : undefined}>
+            {item.label}
+            <Icon name="ion:chevron-down" class="dd-chevron h-3.5 w-3.5 transition-transform" aria-hidden="true" />
+          </button>
+          <div id={`dd-${slug(item.label)}`} class="dd-panel absolute left-0 top-full z-50 hidden pt-3">
+            <ul class="w-80 rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl">
+              {item.children.map((child) => (
+                <li><a href={child.path} aria-current={isActive(child.path) ? 'page' : undefined} class:list={['flex min-h-11 items-center rounded-xl px-4 font-body text-sm font-medium transition hover:bg-slate-50 hover:text-accent', isActive(child.path) ? 'text-accent' : 'text-slate-700']}>{child.label}</a></li>
+              ))}
+            </ul>
+          </div>
+        </li>
+      ) : (
+        <li>
+          <a href={item.to} aria-current={isActive(item.to) ? 'page' : undefined} class:list={['nav-link relative block rounded-md py-2 font-body text-sm font-medium transition', isActive(item.to) && 'border-b-2 border-accent']}>{item.label}</a>
+        </li>
+      ))}
+    </ul>
+
+    <a href={NAV_CTA.to} class="ml-auto hidden min-h-11 items-center justify-center rounded-full bg-accent px-6 font-heading text-sm font-semibold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-accent-dark xl:inline-flex">{NAV_CTA.label}</a>
+    <button type="button" id="menu-toggle" class="menu-btn flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition hover:bg-white/10 xl:hidden" aria-expanded="false" aria-controls="mobile-navigation" aria-label="Open navigation menu">
+      <Icon name="ion:menu" class="menu-open h-6 w-6" aria-hidden="true" />
+      <Icon name="ion:close" class="menu-close hidden h-6 w-6" aria-hidden="true" />
+    </button>
+  </nav>
+</header>
+
+<div id="mobile-backdrop" class="fixed inset-0 z-40 hidden bg-primary/45 backdrop-blur-sm xl:hidden"></div>
+<div id="mobile-navigation" class="fixed inset-x-3 top-[4.75rem] z-50 hidden max-h-[calc(100dvh-6rem)] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl sm:inset-x-5 xl:hidden">
+  {NAV.map((item) => item.children ? (
+    <div>
+      <button type="button" class="m-group-btn flex min-h-12 w-full items-center justify-between rounded-xl px-4 font-heading text-base font-semibold hover:bg-slate-50" class:list={[groupActive(item) ? 'text-accent' : 'text-primary']} aria-expanded={groupActive(item) ? 'true' : 'false'} aria-controls={`m-${slug(item.label)}`}>
+        {item.label}
+        <Icon name="ion:chevron-down" class="h-4 w-4 transition-transform" aria-hidden="true" />
+      </button>
+      <ul id={`m-${slug(item.label)}`} class:list={['mb-1 ml-3 border-l border-slate-200 pl-2', !groupActive(item) && 'hidden']}>
+        {item.children.map((child) => (
+          <li><a href={child.path} aria-current={isActive(child.path) ? 'page' : undefined} class:list={['flex min-h-11 items-center rounded-lg px-3 font-body text-sm font-medium hover:bg-slate-50', isActive(child.path) ? 'text-accent' : 'text-slate-700']}>{child.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  ) : (
+    <a href={item.to} aria-current={isActive(item.to) ? 'page' : undefined} class:list={['flex min-h-12 items-center rounded-xl px-4 font-heading text-base font-semibold', isActive(item.to) ? 'bg-accent/10 text-accent' : 'text-primary hover:bg-slate-50']}>{item.label}</a>
+  ))}
+  <a href={NAV_CTA.to} class="mt-2 flex min-h-12 items-center justify-center rounded-xl bg-accent px-5 font-heading text-sm font-semibold text-white">{NAV_CTA.label}</a>
+</div>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const isHome = header.dataset.home === 'true';
+  const toggle = document.getElementById('menu-toggle')!;
+  const panel = document.getElementById('mobile-navigation')!;
+  const backdrop = document.getElementById('mobile-backdrop')!;
+  let menuOpen = false;
+
+  const syncSolid = () => {
+    header.dataset.solid = (!isHome || menuOpen || window.scrollY > 18) ? 'true' : 'false';
+  };
+  syncSolid();
+  window.addEventListener('scroll', syncSolid, { passive: true });
+
+  // Mobile menu
+  const setMenu = (open: boolean) => {
+    menuOpen = open;
+    panel.classList.toggle('hidden', !open);
+    backdrop.classList.toggle('hidden', !open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+    toggle.querySelector('.menu-open')!.classList.toggle('hidden', open);
+    toggle.querySelector('.menu-close')!.classList.toggle('hidden', !open);
+    document.body.style.overflow = open ? 'hidden' : '';
+    syncSolid();
+  };
+  toggle.addEventListener('click', () => setMenu(!menuOpen));
+  backdrop.addEventListener('click', () => setMenu(false));
+  panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  window.addEventListener('resize', () => { if (window.innerWidth >= 1280 && menuOpen) setMenu(false); });
+  panel.querySelectorAll<HTMLButtonElement>('.m-group-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', String(open));
+      document.getElementById(btn.getAttribute('aria-controls')!)!.classList.toggle('hidden', !open);
+      btn.querySelector('svg')!.classList.toggle('rotate-180', open);
+    });
+    if (btn.getAttribute('aria-expanded') === 'true') btn.querySelector('svg')!.classList.add('rotate-180');
+  });
+
+  // Desktop dropdowns
+  const dropdowns = document.querySelectorAll<HTMLElement>('.dd');
+  const setDropdown = (dd: HTMLElement, open: boolean) => {
+    const btn = dd.querySelector<HTMLButtonElement>('.dd-btn')!;
+    btn.setAttribute('aria-expanded', String(open));
+    dd.querySelector('.dd-panel')!.classList.toggle('hidden', !open);
+    dd.querySelector('.dd-chevron')!.classList.toggle('rotate-180', open);
+  };
+  dropdowns.forEach((dd) => {
+    const btn = dd.querySelector<HTMLButtonElement>('.dd-btn')!;
+    btn.addEventListener('click', () => setDropdown(dd, btn.getAttribute('aria-expanded') !== 'true'));
+    dd.addEventListener('mouseenter', () => setDropdown(dd, true));
+    dd.addEventListener('mouseleave', () => setDropdown(dd, false));
+    dd.addEventListener('focusout', (event) => { if (!dd.contains((event as FocusEvent).relatedTarget as Node)) setDropdown(dd, false); });
+  });
+  document.addEventListener('pointerdown', (event) => dropdowns.forEach((dd) => { if (!dd.contains(event.target as Node)) setDropdown(dd, false); }));
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    if (menuOpen) setMenu(false);
+    dropdowns.forEach((dd) => { setDropdown(dd, false); });
+  });
+</script>

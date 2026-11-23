@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import Capabilities from '../components/home/Capabilities.astro';
+import IndustriesSection from '../components/home/IndustriesSection.astro';
+import Approach from '../components/home/Approach.astro';
+import Experience from '../components/home/Experience.astro';
+import TechnologiesSection from '../components/home/TechnologiesSection.astro';
+import Leadership from '../components/home/Leadership.astro';
+import Values from '../components/home/Values.astro';
+import CafeSection from '../components/home/CafeSection.astro';
+import FinalCta from '../components/home/FinalCta.astro';
+import { SITE } from '../data/site';
+import { organizationJsonLd } from '../data/home';
+---
+<!-- Section order follows the Homepage Content & Design Blueprint. -->
+<BaseLayout title={SITE.home.title} description={SITE.home.description} path="/" jsonLd={[organizationJsonLd(SITE.url)]}>
+  <main>
+    <Hero />
+    <Capabilities />
+    <IndustriesSection />
+    <Approach />
+    <Experience />
+    <TechnologiesSection />
+    <Leadership />
+    <Values />
+    <CafeSection />
+    <FinalCta />
+  </main>
+</BaseLayout>
