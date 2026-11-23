@@ -23,3 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 tmp
+.astro
+.env
+.env.*
+!.env.example
+studio/node_modules
+studio/dist
+studio/.sanity

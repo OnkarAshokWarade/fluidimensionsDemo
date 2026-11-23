@@ -1,0 +1,22 @@
+---
+import { SITE } from '../data/site';
+interface Props { title: string; description: string; path?: string; noindex?: boolean; ogType?: string; image?: string }
+const { title, description, path = '/', noindex = false, ogType = 'website', image } = Astro.props;
+const url = `${SITE.url}${path}`;
+// Default social image is the logo until an approved branded share image exists.
+const ogImage = image || `${SITE.url}/logo.png`;
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={url} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={url} />
+<meta property="og:image" content={ogImage} />
+<meta name="twitter:card" content={image ? "summary_large_image" : "summary"} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />

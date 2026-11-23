@@ -1,0 +1,102 @@
+---
+interface Field { name: string; label: string; type: string; required?: boolean; options?: string[][]; placeholder?: string; autocomplete?: string; accept?: string; rows?: number; hint?: string }
+interface Props { id: string; type: string; fields: Field[]; submit: string; successTitle?: string; successText?: string }
+const { id, type, fields, submit, successTitle = 'Thank you', successText = 'Your message has been received. We will get back to you as soon as we can.' } = Astro.props;
+// Forms post to a form service (Formspree, Web3Forms, ...). Set PUBLIC_FORM_ENDPOINT in Vercel.
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+const fallbackEmail = import.meta.env.PUBLIC_CONTACT_EMAIL || '';
+const control = 'min-h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-body text-base text-primary transition-colors focus:border-accent focus:bg-white focus:outline-none';
+---
+<div data-enquiry-root>
+  <form data-enquiry data-type={type} data-endpoint={endpoint} data-email={fallbackEmail} novalidate={false} class="space-y-5" id={`${id}-form`}>
+    {fields.map((field) => {
+      const fieldId = `${id}-${field.name}`;
+      return (
+        <div>
+          <label for={fieldId} class="mb-2 block font-heading text-xs font-bold uppercase tracking-wider text-primary">{field.label}{field.required && <span class="text-accent" aria-hidden="true"> *</span>}</label>
+          {field.type === 'textarea' ? (
+            <textarea id={fieldId} name={field.name} rows={field.rows ?? 4} required={field.required} placeholder={field.placeholder} class:list={[control, 'min-h-28 resize-y']}></textarea>
+          ) : field.type === 'select' ? (
+            <select id={fieldId} name={field.name} class={control}>
+              {field.options!.map(([value, label]) => <option value={label}>{label}</option>)}
+            </select>
+          ) : field.type === 'file' ? (
+            <input id={fieldId} name={field.name} type="file" accept={field.accept} required={field.required} class={`${control} file:mr-4 file:rounded-lg file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white`} />
+          ) : (
+            <input id={fieldId} name={field.name} type={field.type} required={field.required} autocomplete={field.autocomplete} placeholder={field.placeholder} class={control} />
+          )}
+          {field.hint && <p class="mt-1 font-body text-xs text-slate-500">{field.hint}</p>}
+        </div>
+      );
+    })}
+    <!-- Honeypot: real visitors never see or fill this. -->
+    <div class="absolute -left-[9999px]" aria-hidden="true">
+      <label>Leave this field empty<input type="text" name="company_website" tabindex="-1" autocomplete="off" /></label>
+    </div>
+    <p class="font-body text-xs leading-relaxed text-slate-500">We use the details you send only to respond to your message.</p>
+    <p data-status role="alert" class="hidden rounded-xl border border-red-200 bg-red-50 p-4 font-body text-sm text-red-700"></p>
+    <button type="submit" class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-accent px-5 font-heading text-sm font-semibold text-white shadow-md transition hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:px-8">{submit}</button>
+  </form>
+  <div data-success tabindex="-1" class="hidden rounded-2xl border border-emerald-100 bg-emerald-50 p-8 text-center" role="status">
+    <h3 class="font-heading text-lg font-bold text-primary">{successTitle}</h3>
+    <p class="mt-2 font-body text-sm text-slate-600">{successText}</p>
+  </div>
+</div>
+
+<script>
+  const MAX_FILE = 5 * 1024 * 1024;
+  const ALLOWED = /\.(pdf|docx?)$/i;
+
+  document.querySelectorAll<HTMLFormElement>('form[data-enquiry]').forEach((form) => {
+    const root = form.closest('[data-enquiry-root]') as HTMLElement;
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const success = root.querySelector<HTMLElement>('[data-success]')!;
+    const showError = (message: string) => { status.textContent = message; status.classList.remove('hidden'); };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      status.classList.add('hidden');
+      const data = new FormData(form);
+
+      // Honeypot: bots fill it. Pretend success and send nothing.
+      if (data.get('company_website')) { form.classList.add('hidden'); success.classList.remove('hidden'); return; }
+      data.delete('company_website');
+
+      const file = data.get('resume');
+      if (file instanceof File && file.size > 0) {
+        if (!ALLOWED.test(file.name)) return showError('Please upload a PDF, DOC or DOCX file.');
+        if (file.size > MAX_FILE) return showError('The file is larger than 5 MB. Please upload a smaller file.');
+      }
+
+      const endpoint = form.dataset.endpoint;
+      const email = form.dataset.email;
+      if (!endpoint) {
+        return showError(`This form is not connected yet, so nothing was sent.${email ? ` Please email us at ${email}.` : ''}`);
+      }
+
+      data.set('enquiry_type', form.dataset.type || 'general');
+      data.set('_subject', `FluiDimensions website: ${form.dataset.type} enquiry`);
+      data.set('source_page', location.pathname);
+
+      button.disabled = true;
+      const label = button.textContent;
+      button.textContent = 'Sending...';
+      try {
+        const response = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        // Conversion event for Google Analytics (only fires when analytics is configured).
+        (window as any).gtag?.('event', 'generate_lead', { enquiry_type: form.dataset.type });
+        form.reset();
+        form.classList.add('hidden');
+        success.classList.remove('hidden');
+        success.focus();
+      } catch {
+        showError(`Sorry, something went wrong and your message was not sent.${email ? ` Please try again, or email us at ${email}.` : ' Please try again in a moment.'}`);
+      } finally {
+        button.disabled = false;
+        button.textContent = label;
+      }
+    });
+  });
+</script>

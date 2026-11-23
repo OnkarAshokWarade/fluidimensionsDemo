@@ -1,0 +1,158 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/services{/}?",
+      "destination": "/#capabilities",
+      "permanent": true
+    },
+    {
+      "source": "/services/cfd-analysis{/}?",
+      "destination": "/engineering-simulation/",
+      "permanent": true
+    },
+    {
+      "source": "/services/cfd-modeling{/}?",
+      "destination": "/engineering-simulation/",
+      "permanent": true
+    },
+    {
+      "source": "/services/heat-transfer{/}?",
+      "destination": "/engineering-simulation/",
+      "permanent": true
+    },
+    {
+      "source": "/services/reaction-engineering{/}?",
+      "destination": "/chemical-engineering-process-consulting/",
+      "permanent": true
+    },
+    {
+      "source": "/services/mixing-optimization{/}?",
+      "destination": "/chemical-engineering-process-consulting/",
+      "permanent": true
+    },
+    {
+      "source": "/services/equipment-design{/}?",
+      "destination": "/engineering-design/",
+      "permanent": true
+    },
+    {
+      "source": "/services/cfd-automation{/}?",
+      "destination": "/software-automation/",
+      "permanent": true
+    },
+    {
+      "source": "/services/process-optimization{/}?",
+      "destination": "/chemical-engineering-process-consulting/",
+      "permanent": true
+    },
+    {
+      "source": "/services/industrial-training{/}?",
+      "destination": "/engineering-technologies-software/",
+      "permanent": true
+    },
+    {
+      "source": "/industries{/}?",
+      "destination": "/#industries",
+      "permanent": true
+    },
+    {
+      "source": "/industries/chemical{/}?",
+      "destination": "/industries/chemical-process/",
+      "permanent": true
+    },
+    {
+      "source": "/industries/pharmaceutical{/}?",
+      "destination": "/industries/pharmaceuticals/",
+      "permanent": true
+    },
+    {
+      "source": "/industries/oil-gas{/}?",
+      "destination": "/industries/oil-gas/",
+      "permanent": true
+    },
+    {
+      "source": "/industries/cement-mining{/}?",
+      "destination": "/industries/cement/",
+      "permanent": true
+    },
+    {
+      "source": "/industries/metals-metallurgy{/}?",
+      "destination": "/#industries",
+      "permanent": true
+    },
+    {
+      "source": "/industries/agro{/}?",
+      "destination": "/#industries",
+      "permanent": true
+    },
+    {
+      "source": "/industries/paints-pigments{/}?",
+      "destination": "/#industries",
+      "permanent": true
+    },
+    {
+      "source": "/industries/food-beverage{/}?",
+      "destination": "/#industries",
+      "permanent": true
+    },
+    {
+      "source": "/industries/automobile{/}?",
+      "destination": "/#industries",
+      "permanent": true
+    },
+    {
+      "source": "/cement{/}?",
+      "destination": "/industries/cement/",
+      "permanent": true
+    },
+    {
+      "source": "/pharmaceuticals{/}?",
+      "destination": "/industries/pharmaceuticals/",
+      "permanent": true
+    },
+    {
+      "source": "/cfd{/}?",
+      "destination": "/engineering-simulation/",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        }
+      ]
+    },
+    {
+      "source": "/_astro/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}

@@ -14,12 +14,12 @@ export const capabilitiesSection = {
   intro:
     'Industrial challenges rarely fit within a single discipline. Solving them often requires an understanding of the process, the equipment, the underlying physics and the way the system operates. FluiDimensions brings these perspectives together, combining engineering expertise with simulation, design and advanced technologies to develop practical solutions.',
   cards: [
-    { icon: 'IoAnalyticsOutline', tone: 'capability.simulation', title: 'Engineering Simulation', desc: 'CFD, FEA and multiphysics analysis to understand complex flow, thermal, structural and equipment behaviour.', to: '/engineering-simulation/' },
-    { icon: 'IoFlaskOutline', tone: 'capability.process', title: 'Chemical Engineering & Process Consulting', desc: 'Process understanding, modelling, troubleshooting and optimisation to support better process and operating decisions.', to: '/chemical-engineering-process-consulting/' },
-    { icon: 'IoConstructOutline', tone: 'capability.design', title: 'Engineering Design', desc: 'Engineering design and evaluation to improve equipment performance and support practical design decisions.', to: '/engineering-design/' },
-    { icon: 'IoStatsChartOutline', tone: 'capability.data', title: 'Machine Learning & Data Intelligence', desc: 'Data-driven modelling and predictive methods to extract insight from process and engineering data.', to: '/machine-learning-data-intelligence/' },
-    { icon: 'IoCodeSlashOutline', tone: 'capability.software', title: 'Software & Automation', desc: 'Custom engineering software, workflow automation and integration to make engineering methods more accessible and efficient.', to: '/software-automation/' },
-    { icon: 'IoGitNetworkOutline', tone: 'capability.digital', title: 'Digital Engineering', desc: 'Connecting engineering models, simulation and operational information to support analysis, prediction and better decisions.', to: CONTACT_PATH },
+    { icon: 'ion:analytics-outline', tone: 'capability.simulation', title: 'Engineering Simulation', desc: 'CFD, FEA and multiphysics analysis to understand complex flow, thermal, structural and equipment behaviour.', to: '/engineering-simulation/' },
+    { icon: 'ion:flask-outline', tone: 'capability.process', title: 'Chemical Engineering & Process Consulting', desc: 'Process understanding, modelling, troubleshooting and optimisation to support better process and operating decisions.', to: '/chemical-engineering-process-consulting/' },
+    { icon: 'ion:construct-outline', tone: 'capability.design', title: 'Engineering Design', desc: 'Engineering design and evaluation to improve equipment performance and support practical design decisions.', to: '/engineering-design/' },
+    { icon: 'ion:stats-chart-outline', tone: 'capability.data', title: 'Machine Learning & Data Intelligence', desc: 'Data-driven modelling and predictive methods to extract insight from process and engineering data.', to: '/machine-learning-data-intelligence/' },
+    { icon: 'ion:code-slash-outline', tone: 'capability.software', title: 'Software & Automation', desc: 'Custom engineering software, workflow automation and integration to make engineering methods more accessible and efficient.', to: '/software-automation/' },
+    { icon: 'ion:git-network-outline', tone: 'capability.digital', title: 'Digital Engineering', desc: 'Connecting engineering models, simulation and operational information to support analysis, prediction and better decisions.', to: CONTACT_PATH },
   ],
 };
 
@@ -78,10 +78,10 @@ export const technologiesSection = {
 export const whySection = {
   heading: 'Engineering Perspective. Practical Outcomes.',
   items: [
-    { icon: 'IoLayersOutline', title: 'Integrated engineering expertise', desc: 'We bring together process understanding, engineering principles, simulation and technology to address problems that cross traditional discipline boundaries.' },
-    { icon: 'IoExtensionPuzzleOutline', title: 'Complex problem-solving', desc: 'We work on challenging flow, multiphase, combustion, thermal and equipment-related engineering problems.' },
-    { icon: 'IoBulbOutline', title: 'Insight beyond the analysis', desc: 'We focus on interpreting engineering results in the context of actual process and equipment behaviour, and translating them into useful recommendations.' },
-    { icon: 'IoOptionsOutline', title: 'Technology applied with purpose', desc: 'We select and combine appropriate tools and methods to serve the engineering objective, not the other way around.' },
+    { icon: 'ion:layers-outline', title: 'Integrated engineering expertise', desc: 'We bring together process understanding, engineering principles, simulation and technology to address problems that cross traditional discipline boundaries.' },
+    { icon: 'ion:extension-puzzle-outline', title: 'Complex problem-solving', desc: 'We work on challenging flow, multiphase, combustion, thermal and equipment-related engineering problems.' },
+    { icon: 'ion:bulb-outline', title: 'Insight beyond the analysis', desc: 'We focus on interpreting engineering results in the context of actual process and equipment behaviour, and translating them into useful recommendations.' },
+    { icon: 'ion:options-outline', title: 'Technology applied with purpose', desc: 'We select and combine appropriate tools and methods to serve the engineering objective, not the other way around.' },
   ],
 };
 

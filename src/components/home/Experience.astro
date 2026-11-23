@@ -1,0 +1,41 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionHeading from './SectionHeading.astro';
+import { experienceSection as content } from '../../data/home';
+import { CONTACT_BUSINESS } from '../../data/site';
+const hasProjects = content.projects.length > 0;
+---
+<section id="experience" aria-labelledby="experience-heading" class="bg-brand-bg py-20 sm:py-24 lg:py-28">
+  <div class="site-container">
+    <SectionHeading id="experience-heading" title={content.heading} intro={content.intro} />
+    {hasProjects ? (
+      <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {content.projects.map((project: any) => (
+          <li class="reveal">
+            <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+              {project.image && <img src={project.image} alt={project.imageAlt} loading="lazy" decoding="async" class="aspect-[16/9] w-full object-cover" />}
+              <dl class="space-y-3 p-6 font-body text-sm leading-relaxed text-slate-600">
+                {content.format.map(([label]) => (
+                  <div><dt class="font-heading text-xs font-bold uppercase tracking-wider text-accent">{label}</dt><dd>{project[label.toLowerCase()]}</dd></div>
+                ))}
+              </dl>
+              {project.to && <a href={project.to} class="mt-auto px-6 pb-6 font-heading text-xs font-bold text-secondary hover:text-accent">Read more</a>}
+            </article>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <div class="reveal mx-auto max-w-4xl rounded-2xl border border-dashed border-slate-300 bg-white p-6 sm:p-8">
+        <p class="font-body text-sm leading-relaxed text-slate-600">Selected project highlights are being prepared. Each will describe:</p>
+        <dl class="mt-5 grid gap-4 sm:grid-cols-2">
+          {content.format.map(([label, text]) => (
+            <div><dt class="font-heading text-xs font-bold uppercase tracking-wider text-accent">{label}</dt><dd class="mt-1 font-body text-sm text-slate-600">{text}</dd></div>
+          ))}
+        </dl>
+        <a href={CONTACT_BUSINESS} class="mt-6 inline-flex items-center gap-2 font-heading text-sm font-semibold text-secondary hover:text-accent">
+          Discuss an engineering challenge <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" />
+        </a>
+      </div>
+    )}
+  </div>
+</section>

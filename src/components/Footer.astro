@@ -1,0 +1,51 @@
+---
+import { Icon } from 'astro-icon/components';
+import { capabilityPages, industryPages } from '../data/site';
+
+const columns = [
+  { title: 'Company', links: [['Home', '/'], ['About Us', '/about-us/'], ['Technologies & Software', '/engineering-technologies-software/'], ['Engineering Café', '/engineering-cafe/'], ['Blog', '/blog/'], ['Contact', '/contact/']] },
+  { title: 'Engineering', links: capabilityPages.map((page) => [page.label, page.path]) },
+  { title: 'Industries', links: industryPages.map((page) => [page.label, page.path]) },
+];
+// TODO(confirm): replace with the company's real profile URLs.
+const socials = [
+  { icon: 'ion:logo-linkedin', href: 'https://www.linkedin.com', label: 'LinkedIn', tone: 'from-sky-600 to-blue-700' },
+  { icon: 'ion:logo-twitter', href: 'https://twitter.com', label: 'Twitter', tone: 'from-cyan-500 to-sky-400' },
+  { icon: 'ion:logo-youtube', href: 'https://www.youtube.com', label: 'YouTube', tone: 'from-red-500 to-rose-500' },
+];
+---
+<footer class="relative overflow-hidden border-t border-white/5 bg-primary text-white">
+  <div class="cfd-grid pointer-events-none absolute inset-0 opacity-5"></div>
+  <div class="site-container relative z-10 pb-10 pt-16 sm:pb-12 sm:pt-20">
+    <div class="mb-12 grid grid-cols-1 gap-10 min-[480px]:grid-cols-2 lg:mb-16 lg:grid-cols-5 lg:gap-8">
+      <div class="min-w-0 min-[480px]:col-span-2 lg:pr-8">
+        <a href="/" class="mb-6 flex w-fit items-center gap-3 rounded-lg" aria-label="FluiDimensions home">
+          <img src="/logo.png" alt="" width="40" height="40" class="h-10 w-auto" />
+          <div>
+            <span class="block font-heading text-base font-black leading-none">FLUIDIMENSIONS</span>
+            <span class="mt-1 block text-[9px] font-bold uppercase tracking-widest text-accent">Understand. Optimise. Innovate.</span>
+          </div>
+        </a>
+        <p class="max-w-sm text-sm leading-6 text-slate-400">Integrated engineering consulting and technology-driven solutions to help industries understand complex processes, improve equipment performance and solve challenging engineering problems.</p>
+      </div>
+      {columns.map((column) => (
+        <div>
+          <h2 class="mb-5 font-heading text-xs font-bold uppercase tracking-widest text-accent">{column.title}</h2>
+          <ul class="space-y-1 font-body text-sm text-slate-400">
+            {column.links.map(([label, to]) => <li><a href={to} class="inline-flex min-h-11 items-center transition hover:text-white">{label}</a></li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <div class="flex flex-col items-center justify-between gap-6 border-t border-white/5 pt-8 text-center sm:flex-row sm:text-left">
+      <span class="text-xs leading-5 text-slate-500">© {new Date().getFullYear()} FluiDimensions. All rights reserved.</span>
+      <div class="flex gap-3">
+        {socials.map((social) => (
+          <a href={social.href} target="_blank" rel="noreferrer" aria-label={`FluiDimensions on ${social.label}`} class="transition hover:-translate-y-0.5">
+            <span class:list={['inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr text-white shadow-md', social.tone]}><Icon name={social.icon} class="h-[18px] w-[18px]" aria-hidden="true" /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</footer>

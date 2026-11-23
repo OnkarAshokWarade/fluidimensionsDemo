@@ -5,8 +5,8 @@
 
 export const SITE = {
   name: 'FluiDimensions',
-  // TODO(confirm): production domain. Override with VITE_SITE_URL at build time.
-  url: (import.meta.env.VITE_SITE_URL || 'https://www.fluidimensions.com').replace(/\/$/, ''),
+  // TODO(confirm): production domain. Override with PUBLIC_SITE_URL at build time.
+  url: (import.meta.env?.PUBLIC_SITE_URL || (typeof process !== 'undefined' ? process.env.PUBLIC_SITE_URL : '') || 'https://www.fluidimensions.com').replace(/\/$/, ''),
   tagline: 'Understand. Optimise. Innovate.',
   home: {
     title: 'FluiDimensions | Engineering Consulting & Solutions',
@@ -133,7 +133,7 @@ export const aboutPage = {
     'FluiDimensions is an integrated engineering services and solutions company combining engineering knowledge, process understanding, simulation, design and technology.',
   intro:
     'Our company, engineering philosophy, expertise and partnership approach.',
-  stub: true,
+  draft: true,
 };
 
 export const technologiesPage = {
@@ -146,7 +146,7 @@ export const technologiesPage = {
     'Engineering software consultation, training, proof-of-concept studies, application support and integration for simulation and process-modelling platforms.',
   intro:
     'Engineering software and advanced technologies are most valuable when applied in the context of a real engineering problem.',
-  stub: true,
+  draft: true,
 };
 
 export const cafePage = {
@@ -158,7 +158,7 @@ export const cafePage = {
     'A space for engineering conversations, technical questions and the exchange of ideas on process, modelling and equipment challenges.',
   intro:
     'A place for engineering conversations, technical questions and the exchange of ideas.',
-  stub: true,
+  draft: true,
 };
 
 export const contactPage = {
@@ -170,7 +170,7 @@ export const contactPage = {
     'Contact FluiDimensions for business and engineering enquiries, software and training enquiries, careers or general questions.',
   intro:
     'Business and engineering enquiries, training enquiries, careers and general enquiries.',
-  stub: true,
+  draft: true,
 };
 
 // Every page rendered by the generic content template (the homepage is separate).

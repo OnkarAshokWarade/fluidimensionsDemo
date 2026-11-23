@@ -1,0 +1,52 @@
+---
+import { Icon } from 'astro-icon/components';
+import PageLayout from '../layouts/PageLayout.astro';
+import { aboutPage, capabilityPages, CONTACT_BUSINESS } from '../data/site';
+
+// DRAFT copy built from the blueprint's positioning statements; see docs/content-review-checklist.md.
+const philosophy = [
+  { title: 'Understand', text: 'We start by understanding the process, equipment, operating conditions, constraints and desired outcome.' },
+  { title: 'Optimise', text: 'We apply engineering analysis to investigate performance and identify improvement opportunities.' },
+  { title: 'Innovate', text: 'We combine suitable methods and technologies to develop practical solutions where standard approaches fall short.' },
+];
+const partnership = [
+  'We choose tools and methods to serve the engineering objective, not the other way around.',
+  'We interpret results in the context of real process and equipment behaviour.',
+  'We translate insight into recommendations, design inputs, models or tools you can act on.',
+];
+---
+<PageLayout page={aboutPage}>
+  <section aria-labelledby="who-heading" class="mt-14 sm:mt-16">
+    <h2 id="who-heading" class="font-heading text-xl font-bold text-primary sm:text-2xl">Who we are</h2>
+    <p class="mt-5 max-w-3xl font-body text-base leading-relaxed text-slate-600">FluiDimensions is an integrated engineering services and solutions company that combines engineering knowledge, process understanding, simulation, design and technology to help industries solve complex challenges and improve performance.</p>
+  </section>
+
+  <section aria-labelledby="philosophy-heading" class="mt-14 sm:mt-16">
+    <h2 id="philosophy-heading" class="font-heading text-xl font-bold text-primary sm:text-2xl">Our engineering philosophy</h2>
+    <ul class="mt-5 grid gap-4 sm:grid-cols-3">
+      {philosophy.map((item) => (
+        <li class="rounded-2xl border border-slate-200 bg-white p-6"><h3 class="font-heading text-lg font-bold text-accent">{item.title}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{item.text}</p></li>
+      ))}
+    </ul>
+  </section>
+
+  <section aria-labelledby="expertise-heading" class="mt-14 sm:mt-16">
+    <h2 id="expertise-heading" class="font-heading text-xl font-bold text-primary sm:text-2xl">Areas of expertise</h2>
+    <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+      {capabilityPages.map((page) => (
+        <li><a href={page.path} class="flex min-h-12 items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-5 font-body text-sm font-semibold text-slate-700 transition hover:border-accent/40 hover:text-accent">{page.label} <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" /></a></li>
+      ))}
+    </ul>
+  </section>
+
+  <section aria-labelledby="partnership-heading" class="mt-14 sm:mt-16">
+    <h2 id="partnership-heading" class="font-heading text-xl font-bold text-primary sm:text-2xl">How we work with you</h2>
+    <ul class="mt-5 max-w-3xl list-disc space-y-2 pl-5 font-body text-base leading-relaxed text-slate-600 marker:text-accent">
+      {partnership.map((item) => <li>{item}</li>)}
+    </ul>
+  </section>
+
+  <div class="mt-16">
+    <a href={CONTACT_BUSINESS} class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-accent px-6 font-heading text-sm font-semibold text-white shadow-lg shadow-accent/20 transition hover:-translate-y-0.5 hover:bg-accent-dark">Discuss an Engineering Challenge <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" /></a>
+  </div>
+</PageLayout>

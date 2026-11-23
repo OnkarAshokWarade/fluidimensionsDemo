@@ -1,0 +1,48 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { SITE, capabilityPages } from '../data/site';
+import { pageContent, levelLabels, levelNotes } from '../data/content';
+
+interface Props { page: any }
+const { page } = Astro.props;
+const noindex = Boolean(page.stub || page.draft);
+const content = (pageContent as Record<string, any>)[page.path];
+const isIndustry = page.path.startsWith('/industries/');
+const section = isIndustry
+  ? { name: 'Industries', to: '/#industries' }
+  : capabilityPages.some((entry) => entry.path === page.path) ? { name: 'Engineering', to: null } : null;
+
+const crumbs = [
+  { name: 'Home', item: `${SITE.url}/` },
+  ...(section?.to ? [{ name: section.name, item: `${SITE.url}${section.to}` }] : []),
+  { name: page.label, item: `${SITE.url}${page.path}` },
+];
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: crumbs.map((entry, index) => ({ '@type': 'ListItem', position: index + 1, ...entry })),
+};
+const note = content?.levelNote || (content ? (levelNotes as Record<string, string>)[content.level] : undefined);
+---
+<BaseLayout title={page.title} description={page.description} path={page.path} noindex={noindex} jsonLd={[breadcrumbLd]}>
+  <main class="pb-20 pt-28 sm:pt-32">
+    <div class="site-container">
+      <nav aria-label="Breadcrumb" class="mb-6 text-xs font-medium text-slate-500">
+        <ol class="flex flex-wrap items-center gap-2">
+          <li><a href="/" class="hover:text-accent">Home</a></li>
+          {section && <li aria-hidden="true">/</li>}
+          {section && <li>{section.to ? <a href={section.to} class="hover:text-accent">{section.name}</a> : section.name}</li>}
+          <li aria-hidden="true">/</li>
+          <li aria-current="page" class="text-primary">{page.label}</li>
+        </ol>
+      </nav>
+      <header class="max-w-3xl">
+        {content && <p class="mb-4 inline-flex rounded-full border border-secondary/20 bg-secondary/5 px-3 py-1 font-heading text-xs font-semibold text-secondary">{(levelLabels as Record<string, string>)[content.level]}</p>}
+        <h1 class="font-heading text-[clamp(2rem,6vw,3.25rem)] font-black leading-tight text-primary">{page.h1}</h1>
+        <p class="mt-5 font-body text-base leading-relaxed text-slate-600 sm:text-lg">{page.intro}</p>
+        {note && <p class="mt-4 font-body text-sm leading-relaxed text-slate-500">{note}</p>}
+      </header>
+      <slot />
+    </div>
+  </main>
+</BaseLayout>

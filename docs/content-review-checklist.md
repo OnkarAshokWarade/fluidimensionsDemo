@@ -29,3 +29,11 @@ a specific project, client, result or product.
 ## Still to supply
 - Approved project examples and images per industry (blueprint section 5).
 - Whether an Industries landing page and a Combustion Engineering page are wanted.
+
+## Phase 4 pages (also `draft`, `noindex`)
+| Page | Check |
+|---|---|
+| About Us | Philosophy cards (Understand / Optimise / Innovate) are my reading of the tagline; confirm wording. Add team, experience and publications when approved. |
+| Engineering Technologies & Software | No platform or Siemens product is named. Confirm partner scope, then fill the "Platforms" section. |
+| Engineering Café | Confirm this "open conversation" form is the intended format (threaded discussion is not built). |
+| Contact | Set `PUBLIC_FORM_ENDPOINT` (forms say "not connected" until then) and confirm `PUBLIC_CONTACT_EMAIL`. Resume upload needs a form service/plan that accepts attachments. Add a privacy policy page and link it. |
