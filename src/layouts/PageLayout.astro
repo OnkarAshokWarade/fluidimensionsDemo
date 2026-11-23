@@ -2,8 +2,8 @@
 import BaseLayout from './BaseLayout.astro';
 import { SITE, capabilityPages } from '../data/site';
 
-interface Props { page: any; lead?: string }
-const { page, lead } = Astro.props;
+interface Props { page: any; lead?: string; banner?: boolean; chips?: string[] }
+const { page, lead, banner = false, chips = [] } = Astro.props;
 const noindex = Boolean(page.stub || page.draft);
 const isIndustry = page.path.startsWith('/industries/');
 const section = isIndustry
@@ -23,21 +23,47 @@ const breadcrumbLd = {
 ---
 <BaseLayout title={page.title} description={page.description} path={page.path} noindex={noindex} jsonLd={[breadcrumbLd]}>
   <main>
-    <header class="border-b border-slate-200 bg-gradient-to-b from-sky-100 to-brand-bg pb-12 pt-28 sm:pb-16 sm:pt-36">
-      <div class="site-container">
-        <nav aria-label="Breadcrumb" class="mb-6 text-sm text-slate-500">
-          <ol class="flex flex-wrap items-center gap-2">
-            <li><a href="/" class="hover:text-accent">Home</a></li>
-            {section && <li aria-hidden="true">/</li>}
-            {section && <li>{section.to ? <a href={section.to} class="hover:text-accent">{section.name}</a> : section.name}</li>}
-            <li aria-hidden="true">/</li>
-            <li aria-current="page" class="font-medium text-primary">{page.label}</li>
-          </ol>
-        </nav>
-        <h1 class="max-w-4xl font-heading text-[clamp(2rem,4.8vw,3.2rem)] font-bold leading-[1.12] text-primary">{page.h1}</h1>
-        <p class="mt-5 max-w-3xl font-body text-lg leading-8 text-slate-600">{lead ?? page.intro}</p>
-      </div>
-    </header>
+    {banner ? (
+      <header class="relative overflow-hidden bg-gradient-to-br from-primary via-[#0B2D5B] to-secondary pb-14 pt-28 text-white sm:pb-20 sm:pt-36">
+        <div class="cfd-grid pointer-events-none absolute inset-0 opacity-10" aria-hidden="true"></div>
+        <div class="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-accent/20 blur-[100px]" aria-hidden="true"></div>
+        <div class="site-container relative">
+          <nav aria-label="Breadcrumb" class="mb-6 text-sm text-slate-300">
+            <ol class="flex flex-wrap items-center gap-2">
+              <li><a href="/" class="hover:text-white">Home</a></li>
+              {section && <li aria-hidden="true">/</li>}
+              {section && <li>{section.to ? <a href={section.to} class="hover:text-white">{section.name}</a> : section.name}</li>}
+              <li aria-hidden="true">/</li>
+              <li aria-current="page" class="font-semibold text-white">{page.label}</li>
+            </ol>
+          </nav>
+          <span class="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">{isIndustry ? 'Industry solutions' : 'Engineering capability'}</span>
+          <h1 class="mt-4 max-w-4xl font-heading text-[clamp(2rem,4.8vw,3.3rem)] font-bold leading-[1.12] text-white">{page.h1}</h1>
+          <p class="mt-5 max-w-3xl font-body text-lg leading-8 text-slate-200">{lead ?? page.intro}</p>
+          {chips.length > 0 && (
+            <ul class="mt-8 flex flex-wrap gap-2.5" aria-label="Key topics">
+              {chips.map((chip) => <li class="rounded-full border border-white/25 bg-white/10 px-4 py-1.5 font-heading text-sm font-medium text-white backdrop-blur">{chip}</li>)}
+            </ul>
+          )}
+        </div>
+      </header>
+    ) : (
+      <header class="border-b border-slate-200 bg-gradient-to-b from-sky-100 to-brand-bg pb-12 pt-28 sm:pb-16 sm:pt-36">
+        <div class="site-container">
+          <nav aria-label="Breadcrumb" class="mb-6 text-sm text-slate-500">
+            <ol class="flex flex-wrap items-center gap-2">
+              <li><a href="/" class="hover:text-accent">Home</a></li>
+              {section && <li aria-hidden="true">/</li>}
+              {section && <li>{section.to ? <a href={section.to} class="hover:text-accent">{section.name}</a> : section.name}</li>}
+              <li aria-hidden="true">/</li>
+              <li aria-current="page" class="font-medium text-primary">{page.label}</li>
+            </ol>
+          </nav>
+          <h1 class="max-w-4xl font-heading text-[clamp(2rem,4.8vw,3.2rem)] font-bold leading-[1.12] text-primary">{page.h1}</h1>
+          <p class="mt-5 max-w-3xl font-body text-lg leading-8 text-slate-600">{lead ?? page.intro}</p>
+        </div>
+      </header>
+    )}
     <div class="site-container py-14 sm:py-20">
       <slot />
     </div>

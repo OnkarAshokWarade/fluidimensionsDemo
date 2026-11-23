@@ -26,8 +26,24 @@ const indIds: Record<string, string> = {
 const isCap = capabilityPages.some((p) => p.path === page.path);
 const isInd = industryPages.some((p) => p.path === page.path);
 const kind = isCap ? 'capability' : 'industry';
+const chipsById: Record<string, string[]> = {
+  simulation: ['CFD', 'FEA', 'Multiphase flow', 'Combustion', 'Heat & mass transfer', 'Molecular modelling'],
+  ml: ['Predictive models', 'Soft sensors', 'Anomaly detection', 'Digital twins', 'Golden batch'],
+  software: ['Simulation automation', 'Custom applications', 'ML applications', 'Data integration', 'Digital twins'],
+  design: ['Process design', 'Equipment design', 'Scale-up', 'Retrofits'],
+  process: ['Troubleshooting', 'Root-cause analysis', 'Optimisation', 'Equipment performance'],
+  chemical: ['Process design', 'Reactors', 'Heat & mass transfer', 'Digital twins'],
+  pharma: ['Bioreactors', 'Scale-up', 'Crystallisation', 'Process modelling'],
+  cement: ['Pyro-process', 'Combustion', 'Cyclones', 'ESP & bag filters'],
+  steel: ['Furnaces', 'Thermal processes', 'Monitoring'],
+  'oil-gas': ['Separators', 'Tank mixing', 'Fire modelling', 'FEA'],
+  automotive: ['Fuel sprays', 'SCR', 'Motor cooling'],
+  aerospace: ['Atomisation', 'Propellant', 'Icing'],
+  marine: ['Hull hydrodynamics', 'Waves'],
+  food: ['Process optimisation', 'Emulsions', 'Quality'],
+};
 const id = isCap ? capIds[page.path] : indIds[page.path.split('/')[2]];
 ---
-<PageLayout page={page}>
+<PageLayout page={page} banner={isCap || isInd} chips={chipsById[id] ?? []}>
   {(isCap || isInd) && <DocPage kind={kind} id={id} />}
 </PageLayout>
