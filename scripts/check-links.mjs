@@ -37,3 +37,12 @@ if (problems.length) {
   process.exit(1);
 }
 console.log(`Checked ${checked} internal links: all resolve.`);
+
+// Redirect loops: a redirect that points to its own source would loop forever on Vercel.
+const vercel = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
+const selfRedirects = vercel.redirects.filter((r) => r.source.replace('{/}?', '').replace(/\/$/, '') === r.destination.split('#')[0].replace(/\/$/, ''));
+if (selfRedirects.length) {
+  console.error(`Redirect loops in vercel.json: ${selfRedirects.map((r) => r.source).join(', ')}`);
+  process.exit(1);
+}
+console.log(`No redirect loops (${vercel.redirects.length} redirects checked).`);

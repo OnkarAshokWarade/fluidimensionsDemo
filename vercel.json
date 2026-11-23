@@ -69,11 +69,6 @@
       "permanent": true
     },
     {
-      "source": "/industries/oil-gas{/}?",
-      "destination": "/industries/oil-gas/",
-      "permanent": true
-    },
-    {
       "source": "/industries/cement-mining{/}?",
       "destination": "/industries/cement/",
       "permanent": true
@@ -91,11 +86,6 @@
     {
       "source": "/industries/paints-pigments{/}?",
       "destination": "/#industries",
-      "permanent": true
-    },
-    {
-      "source": "/industries/food-beverage{/}?",
-      "destination": "/industries/food-beverage/",
       "permanent": true
     },
     {

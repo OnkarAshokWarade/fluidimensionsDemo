@@ -20,13 +20,12 @@ const services = {
 const industries = {
   chemical: '/industries/chemical-process/',
   pharmaceutical: '/industries/pharmaceuticals/',
-  'oil-gas': '/industries/oil-gas/',
   'cement-mining': '/industries/cement/',
-  // Closest relevant destination; agro and paints have no dedicated page yet.
+  // Closest relevant destination; agro and paints have no dedicated page yet. Old URLs that already match
+  // a new URL (oil-gas, food-beverage) need no redirect: redirecting a URL to itself creates an endless loop.
   'metals-metallurgy': '/industries/steel-metals/',
   agro: '/#industries',
   'paints-pigments': '/#industries',
-  'food-beverage': '/industries/food-beverage/',
   automobile: '/industries/automotive/',
 };
 

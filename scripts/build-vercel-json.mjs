@@ -2,6 +2,14 @@
 import { writeFileSync } from 'node:fs';
 import { redirects } from '../src/data/redirects.js';
 
+// Guard: a redirect from a path to itself loops forever (this once broke live pages).
+const norm = (path) => path.split('#')[0].replace(/\/$/, '');
+const loops = redirects.filter((r) => norm(r.from) === norm(r.to));
+if (loops.length) {
+  console.error('Redirect loops found:', loops.map((r) => r.from).join(', '));
+  process.exit(1);
+}
+
 const security = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
