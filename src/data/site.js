@@ -30,7 +30,6 @@ export const capabilityPages = [
       'CFD, FEA and multiphysics analysis to understand complex flow, thermal, structural and equipment behaviour in industrial processes.',
     intro:
       'CFD, FEA and multiphysics analysis to understand complex flow, thermal, structural and equipment behaviour.',
-    draft: true,
   },
   {
     path: '/machine-learning-data-intelligence/',
@@ -40,7 +39,6 @@ export const capabilityPages = [
     description:
       'Data-driven modelling and predictive methods that extract insight from industrial process and engineering data.',
     intro: 'Data-driven modelling and predictive methods to extract insight from process and engineering data.',
-    draft: true,
   },
   {
     path: '/engineering-design/',
@@ -51,7 +49,6 @@ export const capabilityPages = [
       'Engineering design and evaluation to improve equipment performance and support practical design decisions.',
     intro:
       'Engineering design and evaluation to improve equipment performance and support practical design decisions.',
-    draft: true,
   },
   {
     path: '/software-automation/',
@@ -62,7 +59,6 @@ export const capabilityPages = [
       'Custom engineering software, workflow automation and integration that make engineering methods more accessible and efficient.',
     intro:
       'Custom engineering software, workflow automation and integration to make engineering methods more accessible and efficient.',
-    draft: true,
   },
   {
     path: '/chemical-engineering-process-consulting/',
@@ -73,7 +69,6 @@ export const capabilityPages = [
       'Process understanding, modelling, troubleshooting and optimisation to support better process and operating decisions.',
     intro:
       'Process understanding, modelling, troubleshooting and optimisation to support better process and operating decisions.',
-    draft: true,
   },
 ];
 
@@ -86,7 +81,6 @@ export const industryPages = [
     description:
       'Engineering solutions for chemical and process industries: process and equipment design, performance improvement, quality and digital twins.',
     intro: 'Engineering Better Processes. Driving Performance.',
-    draft: true,
   },
   {
     path: '/industries/pharmaceuticals/',
@@ -96,7 +90,6 @@ export const industryPages = [
     description:
       'Reactor and bioreactor engineering, scale-up, crystallisation, process modelling and performance prediction for pharmaceutical manufacturing.',
     intro: 'Improving Process Understanding. Enabling Better Manufacturing Decisions.',
-    draft: true,
   },
   {
     path: '/industries/cement/',
@@ -106,7 +99,6 @@ export const industryPages = [
     description:
       'Pyro-process optimisation, combustion and emissions, cyclone, ESP and bag-filter improvement, duct networks and engineering software for cement plants.',
     intro: 'Improving Plant Performance. Reducing Energy Consumption and Emissions.',
-    draft: true,
   },
   {
     path: '/industries/steel-metals/',
@@ -126,7 +118,6 @@ export const industryPages = [
     description:
       'Separators, tank mixing, multiphase equipment, combustion, fire modelling and structural analysis for oil and gas facilities.',
     intro: 'Understanding Complex Engineering Challenges. Improving Equipment and Process Performance.',
-    draft: true,
   },
   {
     path: '/industries/automotive/',
@@ -179,7 +170,6 @@ export const aboutPage = {
     'FluiDimensions is an integrated engineering services and solutions company combining engineering knowledge, process understanding, simulation, design and technology.',
   intro:
     'Our company, engineering philosophy, expertise and partnership approach.',
-  draft: true,
 };
 
 export const technologiesPage = {
@@ -192,7 +182,6 @@ export const technologiesPage = {
     'Engineering software consultation, training, proof-of-concept studies, application support and integration for simulation and process-modelling platforms.',
   intro:
     'Engineering software and advanced technologies are most valuable when applied in the context of a real engineering problem.',
-  draft: true,
 };
 
 export const cafePage = {
@@ -204,7 +193,6 @@ export const cafePage = {
     'A space for engineering conversations, technical questions and the exchange of ideas on process, modelling and equipment challenges.',
   intro:
     'A place for engineering conversations, technical questions and the exchange of ideas.',
-  draft: true,
 };
 
 export const contactPage = {
@@ -216,7 +204,6 @@ export const contactPage = {
     'Contact FluiDimensions for business and engineering enquiries, software and training enquiries, careers or general questions.',
   intro:
     'Business and engineering enquiries, training enquiries, careers and general enquiries.',
-  draft: true,
 };
 
 export const privacyPage = {
@@ -226,7 +213,6 @@ export const privacyPage = {
   title: `Privacy Policy${suffix}`,
   description: 'How FluiDimensions collects, uses and protects the personal information you share through this website.',
   intro: 'How we handle the personal information you share with us through this website.',
-  draft: true,
 };
 
 // Every page rendered by the generic content template (the homepage is separate).

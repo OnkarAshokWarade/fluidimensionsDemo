@@ -55,3 +55,7 @@ Pages now carry real content condensed from your document. These need your sign-
 - [ ] **Leadership:** Ph.D., 25+ years, UOP India and Aditya Birla Science and Technology Centre. Confirm wording; add a name, photo and biography if wanted.
 - [ ] **Steel & Metals, Automotive, Aerospace, Marine, Food & Beverage:** only the headline and generic application areas exist. Supply full content if you want full pages.
 - [ ] Remove any claim you cannot support; condensed copy is in `src/data/doc.js`.
+
+## Publishing status
+Published (indexable, in the sitemap): Home, About, all five Engineering pages, Technologies & Software, Chemical & Process, Pharmaceuticals, Cement, Oil & Gas, Engineering Café, Contact, Privacy Policy, Blog.
+Still `draft` (noindex, not in the sitemap): Steel & Metals, Automotive, Aerospace, Marine, Food & Beverage. Remove `draft: true` for a page in `src/data/site.js` once it has real content.
