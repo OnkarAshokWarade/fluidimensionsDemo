@@ -5,10 +5,12 @@ const { id, type, fields, submit, successTitle = 'Thank you', successText = 'You
 // Forms post to a form service (Formspree, Web3Forms, ...). Set PUBLIC_FORM_ENDPOINT in Vercel.
 const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
 const fallbackEmail = import.meta.env.PUBLIC_CONTACT_EMAIL || '';
+// Web3Forms-style access key (public by design). Leave empty for services that do not need one.
+const accessKey = import.meta.env.PUBLIC_FORM_ACCESS_KEY || '';
 const control = 'min-h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-body text-base text-primary transition-colors focus:border-accent focus:bg-white focus:outline-none';
 ---
 <div data-enquiry-root>
-  <form data-enquiry data-type={type} data-endpoint={endpoint} data-email={fallbackEmail} novalidate={false} class="space-y-5" id={`${id}-form`}>
+  <form data-enquiry data-type={type} data-endpoint={endpoint} data-key={accessKey} data-email={fallbackEmail} novalidate={false} class="space-y-5" id={`${id}-form`}>
     {fields.map((field) => {
       const fieldId = `${id}-${field.name}`;
       return (
@@ -75,8 +77,11 @@ const control = 'min-h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px
         return showError(`This form is not connected yet, so nothing was sent.${email ? ` Please email us at ${email}.` : ''}`);
       }
 
+      if (form.dataset.key) data.set('access_key', form.dataset.key);
+      data.set('from_name', 'FluiDimensions website');
       data.set('enquiry_type', form.dataset.type || 'general');
       data.set('_subject', `FluiDimensions website: ${form.dataset.type} enquiry`);
+      data.set('subject', `FluiDimensions website: ${form.dataset.type} enquiry`);
       data.set('source_page', location.pathname);
 
       button.disabled = true;
@@ -84,7 +89,8 @@ const control = 'min-h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px
       button.textContent = 'Sending...';
       try {
         const response = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const result = await response.json().catch(() => ({ success: response.ok }));
+        if (!response.ok || result.success === false) throw new Error(result.message || `HTTP ${response.status}`);
         // Conversion event for Google Analytics (only fires when analytics is configured).
         (window as any).gtag?.('event', 'generate_lead', { enquiry_type: form.dataset.type });
         form.reset();

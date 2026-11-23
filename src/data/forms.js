@@ -9,6 +9,10 @@ const industryOptions = [
   ['other', 'Other / not sure'],
 ];
 
+// Free form services (e.g. Web3Forms free plan) cannot take file attachments. Set PUBLIC_FORM_FILE_UPLOADS=true once
+// the service/plan supports them; until then Careers asks for a resume link instead.
+const fileUploads = import.meta.env.PUBLIC_FORM_FILE_UPLOADS === 'true';
+
 const name = { name: 'name', label: 'Full name', type: 'text', required: true, autocomplete: 'name' };
 const email = { name: 'email', label: 'Email', type: 'email', required: true, autocomplete: 'email' };
 const organisation = { name: 'organisation', label: 'Company / organisation', type: 'text', autocomplete: 'organization' };
@@ -50,7 +54,9 @@ export const contactForms = [
     fields: [
       name, email,
       { name: 'role', label: 'Role or area of interest', type: 'text' },
-      { name: 'resume', label: 'Resume', type: 'file', required: true, accept: '.pdf,.doc,.docx', hint: 'PDF, DOC or DOCX, up to 5 MB.' },
+      fileUploads
+        ? { name: 'resume', label: 'Resume', type: 'file', required: true, accept: '.pdf,.doc,.docx', hint: 'PDF, DOC or DOCX, up to 5 MB.' }
+        : { name: 'resume_link', label: 'Link to your resume or profile', type: 'url', required: true, placeholder: 'https://...', hint: 'A shared Google Drive / Dropbox link or your LinkedIn profile.' },
       { name: 'message', label: 'Cover note (optional)', type: 'textarea', rows: 4 },
     ],
   },
