@@ -20,7 +20,7 @@ Follows the SEO Master Blueprint (sections 6, 7 and 10). Items marked **you** ne
 - [ ] **you** Contact forms: set `PUBLIC_FORM_ENDPOINT` (and confirm `PUBLIC_CONTACT_EMAIL`); send a test enquiry for each of the four routes, including a resume
 - [ ] **you** Sanity: create the Vercel deploy hook and Sanity webhook (see `docs/blog-and-sanity.md`); publish a test post
 - [ ] **you** Review the draft pages (`docs/content-review-checklist.md`), then delete each page's `draft: true` in `src/data/site.js` to publish it
-- [ ] **you** Add a privacy policy page and link it from the forms and footer
+- [~] Privacy policy page added and linked from forms and footer; **you** review it with legal and publish (see content-review-checklist)
 - [ ] **you** Confirm the company details: legal name, address, email, real social profile URLs (footer uses placeholders). Then add them to the Organization structured data in `src/data/home.js`
 - [ ] **you** Analytics: create a GA4 property, set `PUBLIC_GA_MEASUREMENT_ID` (a `generate_lead` event fires on each successful enquiry). Decide whether you need a cookie-consent banner for your visitors' regions
 - [ ] **you** Search Console: add the property, set `PUBLIC_GSC_VERIFICATION`, submit `/sitemap-index.xml`

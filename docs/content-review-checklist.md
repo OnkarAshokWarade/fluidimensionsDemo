@@ -37,3 +37,11 @@ a specific project, client, result or product.
 | Engineering Technologies & Software | No platform or Siemens product is named. Confirm partner scope, then fill the "Platforms" section. |
 | Engineering Café | Confirm this "open conversation" form is the intended format (threaded discussion is not built). |
 | Contact | Set `PUBLIC_FORM_ENDPOINT` (forms say "not connected" until then) and confirm `PUBLIC_CONTACT_EMAIL`. Resume upload needs a form service/plan that accepts attachments. Add a privacy policy page and link it. |
+
+## Privacy Policy (`/privacy-policy/`, draft, `noindex`)
+Written to match what the site does today (Web3Forms for enquiries, Vercel hosting, Google Analytics only if enabled). It is **not legal advice**: have it reviewed before launch.
+- [ ] Confirm the legal entity name and add a postal address / contact email (set `PUBLIC_CONTACT_EMAIL` to show an email on the page).
+- [ ] Decide real retention periods for enquiries and careers applications (the page currently says "as long as needed").
+- [ ] Confirm which laws to cite (it mentions India's DPDP Act 2023 and the GDPR) and whether a cookie-consent banner is needed once Analytics is on.
+- [ ] Update the policy whenever forms, analytics or hosting providers change (for example if Web3Forms is replaced, or resume uploads are enabled).
+- [ ] Delete `draft: true` for `privacyPage` in `src/data/site.js` to publish it.

@@ -173,6 +173,16 @@ export const contactPage = {
   draft: true,
 };
 
+export const privacyPage = {
+  path: '/privacy-policy/',
+  label: 'Privacy Policy',
+  h1: 'Privacy Policy',
+  title: `Privacy Policy${suffix}`,
+  description: 'How FluiDimensions collects, uses and protects the personal information you share through this website.',
+  intro: 'How we handle the personal information you share with us through this website.',
+  draft: true,
+};
+
 // Every page rendered by the generic content template (the homepage is separate).
 export const contentPages = [
   aboutPage,
@@ -181,6 +191,7 @@ export const contentPages = [
   ...industryPages,
   cafePage,
   contactPage,
+  privacyPage,
 ];
 
 // Header navigation. `children` items render as a dropdown.

@@ -6,7 +6,7 @@ import { pageContent } from '../data/content';
 
 export function getStaticPaths() {
   // Pages with their own dedicated .astro file go in this list so they are not generated twice.
-  const custom: string[] = ['/about-us/', '/engineering-technologies-software/', '/engineering-cafe/', '/contact/'];
+  const custom: string[] = ['/about-us/', '/engineering-technologies-software/', '/engineering-cafe/', '/contact/', '/privacy-policy/'];
   return contentPages
     .filter((page) => !custom.includes(page.path))
     .map((page) => ({ params: { slug: page.path.replace(/^\/|\/$/g, '') }, props: { page } }));
