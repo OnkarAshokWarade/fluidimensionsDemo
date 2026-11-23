@@ -80,24 +80,12 @@ export const capabilityPages = [
 export const industryPages = [
   {
     path: '/industries/chemical-process/',
-    label: 'Chemical Process',
-    h1: 'Chemical Process Industry',
+    label: 'Chemical & Process',
+    h1: 'Chemical & Process Industry',
     title: `Chemical Process Engineering Solutions${suffix}`,
     description:
-      'Engineering solutions for chemical process and equipment challenges involving flow, heat and mass transfer, combustion, separation and performance.',
-    intro:
-      'Process and equipment challenges involving flow, heat and mass transfer, combustion, separation and process performance.',
-    draft: true,
-  },
-  {
-    path: '/industries/cement/',
-    label: 'Cement',
-    h1: 'Cement Industry',
-    title: `Cement Plant Optimisation & CFD${suffix}`,
-    description:
-      'Engineering analysis for cement pyro-process and plant equipment, including cyclones, combustion, calcination, gas distribution and pressure losses.',
-    intro:
-      'Pyro-process and plant equipment challenges, including cyclones, combustion, calcination, gas distribution and pressure losses.',
+      'Engineering solutions for chemical and process industries: process and equipment design, performance improvement, quality and digital twins.',
+    intro: 'Engineering Better Processes. Driving Performance.',
     draft: true,
   },
   {
@@ -106,9 +94,28 @@ export const industryPages = [
     h1: 'Pharmaceutical Industry',
     title: `Pharmaceutical Process & Reactor Modelling${suffix}`,
     description:
-      'Engineering support for pharmaceutical process and reactor challenges involving mixing, scale-up, process consistency and performance prediction.',
-    intro:
-      'Process and reactor engineering challenges involving mixing, scale-up, process consistency and performance prediction.',
+      'Reactor and bioreactor engineering, scale-up, crystallisation, process modelling and performance prediction for pharmaceutical manufacturing.',
+    intro: 'Improving Process Understanding. Enabling Better Manufacturing Decisions.',
+    draft: true,
+  },
+  {
+    path: '/industries/cement/',
+    label: 'Cement',
+    h1: 'Cement Industry',
+    title: `Cement Plant Optimisation & Engineering${suffix}`,
+    description:
+      'Pyro-process optimisation, combustion and emissions, cyclone, ESP and bag-filter improvement, duct networks and engineering software for cement plants.',
+    intro: 'Improving Plant Performance. Reducing Energy Consumption and Emissions.',
+    draft: true,
+  },
+  {
+    path: '/industries/steel-metals/',
+    label: 'Steel & Metals',
+    h1: 'Steel & Metals Industry',
+    title: `Steel & Metals Engineering Solutions${suffix}`,
+    description:
+      'Engineering solutions for steel and metals: thermal process optimisation, furnaces, process monitoring and operating performance.',
+    intro: 'Engineering Smarter Production. Strengthening Performance.',
     draft: true,
   },
   {
@@ -117,9 +124,48 @@ export const industryPages = [
     h1: 'Oil & Gas Industry',
     title: `Oil & Gas Engineering Simulation${suffix}`,
     description:
-      'Engineering analysis of separation systems, multiphase equipment, combustion, fire scenarios and mechanical performance for oil and gas.',
-    intro:
-      'Engineering analysis of separation systems, multiphase equipment, combustion, fire scenarios and mechanical performance.',
+      'Separators, tank mixing, multiphase equipment, combustion, fire modelling and structural analysis for oil and gas facilities.',
+    intro: 'Understanding Complex Engineering Challenges. Improving Equipment and Process Performance.',
+    draft: true,
+  },
+  {
+    path: '/industries/automotive/',
+    label: 'Automotive',
+    h1: 'Automotive Industry',
+    title: `Automotive Engineering Solutions${suffix}`,
+    description:
+      'Engineering analysis for automotive product performance, thermal management, sprays and combustion.',
+    intro: 'Engineering Innovation. Advancing Product Performance.',
+    draft: true,
+  },
+  {
+    path: '/industries/aerospace/',
+    label: 'Aerospace',
+    h1: 'Aerospace Industry',
+    title: `Aerospace Engineering Solutions${suffix}`,
+    description:
+      'Engineering analysis for aerospace performance and reliability, from fuel systems to thermal and structural behaviour.',
+    intro: 'Engineering Precision. Advancing Performance & Reliability.',
+    draft: true,
+  },
+  {
+    path: '/industries/marine/',
+    label: 'Marine',
+    h1: 'Marine Industry',
+    title: `Marine Engineering Solutions${suffix}`,
+    description:
+      'Engineering analysis for vessel and marine equipment performance, including hydrodynamics and thermal systems.',
+    intro: 'Advancing Marine Engineering. Enhancing Vessel Performance.',
+    draft: true,
+  },
+  {
+    path: '/industries/food-beverage/',
+    label: 'Food & Beverage',
+    h1: 'Food & Beverage Industry',
+    title: `Food & Beverage Engineering Solutions${suffix}`,
+    description:
+      'Process optimisation, mixing, thermal processing and quality consistency for food and beverage production.',
+    intro: 'Improving Production Efficiency. Ensuring Product Consistency.',
     draft: true,
   },
 ];
@@ -202,6 +248,7 @@ export const NAV = [
   { label: technologiesPage.label, shortLabel: technologiesPage.shortLabel, to: technologiesPage.path },
   { label: 'Industries', children: industryPages },
   { label: cafePage.label, to: cafePage.path },
+  { label: 'Blog', to: '/blog/' },
 ];
 
 export const NAV_CTA = { label: 'Contact', to: CONTACT_PATH };

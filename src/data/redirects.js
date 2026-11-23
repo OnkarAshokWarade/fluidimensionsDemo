@@ -22,12 +22,12 @@ const industries = {
   pharmaceutical: '/industries/pharmaceuticals/',
   'oil-gas': '/industries/oil-gas/',
   'cement-mining': '/industries/cement/',
-  // No dedicated page yet: closest relevant destination is the industries section.
-  'metals-metallurgy': '/#industries',
+  // Closest relevant destination; agro and paints have no dedicated page yet.
+  'metals-metallurgy': '/industries/steel-metals/',
   agro: '/#industries',
   'paints-pigments': '/#industries',
-  'food-beverage': '/#industries',
-  automobile: '/#industries',
+  'food-beverage': '/industries/food-beverage/',
+  automobile: '/industries/automotive/',
 };
 
 export const redirects = [

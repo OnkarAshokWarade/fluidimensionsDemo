@@ -1,23 +1,50 @@
 ---
+import { Icon } from 'astro-icon/components';
 import PageLayout from '../layouts/PageLayout.astro';
 import EnquiryForm from '../components/EnquiryForm.astro';
 import { contactPage } from '../data/site';
 import { contactForms } from '../data/forms';
----
-<PageLayout page={contactPage}>
-  <div class="mt-10 sm:mt-12">
-    <p class="mb-4 max-w-3xl font-body text-sm text-slate-600">Choose the kind of enquiry so it reaches the right person.</p>
-    <div role="tablist" aria-label="Enquiry type" class="flex flex-wrap gap-2" id="enquiry-tabs">
-      {contactForms.map((form, index) => (
-        <a href={`#${form.id}`} role="tab" id={`tab-${form.id}`} aria-controls={form.id} aria-selected={index === 0 ? 'true' : 'false'} class="min-h-11 rounded-full border border-slate-300 bg-white px-5 py-2.5 font-heading text-sm font-semibold text-slate-700 transition hover:border-accent hover:text-accent aria-selected:border-accent aria-selected:bg-accent aria-selected:text-white">{form.tab}</a>
-      ))}
-    </div>
 
-    <div class="mt-8 max-w-3xl">
-      {contactForms.map((form, index) => (
-        <section id={form.id} role="tabpanel" aria-labelledby={`tab-${form.id}`} data-panel class="scroll-mt-28 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8 [&:not(:first-child)]:mt-8" hidden={false}>
-          <h2 class="font-heading text-xl font-bold text-primary sm:text-2xl">{form.title}</h2>
-          <p class="mt-2 mb-6 font-body text-sm leading-relaxed text-slate-600">{form.intro}</p>
+const icons: Record<string, string> = { business: 'ion:construct-outline', training: 'ion:school-outline', careers: 'ion:people-outline', general: 'ion:chatbubbles-outline' };
+const steps = [
+  ['We read your message', 'An engineer, not a call centre, reviews every enquiry.'],
+  ['We reply with questions or next steps', 'Often a short conversation to understand the problem before suggesting an approach.'],
+  ['We agree a practical way forward', 'This might be a technical discussion, a proposal or a pointer to the right resource.'],
+];
+---
+<PageLayout page={contactPage} lead="Choose the kind of enquiry so it reaches the right person. A short description is enough to start a conversation.">
+  <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+    <aside class="space-y-8">
+      <div>
+        <h2 class="font-heading text-lg font-bold text-primary">What would you like to do?</h2>
+        <div role="tablist" aria-label="Enquiry type" id="enquiry-tabs" class="mt-4 grid gap-3">
+          {contactForms.map((form, index) => (
+            <a href={`#${form.id}`} role="tab" id={`tab-${form.id}`} aria-controls={form.id} aria-selected={index === 0 ? 'true' : 'false'} class="group flex items-start gap-4 rounded-xl border border-slate-200 bg-white p-4 transition hover:border-accent/50 aria-selected:border-accent aria-selected:bg-sky-50 aria-selected:shadow-sm">
+              <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-secondary group-aria-selected:bg-accent group-aria-selected:text-white"><Icon name={icons[form.type]} class="h-5 w-5" aria-hidden="true" /></span>
+              <span><span class="block font-heading text-sm font-bold text-primary">{form.title}</span><span class="mt-1 block font-body text-sm leading-snug text-slate-500">{form.intro}</span></span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-6">
+        <h2 class="font-heading text-lg font-bold text-primary">What happens next</h2>
+        <ol class="mt-4 space-y-4">
+          {steps.map(([title, text], i) => (
+            <li class="flex gap-3"><span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-white">{i + 1}</span><span><span class="block font-heading text-sm font-semibold text-primary">{title}</span><span class="block font-body text-sm leading-snug text-slate-500">{text}</span></span></li>
+          ))}
+        </ol>
+      </div>
+
+      <p class="rounded-xl bg-amber-50 p-4 font-body text-sm leading-relaxed text-amber-900">We respect confidentiality. Please avoid sharing proprietary documents, sensitive process data or confidential customer information until appropriate confidentiality arrangements are in place.</p>
+      <p class="font-body text-sm text-slate-500">Prefer an open conversation without a project brief? Visit the <a href="/engineering-cafe/" class="font-semibold text-secondary underline underline-offset-2 hover:text-accent">Engineering Café</a>.</p>
+    </aside>
+
+    <div>
+      {contactForms.map((form) => (
+        <section id={form.id} role="tabpanel" aria-labelledby={`tab-${form.id}`} data-panel class="scroll-mt-28 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9 [&:not(:first-child)]:mt-8" hidden={false}>
+          <h2 class="font-heading text-2xl font-bold text-primary">{form.title}</h2>
+          <p class="mb-7 mt-2 font-body text-base leading-relaxed text-slate-600">{form.intro}</p>
           <EnquiryForm id={form.id} type={form.type} fields={form.fields} submit={form.submit} successTitle={form.type === 'careers' ? 'Application received' : 'Enquiry received'} />
         </section>
       ))}

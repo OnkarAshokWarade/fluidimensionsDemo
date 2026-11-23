@@ -1,100 +1,86 @@
-// Homepage copy, taken from the FluiDimensions Homepage Content & Design Blueprint.
-// Keep claims factual: do not add metrics, client names or product names without confirmation.
+// Homepage copy, drawn from the FluiDimensions company document (websitecentral_aboutus_vision.docx)
+// and the Homepage Content & Design Blueprint. Keep claims factual; confirm project details before publishing.
 import { industryPages, technologiesPage, cafePage, CONTACT_PATH } from './site';
-
+import { APPROACH, PROOF, VALUES } from './doc';
 
 export const hero = {
+  eyebrow: 'Your engineering solutions & digital innovation partner',
   h1: 'Solving Complex Engineering Challenges. Driving Better Performance.',
   tagline: 'Understand. Optimise. Innovate.',
-  body: 'FluiDimensions provides integrated engineering consulting and technology-driven solutions to help industries understand complex processes, improve equipment performance and solve challenging engineering problems.',
+  body: 'We combine engineering consultancy, advanced modelling and simulation, machine learning and digital technologies to solve complex technical challenges and deliver practical engineering solutions across industries.',
 };
 
 export const capabilitiesSection = {
   heading: 'Engineering Knowledge. Integrated Solutions.',
   intro:
-    'Industrial challenges rarely fit within a single discipline. Solving them often requires an understanding of the process, the equipment, the underlying physics and the way the system operates. FluiDimensions brings these perspectives together, combining engineering expertise with simulation, design and advanced technologies to develop practical solutions.',
+    'Our capabilities are not isolated services. We combine them as appropriate to address the engineering problem as a whole, from understanding the process to delivering a practical solution.',
   cards: [
-    { icon: 'ion:analytics-outline', tone: 'capability.simulation', title: 'Engineering Simulation', desc: 'CFD, FEA and multiphysics analysis to understand complex flow, thermal, structural and equipment behaviour.', to: '/engineering-simulation/' },
-    { icon: 'ion:flask-outline', tone: 'capability.process', title: 'Chemical Engineering & Process Consulting', desc: 'Process understanding, modelling, troubleshooting and optimisation to support better process and operating decisions.', to: '/chemical-engineering-process-consulting/' },
-    { icon: 'ion:construct-outline', tone: 'capability.design', title: 'Engineering Design', desc: 'Engineering design and evaluation to improve equipment performance and support practical design decisions.', to: '/engineering-design/' },
-    { icon: 'ion:stats-chart-outline', tone: 'capability.data', title: 'Machine Learning & Data Intelligence', desc: 'Data-driven modelling and predictive methods to extract insight from process and engineering data.', to: '/machine-learning-data-intelligence/' },
-    { icon: 'ion:code-slash-outline', tone: 'capability.software', title: 'Software & Automation', desc: 'Custom engineering software, workflow automation and integration to make engineering methods more accessible and efficient.', to: '/software-automation/' },
-    { icon: 'ion:git-network-outline', tone: 'capability.digital', title: 'Digital Engineering', desc: 'Connecting engineering models, simulation and operational information to support analysis, prediction and better decisions.', to: CONTACT_PATH },
+    { icon: 'ion:analytics-outline', tone: 'capability.simulation', title: 'Engineering Simulation', desc: 'CFD, FEA, multiphase flow, combustion, heat and mass transfer and other specialisations, applied to understand and improve equipment performance.', to: '/engineering-simulation/' },
+    { icon: 'ion:flask-outline', tone: 'capability.process', title: 'Chemical Engineering & Process Consulting', desc: 'Process troubleshooting, root-cause analysis, optimisation and engineering consulting for process industries.', to: '/chemical-engineering-process-consulting/' },
+    { icon: 'ion:construct-outline', tone: 'capability.design', title: 'Engineering Design', desc: 'Process and equipment design, design evaluation and simulation-led optimisation.', to: '/engineering-design/' },
+    { icon: 'ion:stats-chart-outline', tone: 'capability.data', title: 'Machine Learning & Data Intelligence', desc: 'Predictive modelling, soft sensors, process monitoring and the integration of physics and data.', to: '/machine-learning-data-intelligence/' },
+    { icon: 'ion:code-slash-outline', tone: 'capability.software', title: 'Software & Automation', desc: 'Custom engineering applications, automated simulation workflows and integrated engineering solutions.', to: '/software-automation/' },
+    { icon: 'ion:git-network-outline', tone: 'capability.digital', title: 'Digital Engineering', desc: 'Digital twins and integrated models that connect simulation, process models and operational data.', to: '/software-automation/' },
   ],
-};
-
-const industryIntros = {
-  '/industries/chemical-process/': 'Process and equipment challenges involving flow, heat and mass transfer, combustion, separation and process performance.',
-  '/industries/cement/': 'Pyro-process and plant equipment challenges, including cyclones, combustion, calcination, gas distribution and pressure losses.',
-  '/industries/pharmaceuticals/': 'Process and reactor engineering challenges involving mixing, scale-up, process consistency and performance prediction.',
-  '/industries/oil-gas/': 'Engineering analysis of separation systems, multiphase equipment, combustion, fire scenarios and mechanical performance.',
 };
 
 export const industriesSection = {
   heading: 'Engineering Solutions for Demanding Industries',
   intro:
-    'Different industries face different process, equipment and performance challenges. Our engineering approach is shaped around the requirements of each application, combining process knowledge, analysis and technology to address the problem that matters to the customer.',
-  cards: industryPages.map((page) => ({ ...page, desc: industryIntros[page.path] })),
+    'Every industry has its own operating environment, technical priorities and performance requirements. Our approach is centred on understanding each application rather than offering standardised solutions.',
+  cards: industryPages.map((page) => ({ path: page.path, label: page.label, desc: page.intro })),
 };
 
 export const approachSection = {
   heading: 'From Engineering Understanding to Practical Solutions',
   intro:
-    "We begin by understanding the customer's process, equipment, operating conditions and objectives. We then select the engineering methods and technologies appropriate to the challenge, analyse the system and translate the findings into practical recommendations or deliverables.",
-  steps: [
-    { n: '01', title: 'Understand the challenge', desc: 'Understand the process, equipment, operating conditions, constraints and desired outcome.' },
-    { n: '02', title: 'Apply engineering knowledge', desc: 'Bring together relevant engineering principles, process understanding and suitable analytical methods.' },
-    { n: '03', title: 'Analyse and develop solutions', desc: 'Use modelling, simulation, design evaluation and data-driven methods to investigate performance and identify improvement opportunities.' },
-    { n: '04', title: 'Translate insight into action', desc: 'Provide engineering recommendations, design inputs, models, tools or other agreed deliverables that support customer decisions.' },
-  ],
+    'We stay engaged from the first question to the explanation of results and the decisions they support.',
+  steps: APPROACH.map(([title, desc], index) => ({ n: String(index + 1).padStart(2, '0'), title, desc })),
 };
 
 export const experienceSection = {
   heading: 'Engineering Insight Backed by Practical Experience',
   intro:
-    'Our work spans challenging flow, thermal, combustion, multiphase and process-engineering applications. We use engineering analysis not simply to produce results, but to understand equipment and process behaviour, investigate root causes and support better engineering decisions.',
-  format: [
-    ['Challenge', 'The customer or engineering problem.'],
-    ['Approach', 'The analysis, modelling or design method used.'],
-    ['Insight', 'What the work revealed about process or equipment behaviour.'],
-    ['Value', 'The improvement opportunity, design decision or recommendation it supported.'],
-  ],
-  // TODO(content): add 3-4 approved, anonymised project highlights here:
-  // { challenge, approach, insight, value, image, imageAlt, to }
-  projects: [],
+    'Examples across industries and capabilities. Our work spans flow, thermal, combustion, multiphase and process-engineering applications, supported by engineering analysis that explains equipment and process behaviour.',
+  projects: PROOF.map((p) => ({ ...p, to: { cement: '/industries/cement/', pharma: '/industries/pharmaceuticals/', 'oil-gas': '/industries/oil-gas/', software: '/software-automation/' }[p.to] })),
 };
 
 export const technologiesSection = {
   heading: 'The Right Technology, Applied with Engineering Understanding',
   body: [
-    'Engineering software and advanced technologies are most valuable when they are applied in the context of a real engineering problem. FluiDimensions works with engineering simulation, process modelling, system simulation, molecular modelling and data-driven technologies, helping customers evaluate, apply and integrate tools into their engineering workflows.',
-    'Our support can include software-related consultation, training, proof-of-concept studies, application support and integration, depending on the platform and project requirements.',
+    'As a Siemens software channel partner, we help organisations explore and adopt engineering software across CFD, FEA, molecular modelling, process modelling, system simulation and design engineering.',
+    'Our support includes software licensing enquiries, technical training, proof-of-concept studies, application support and technology integration.',
   ],
-  areas: ['Engineering simulation', 'Process modelling', 'System simulation', 'Molecular modelling', 'Data-driven technologies'],
+  areas: ['CFD & FEA', 'Process modelling', 'System simulation', 'Molecular modelling', 'Machine learning', 'Custom software'],
   cta: 'Explore Engineering Technologies & Software',
   to: technologiesPage.path,
 };
 
-export const whySection = {
-  heading: 'Engineering Perspective. Practical Outcomes.',
-  items: [
-    { icon: 'ion:layers-outline', title: 'Integrated engineering expertise', desc: 'We bring together process understanding, engineering principles, simulation and technology to address problems that cross traditional discipline boundaries.' },
-    { icon: 'ion:extension-puzzle-outline', title: 'Complex problem-solving', desc: 'We work on challenging flow, multiphase, combustion, thermal and equipment-related engineering problems.' },
-    { icon: 'ion:bulb-outline', title: 'Insight beyond the analysis', desc: 'We focus on interpreting engineering results in the context of actual process and equipment behaviour, and translating them into useful recommendations.' },
-    { icon: 'ion:options-outline', title: 'Technology applied with purpose', desc: 'We select and combine appropriate tools and methods to serve the engineering objective, not the other way around.' },
-  ],
+export const visionSection = {
+  quote: 'Engineering expertise, combined with digital innovation and the right technologies, can help businesses solve complex challenges, make better decisions and continuously improve.',
+  vision:
+    'Our vision is to be the engineering solutions partner of choice for organisations striving to drive engineering and digital innovation, improve effectiveness, enhance efficiency and achieve sustainable performance.',
+  leader: {
+    heading: 'Over 25 years across industry, research and technology development',
+    body: 'FluiDimensions is led by a chemical engineering professional with a Ph.D. and postdoctoral research experience, with senior technical and managerial roles at UOP India and Aditya Birla Science and Technology Centre.',
+  },
+};
+
+export const valuesSection = {
+  heading: 'Passion. Integrity. Commitment.',
+  items: VALUES.map(([title, subtitle, text]) => ({ title, subtitle, text })),
 };
 
 export const cafeSection = {
   heading: 'Bring a Challenge. Share an Idea. Explore a Solution.',
-  body: 'Engineering Café is a place for engineering conversations, technical questions and the exchange of ideas. Whether you are exploring a process challenge, considering a modelling approach or simply interested in discussing an engineering topic, we welcome the conversation.',
+  body: 'Engineering Café is an open, informal space for technical conversations, exchange of ideas and exploration of engineering possibilities. You do not need a fully defined project.',
   cta: 'Visit Engineering Café',
   to: cafePage.path,
 };
 
 export const finalCta = {
   heading: 'Have an Engineering Challenge to Solve?',
-  body: 'Whether you need to understand a complex process, investigate equipment performance, evaluate a design or develop a technology-enabled engineering solution, FluiDimensions can work with you to explore the challenge and identify a practical way forward.',
+  body: 'Whether you need to understand a complex process, investigate equipment performance, evaluate a design or develop a technology-enabled engineering solution, FluiDimensions can work with you to find a practical way forward.',
   primary: 'Discuss Your Engineering Challenge',
   secondary: 'Contact FluiDimensions',
 };
@@ -109,10 +95,11 @@ export const organizationJsonLd = (siteUrl) => ({
       url: `${siteUrl}/`,
       logo: `${siteUrl}/logo.png`,
       slogan: 'Understand. Optimise. Innovate.',
-      description: 'Integrated engineering consulting and technology-driven solutions for industrial process and equipment challenges.',
+      description: 'Engineering solutions and digital innovation partner for industrial process and equipment challenges.',
       // TODO(confirm): add address, email and sameAs profile URLs once confirmed.
     },
     { '@type': 'WebSite', '@id': `${siteUrl}/#website`, url: `${siteUrl}/`, name: 'FluiDimensions', publisher: { '@id': `${siteUrl}/#organization` } },
   ],
 });
 
+export { CONTACT_PATH };

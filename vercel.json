@@ -80,7 +80,7 @@
     },
     {
       "source": "/industries/metals-metallurgy{/}?",
-      "destination": "/#industries",
+      "destination": "/industries/steel-metals/",
       "permanent": true
     },
     {
@@ -95,12 +95,12 @@
     },
     {
       "source": "/industries/food-beverage{/}?",
-      "destination": "/#industries",
+      "destination": "/industries/food-beverage/",
       "permanent": true
     },
     {
       "source": "/industries/automobile{/}?",
-      "destination": "/#industries",
+      "destination": "/industries/automotive/",
       "permanent": true
     },
     {

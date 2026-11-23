@@ -3,38 +3,56 @@ import PageLayout from '../layouts/PageLayout.astro';
 import EnquiryForm from '../components/EnquiryForm.astro';
 import { cafePage } from '../data/site';
 import { cafeForm } from '../data/forms';
+import { CAFE_TOPICS, CAFE_WHO } from '../data/doc';
 import { getPosts, formatDate } from '../lib/sanity';
 
 const posts = (await getPosts()).slice(0, 3);
-const topics = [
-  'A process challenge you are working through',
-  'A modelling or simulation approach you are considering',
-  'An idea you would like a second opinion on',
-  'An engineering topic you are simply curious about',
-];
+const h2 = 'font-heading text-2xl font-bold text-primary sm:text-3xl';
+const eyebrow = 'text-sm font-bold uppercase tracking-widest text-accent';
+const steps = [['Get in touch', 'Tell us briefly what you would like to discuss.'], ['Find a convenient time', 'We arrange an online or in-person conversation, as appropriate.'], ['Exchange ideas', 'Discuss your challenge, question or area of interest with our team.'], ['Explore possibilities', 'If there is an opportunity, we explore suitable next steps together.']];
 ---
-<PageLayout page={cafePage}>
-  <section aria-labelledby="bring-heading" class="mt-14 sm:mt-16">
-    <h2 id="bring-heading" class="font-heading text-xl font-bold text-primary sm:text-2xl">What you can bring</h2>
-    <ul class="mt-5 max-w-3xl list-disc space-y-2 pl-5 font-body text-base leading-relaxed text-slate-600 marker:text-accent">
-      {topics.map((topic) => <li>{topic}</li>)}
+<PageLayout page={cafePage} lead="Bring a challenge. Share an idea. Explore a solution. An open, informal space for technical conversations, exchange of ideas and exploration of engineering possibilities. You do not need a fully defined project.">
+  <section>
+    <p class={eyebrow}>What can we discuss?</p>
+    <h2 class={`${h2} mt-2`}>Five conversation areas</h2>
+    <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {CAFE_TOPICS.map(([t, d]) => <li class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{d}</p></li>)}
     </ul>
-    <p class="mt-4 max-w-3xl font-body text-sm text-slate-500">This is an open conversation, not a formal sales enquiry. For a project enquiry, use the <a href="/contact/#business-enquiries" class="text-secondary underline underline-offset-2 hover:text-accent">contact page</a>.</p>
   </section>
 
-  <section aria-labelledby="start-heading" class="mt-14 max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:mt-16 sm:p-8">
-    <h2 id="start-heading" class="font-heading text-xl font-bold text-primary sm:text-2xl">{cafeForm.title}</h2>
-    <p class="mt-2 mb-6 font-body text-sm leading-relaxed text-slate-600">{cafeForm.intro}</p>
-    <EnquiryForm id={cafeForm.id} type={cafeForm.type} fields={cafeForm.fields} submit={cafeForm.submit} successTitle="Thanks for sharing" successText="We have received your message and will join the conversation." />
+  <section class="mt-20 grid items-start gap-12 lg:grid-cols-2">
+    <div>
+      <p class={eyebrow}>Who is it for?</p>
+      <h2 class={`${h2} mt-2`}>Open to curious engineers</h2>
+      <ul class="mt-6 space-y-4">{CAFE_WHO.map(([t, d]) => <li class="border-l-4 border-accent pl-4"><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="font-body text-sm leading-relaxed text-slate-600">{d}</p></li>)}</ul>
+    </div>
+    <div>
+      <p class={eyebrow}>How does it work?</p>
+      <h2 class={`${h2} mt-2`}>Four simple steps</h2>
+      <ol class="mt-6 space-y-3">{steps.map(([t, d], i) => <li class="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent font-heading text-sm font-bold text-white">{i + 1}</span><div><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="mt-1 font-body text-sm leading-relaxed text-slate-600">{d}</p></div></li>)}</ol>
+    </div>
+  </section>
+
+  <section id="start" class="mt-20 grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+    <div>
+      <p class={eyebrow}>Let’s start a conversation</p>
+      <h2 class={`${h2} mt-2`}>Let’s talk engineering</h2>
+      <p class="mt-4 font-body text-base leading-relaxed text-slate-600">No elaborate presentations. No need for a fully defined project. Just an open engineering conversation, with a 30 to 45 minute online discussion as a starting point and no commitment to a paid assignment.</p>
+      <p class="mt-5 rounded-xl bg-amber-50 p-4 font-body text-sm leading-relaxed text-amber-900">We respect the confidentiality of our discussions. Please avoid sharing proprietary documents, sensitive process data or confidential customer information until appropriate confidentiality arrangements are in place.</p>
+    </div>
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9">
+      <h3 class="font-heading text-xl font-bold text-primary">{cafeForm.title}</h3>
+      <p class="mb-6 mt-2 font-body text-sm leading-relaxed text-slate-600">{cafeForm.intro}</p>
+      <EnquiryForm id={cafeForm.id} type={cafeForm.type} fields={cafeForm.fields} submit={cafeForm.submit} successTitle="Thanks for sharing" successText="We have received your message and will join the conversation." />
+    </div>
   </section>
 
   {posts.length > 0 && (
-    <section aria-labelledby="latest-heading" class="mt-14 sm:mt-16">
-      <h2 id="latest-heading" class="font-heading text-xl font-bold text-primary sm:text-2xl">Latest articles</h2>
-      <ul class="mt-5 grid gap-4 sm:grid-cols-3">
-        {posts.map((post) => (
-          <li><a href={`/blog/${post.slug}/`} class="block h-full rounded-xl border border-slate-200 bg-white p-5 transition hover:border-accent/40"><time datetime={post.publishedAt} class="text-xs font-semibold uppercase tracking-wider text-accent">{formatDate(post.publishedAt)}</time><span class="mt-1 block font-heading text-sm font-bold text-primary">{post.title}</span></a></li>
-        ))}
+    <section class="mt-20">
+      <p class={eyebrow}>From the blog</p>
+      <h2 class={`${h2} mt-2`}>Latest articles</h2>
+      <ul class="mt-6 grid gap-4 sm:grid-cols-3">
+        {posts.map((post) => <li><a href={`/blog/${post.slug}/`} class="block h-full rounded-xl border border-slate-200 bg-white p-5 transition hover:border-accent/40"><time datetime={post.publishedAt} class="text-xs font-semibold uppercase tracking-wider text-accent">{formatDate(post.publishedAt)}</time><span class="mt-1 block font-heading text-sm font-bold text-primary">{post.title}</span></a></li>)}
       </ul>
       <a href="/blog/" class="mt-5 inline-block font-heading text-sm font-semibold text-secondary hover:text-accent">All articles →</a>
     </section>

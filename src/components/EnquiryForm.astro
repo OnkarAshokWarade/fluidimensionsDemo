@@ -10,11 +10,11 @@ const accessKey = import.meta.env.PUBLIC_FORM_ACCESS_KEY || '';
 const control = 'min-h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-body text-base text-primary transition-colors focus:border-accent focus:bg-white focus:outline-none';
 ---
 <div data-enquiry-root>
-  <form data-enquiry data-type={type} data-endpoint={endpoint} data-key={accessKey} data-email={fallbackEmail} novalidate={false} class="space-y-5" id={`${id}-form`}>
+  <form data-enquiry data-type={type} data-endpoint={endpoint} data-key={accessKey} data-email={fallbackEmail} novalidate={false} class="grid gap-5 sm:grid-cols-2" id={`${id}-form`}>
     {fields.map((field) => {
       const fieldId = `${id}-${field.name}`;
       return (
-        <div>
+        <div class={field.type === "textarea" || field.type === "file" || field.name === "message" ? "sm:col-span-2" : ""}>
           <label for={fieldId} class="mb-2 block font-heading text-xs font-bold uppercase tracking-wider text-primary">{field.label}{field.required && <span class="text-accent" aria-hidden="true"> *</span>}</label>
           {field.type === 'textarea' ? (
             <textarea id={fieldId} name={field.name} rows={field.rows ?? 4} required={field.required} placeholder={field.placeholder} class:list={[control, 'min-h-28 resize-y']}></textarea>
@@ -32,12 +32,12 @@ const control = 'min-h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px
       );
     })}
     <!-- Honeypot: real visitors never see or fill this. -->
-    <div class="absolute -left-[9999px]" aria-hidden="true">
+    <div class="absolute -left-[9999px] sm:col-span-2" aria-hidden="true">
       <label>Leave this field empty<input type="text" name="company_website" tabindex="-1" autocomplete="off" /></label>
     </div>
-    <p class="font-body text-xs leading-relaxed text-slate-500">We use the details you send only to respond to your message. See our <a href="/privacy-policy/" class="underline underline-offset-2 hover:text-accent">Privacy Policy</a>.</p>
-    <p data-status role="alert" class="hidden rounded-xl border border-red-200 bg-red-50 p-4 font-body text-sm text-red-700"></p>
-    <button type="submit" class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-accent px-5 font-heading text-sm font-semibold text-white shadow-md transition hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:px-8">{submit}</button>
+    <p class="font-body text-xs leading-relaxed text-slate-500 sm:col-span-2">We use the details you send only to respond to your message. See our <a href="/privacy-policy/" class="underline underline-offset-2 hover:text-accent">Privacy Policy</a>.</p>
+    <p data-status role="alert" class="hidden rounded-xl sm:col-span-2 border border-red-200 bg-red-50 p-4 font-body text-sm text-red-700"></p>
+    <button type="submit" class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-accent px-5 font-heading text-sm font-semibold text-white shadow-md transition hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2 sm:w-fit sm:px-9">{submit}</button>
   </form>
   <div data-success tabindex="-1" class="hidden rounded-2xl border border-emerald-100 bg-emerald-50 p-8 text-center" role="status">
     <h3 class="font-heading text-lg font-bold text-primary">{successTitle}</h3>

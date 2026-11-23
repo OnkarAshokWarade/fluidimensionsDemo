@@ -1,44 +1,54 @@
 ---
-import { Icon } from 'astro-icon/components';
 import PageLayout from '../layouts/PageLayout.astro';
+import Cta from '../components/pages/Cta.astro';
 import { technologiesPage } from '../data/site';
-import { technologiesSection } from '../data/home';
+import { SIEMENS, ENGAGE } from '../data/doc';
 
-// DRAFT copy from the blueprint. Platform names (e.g. Siemens products) stay out until the
-// partner scope is confirmed; see docs/content-review-checklist.md.
-const support = [
-  { title: 'Software-related consultation', text: 'Help evaluating which tools suit a particular engineering problem.' },
-  { title: 'Training', text: 'Technical training on engineering software and methods.' },
-  { title: 'Proof-of-concept studies', text: 'Small, focused studies that test an approach before wider commitment.' },
-  { title: 'Application support', text: 'Support applying tools to your real engineering cases.' },
-  { title: 'Integration', text: 'Connecting tools and models into your engineering workflows.' },
+const h2 = 'font-heading text-2xl font-bold text-primary sm:text-3xl';
+const eyebrow = 'text-sm font-bold uppercase tracking-widest text-accent';
+const areas = [
+  ['Engineering simulation & analysis', 'CFD, FEA, multiphase flow and particle dynamics, combustion, heat and mass transfer, and multiphysics.'],
+  ['Process modelling & optimisation', 'Flowsheet modelling, sensitivity studies, troubleshooting and integration with other tools.'],
+  ['Machine learning & industrial data', 'Predictive models, monitoring, reduced-order and surrogate models.'],
+  ['Digital twins & integration', 'Physics-based, CFD, reduced-order and data-driven models connected with operational data.'],
+  ['Software development & automation', 'Custom applications, calculators, reduced-order model deployment, interfaces and workflow integration.'],
+  ['Molecular modelling', 'An emerging area developed through our association with CULGI.'],
 ];
 ---
-<PageLayout page={technologiesPage}>
-  <section aria-labelledby="areas-heading" class="mt-14 sm:mt-16">
-    <h2 id="areas-heading" class="font-heading text-xl font-bold text-primary sm:text-2xl">Technology areas</h2>
-    <p class="mt-5 max-w-3xl font-body text-base leading-relaxed text-slate-600">{technologiesSection.body[0]}</p>
-    <ul class="mt-6 flex flex-wrap gap-3" aria-label="Technology areas">
-      {technologiesSection.areas.map((area) => <li class="rounded-full border border-slate-200 bg-white px-5 py-3 font-heading text-sm font-semibold text-secondary">{area}</li>)}
+<PageLayout page={technologiesPage} lead="Technology creates value when it is applied with a clear understanding of the engineering problem. As a Siemens software channel partner, we help organisations explore and adopt engineering software through licensing enquiries, training, proof-of-concept studies, application support and integration.">
+  <section>
+    <p class={eyebrow}>Technology areas</p>
+    <h2 class={`${h2} mt-2`}>Applied with engineering understanding</h2>
+    <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {areas.map(([t, d]) => <li class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{d}</p></li>)}
     </ul>
   </section>
 
-  <section aria-labelledby="support-heading" class="mt-14 sm:mt-16">
-    <h2 id="support-heading" class="font-heading text-xl font-bold text-primary sm:text-2xl">How we can support you</h2>
-    <p class="mt-5 max-w-3xl font-body text-base leading-relaxed text-slate-600">{technologiesSection.body[1]}</p>
-    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
-      {support.map((item) => (
-        <li class="rounded-2xl border border-slate-200 bg-white p-6"><h3 class="font-heading text-base font-bold text-primary">{item.title}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{item.text}</p></li>
-      ))}
+  <section class="mt-20">
+    <p class={eyebrow}>Siemens engineering software</p>
+    <h2 class={`${h2} mt-2`}>Access to advanced technologies through FluiDimensions</h2>
+    <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {SIEMENS.map(([t, d, product]) => <li class="flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="mt-2 flex-1 font-body text-sm leading-relaxed text-slate-600">{d}</p><span class="mt-4 w-fit rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-secondary">{product}</span></li>)}
+    </ul>
+    <p class="mt-5 text-sm text-slate-500">For product features, specifications and the latest information, please refer to the respective Siemens product pages.</p>
+  </section>
+
+  <section class="mt-20">
+    <p class={eyebrow}>More than software supply</p>
+    <h2 class={`${h2} mt-2`}>Helping you adopt, apply and get value</h2>
+    <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {ENGAGE.map(([t, d]) => <li class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{d}</p></li>)}
     </ul>
   </section>
 
-  <section aria-labelledby="platforms-heading" class="mt-14 sm:mt-16">
-    <h2 id="platforms-heading" class="font-heading text-xl font-bold text-primary sm:text-2xl">Platforms</h2>
-    <p class="mt-5 max-w-3xl rounded-xl border border-dashed border-slate-300 bg-white p-5 font-body text-sm leading-relaxed text-slate-500">Details of specific software platforms, and our role with each, will be published here once confirmed.</p>
+  <section class="mt-20 max-w-3xl">
+    <p class={eyebrow}>Bringing technologies together</p>
+    <h2 class={`${h2} mt-2`}>Integrated engineering solutions, not isolated software tools</h2>
+    <p class="mt-5 font-body text-base leading-relaxed text-slate-600">A CFD model may provide detailed insight into equipment behaviour. A process model may help assess the wider process impact. A reduced-order model may make results faster to evaluate across operating conditions. A customised application may then make the workflow accessible to a larger engineering team. FluiDimensions brings these technologies together with engineering understanding to develop solutions around the problem being addressed.</p>
   </section>
 
-  <div class="mt-16 flex flex-wrap gap-4">
-    <a href="/contact/#training-enquiries" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-accent px-6 font-heading text-sm font-semibold text-white shadow-lg shadow-accent/20 transition hover:-translate-y-0.5 hover:bg-accent-dark">Ask about software or training <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" /></a>
+  <div class="mt-20 grid gap-5 md:grid-cols-2">
+    <div class="rounded-2xl bg-primary p-8 text-white"><h2 class="font-heading text-xl font-bold">Discuss an engineering challenge</h2><p class="mt-3 text-sm leading-relaxed text-slate-300">Have a process, equipment or engineering problem you would like to explore?</p><a href="/contact/#business-enquiries" class="mt-6 inline-flex min-h-11 items-center rounded-lg bg-accent px-6 font-heading text-sm font-semibold text-white hover:bg-accent-dark">Start a conversation</a></div>
+    <div class="rounded-2xl border border-slate-200 bg-sky-50 p-8"><h2 class="font-heading text-xl font-bold text-primary">Enquire about Siemens software &amp; training</h2><p class="mt-3 text-sm leading-relaxed text-slate-600">Looking for information about licensing, training or a proof-of-concept? Talk to our team about your requirements.</p><a href="/contact/#training-enquiries" class="mt-6 inline-flex min-h-11 items-center rounded-lg border border-secondary px-6 font-heading text-sm font-semibold text-secondary hover:bg-white">Software &amp; training enquiry</a></div>
   </div>
 </PageLayout>

@@ -1,0 +1,490 @@
+<title>FluiDimensions Website</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout concept: a standard, light corporate website. White and soft-blue sections, one primary blue,
+   one typeface (Inter), plain cards, conventional header and footer. No logo mark, no dark bands. */
+:root{
+  --bg:#FFFFFF; --surface:#FFFFFF; --alt:#F5F8FC; --surface-2:#EEF3FA; --head:#0F2A4D; --ink:#334155; --muted:#5B6B80; --line:#E2E8F0;
+  --accent:#1D63C8; --accent-d:#174FA3; --on-accent:#FFFFFF; --link:#1D63C8; --tint:#EAF2FC;
+  --navy:#EAF2FC; --on-navy:#0F2A4D; --on-navy-muted:#4A5B73; --ok:#15803D; --warn:#B45309;
+  --f-display:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --f-mono:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --shadow:0 1px 2px rgba(15,42,77,.05),0 6px 20px rgba(15,42,77,.07);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1.0625rem;line-height:1.7;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--surface)}
+a{color:var(--link);text-underline-offset:3px}
+a:hover{color:var(--accent-d)}
+:focus-visible{outline:3px solid #7FB0F0;outline-offset:2px;border-radius:4px}
+img,svg{max-width:100%}
+.wrap{width:100%;max-width:1200px;margin-inline:auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--f-display);color:var(--head);margin:0;text-wrap:balance;letter-spacing:-.015em}
+h1{font-size:clamp(2.1rem,4.6vw,3.35rem);line-height:1.12;font-weight:700;letter-spacing:-.025em}
+h2{font-size:clamp(1.6rem,2.9vw,2.2rem);line-height:1.2;font-weight:700}
+h3{font-size:1.2rem;line-height:1.3;font-weight:600}
+h4{font-size:1.02rem;line-height:1.35;font-weight:600}
+p{margin:0}
+.lead{font-size:clamp(1.08rem,1.5vw,1.22rem);line-height:1.65;color:var(--muted);max-width:64ch}
+.prose{max-width:68ch}
+.prose p+p{margin-top:1rem}
+.eyebrow{font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+/* header */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;gap:1rem;min-height:72px}
+.brand{text-decoration:none;color:var(--head);margin-right:auto;font:700 1.45rem var(--f-display);letter-spacing:-.02em}
+.brand span{color:var(--accent)}
+.nav{display:none;align-items:center;gap:.1rem}
+.nav>a,.nav>.dd>button{font:500 .94rem var(--f-body);color:var(--ink);background:none;border:0;padding:.6rem .8rem;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem}
+.nav>a:hover,.nav>.dd>button:hover{color:var(--accent);background:var(--alt)}
+.nav .on{color:var(--accent);font-weight:600}
+.dd{position:relative}
+.dd .menu{display:none;position:absolute;left:0;top:100%;min-width:300px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:.5rem;z-index:5}
+.dd.open .menu,.dd:hover .menu,.dd:focus-within .menu{display:block}
+.menu a{display:block;padding:.6rem .8rem;border-radius:8px;color:var(--ink);text-decoration:none;font-size:.94rem;line-height:1.4}
+.menu a:hover{background:var(--alt);color:var(--accent)}
+.menu.two{min-width:440px;columns:2;column-gap:.3rem}
+.menu.two a{break-inside:avoid}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:48px;padding:.65rem 1.4rem;border-radius:8px;font:600 .96rem var(--f-display);text-decoration:none;border:1.5px solid transparent;cursor:pointer;transition:background .15s,border-color .15s}
+.btn.pri{background:var(--accent);color:var(--on-accent)}
+.btn.pri:hover{background:var(--accent-d);color:var(--on-accent)}
+.btn.ghost{background:#fff;color:var(--accent);border-color:var(--accent)}
+.btn.ghost:hover{background:var(--tint);color:var(--accent-d)}
+.btn.sm{min-height:42px;padding:.45rem 1.1rem;font-size:.92rem}
+.burger{display:inline-flex;min-height:44px;min-width:44px;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line);border-radius:8px;color:var(--head);cursor:pointer}
+.hdr .cta{display:none}
+.mob{display:none;border-top:1px solid var(--line);background:#fff;max-height:calc(100dvh - 74px);overflow:auto}
+.mob.open{display:block}
+.mob a,.mob summary{display:block;padding:.85rem 0;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:500;cursor:pointer;list-style:none}
+.mob details a{padding-left:1rem;font-weight:400;font-size:.97rem}
+@media(min-width:1100px){.nav{display:flex}.burger{display:none}.hdr .cta{display:inline-flex}.mob{display:none!important}}
+.proto{background:#FFF8E6;color:#6B4E00;font-size:.82rem;line-height:1.5;border-bottom:1px solid #F1E2B5}
+.proto .wrap{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;padding-block:.5rem}
+.proto b{font-weight:600}
+/* sections */
+main{display:block;min-height:60vh}
+.sec{padding-block:clamp(3rem,6vw,5.2rem)}
+.sec.alt{background:var(--alt)}
+.sec.navy{background:var(--tint)}
+.sec-h{display:grid;gap:.8rem;margin-bottom:clamp(1.8rem,3vw,2.8rem);max-width:760px}
+.pagehead{padding-block:clamp(2.2rem,4.5vw,3.8rem);background:linear-gradient(180deg,#F3F8FF 0%,#FFFFFF 100%);border-bottom:1px solid var(--line)}
+.pagehead .wrap{display:grid;gap:1rem}
+.crumbs{font-size:.85rem;color:var(--muted);display:flex;gap:.5rem;flex-wrap:wrap}
+.crumbs a{color:var(--muted);text-decoration:none}
+.crumbs a:hover{color:var(--accent)}
+.dim{display:none}
+.grid{display:grid;gap:1.25rem}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:1.5rem;display:flex;flex-direction:column;gap:.75rem;min-width:0;box-shadow:0 1px 2px rgba(15,42,77,.04)}
+.card.link{text-decoration:none;color:var(--ink);transition:box-shadow .15s,transform .15s,border-color .15s}
+.card.link:hover{box-shadow:var(--shadow);transform:translateY(-2px);border-color:#C9D7EA}
+.card.link h3{color:var(--head)}
+.card p{color:var(--muted);font-size:.98rem;line-height:1.62}
+.card .more{margin-top:auto;font:600 .9rem var(--f-display);color:var(--accent);display:flex;gap:.35rem;align-items:center}
+.ico{width:48px;height:48px;border-radius:10px;background:var(--tint);display:grid;place-items:center;color:var(--accent)}
+.ico svg{width:24px;height:24px}
+.tag{display:inline-block;font-size:.74rem;font-weight:500;padding:.2rem .65rem;border-radius:999px;background:var(--tint);color:var(--accent-d)}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem}
+.badge-new{background:#FEF3C7;color:#92400E}
+ul.tick{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+ul.tick li{padding-left:1.6rem;position:relative}
+ul.tick li::before{content:"";position:absolute;left:0;top:.5em;width:.95rem;height:.95rem;border-radius:50%;background:var(--tint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.4l2.3 2.3 4.7-5' fill='none' stroke='%231D63C8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
+.cols{display:grid;gap:clamp(1.5rem,4vw,4rem);grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));align-items:start}
+.split{display:grid;gap:clamp(1.5rem,4vw,4rem);grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));align-items:center}
+/* hero */
+.hero{padding-block:clamp(2.8rem,6vw,5rem);background:linear-gradient(180deg,#F1F7FF 0%,#FFFFFF 100%);border-bottom:1px solid var(--line)}
+.hero .wrap{display:grid;gap:clamp(2rem,4vw,3.5rem);grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));align-items:center}
+.hero .copy{display:grid;gap:1.3rem;min-width:0}
+.hero .tagline{font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.hero .row{display:flex;gap:.8rem;flex-wrap:wrap}
+.cappanel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:1.4rem;display:grid;gap:1rem}
+.cappanel .ph-h{font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cappanel .tiles{display:grid;gap:.8rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+.cappanel a{display:flex;gap:.7rem;align-items:center;padding:.8rem .9rem;border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--head);font:600 .9rem/1.3 var(--f-display);background:#fff}
+.cappanel a:hover{border-color:var(--accent);background:var(--tint)}
+.cappanel .ico{width:38px;height:38px;flex:none}
+.cappanel .ico svg{width:20px;height:20px}
+/* proof etc */
+.proof{border-left:3px solid var(--accent);padding-left:1rem;display:grid;gap:.35rem}
+.big{font:700 2rem/1.1 var(--f-display);color:var(--head)}
+.steps{display:grid;gap:1.1rem;counter-reset:s;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:1.4rem;display:grid;gap:.5rem}
+.step::before{counter-increment:s;content:counter(s);width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font:600 .95rem var(--f-display)}
+.sec.navy .step p,.step p{color:var(--muted)}
+.stage{display:grid;gap:.3rem;padding:1rem 1.2rem;border:1px solid var(--line);border-radius:12px;background:#fff;position:relative}
+.stage:not(:last-child)::after{content:"";position:absolute;left:1.6rem;bottom:-1.1rem;width:2px;height:1.1rem;background:#BFD3EE}
+.stages{display:grid;gap:1.1rem}
+.ph{border-radius:12px;min-height:240px;display:grid;place-content:center;gap:.3rem;text-align:center;padding:1.2rem;color:var(--muted);font-size:.85rem;background:linear-gradient(135deg,#EAF2FC,#F5F8FC);border:1px solid var(--line)}
+.ph b{font-weight:600;color:var(--head)}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:.85rem 1rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--alt)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+.tbl table{min-width:640px}
+details.acc{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+details.acc+details.acc{margin-top:.75rem}
+details.acc summary{cursor:pointer;padding:1.05rem 1.25rem;font:600 1.05rem var(--f-display);color:var(--head);list-style:none;display:flex;justify-content:space-between;gap:1rem;align-items:center}
+details.acc summary:hover{background:var(--alt)}
+details.acc summary::after{content:"+";font:400 1.5rem var(--f-display);color:var(--accent)}
+details.acc[open] summary::after{content:"–"}
+details.acc .in{padding:.2rem 1.25rem 1.4rem;display:grid;gap:1rem}
+details.acc h5{margin:.2rem 0 .3rem;font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.note{border:1px solid #F2D58A;border-left:4px solid #E3A008;background:#FFFAEB;border-radius:8px;padding:.9rem 1.1rem;font-size:.93rem;color:#5F4308}
+.quote{font:600 clamp(1.25rem,2.2vw,1.6rem)/1.4 var(--f-display);color:var(--head);max-width:32ch}
+.band-cta{background:var(--tint);color:var(--ink);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);display:grid;gap:1.1rem}
+.band-cta h2{color:var(--head)}
+.band-cta p{color:var(--muted);max-width:60ch}
+footer{background:var(--alt);color:var(--muted);padding-block:3.2rem 2rem;font-size:.94rem;border-top:1px solid var(--line)}
+footer .fg{display:grid;gap:2rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+footer h4{color:var(--head);font-size:.85rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.8rem}
+footer a{display:block;color:var(--muted);text-decoration:none;padding:.25rem 0}
+footer a:hover{color:var(--accent)}
+footer .legal{margin-top:2rem;padding-top:1.2rem;border-top:1px solid var(--line);display:flex;gap:1rem;flex-wrap:wrap;justify-content:space-between;font-size:.84rem}
+/* forms / tabs */
+.tabs{display:flex;gap:.5rem;flex-wrap:wrap}
+.tab{font:500 .94rem var(--f-display);padding:.6rem 1.15rem;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;min-height:44px}
+.tab:hover{border-color:var(--accent);color:var(--accent)}
+.tab[aria-selected="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+form.f{display:grid;gap:1.1rem}
+.fld{display:grid;gap:.4rem}
+.fld label{font-size:.88rem;font-weight:600;color:var(--head)}
+.fld input,.fld select,.fld textarea{font:inherit;font-size:1rem;padding:.75rem .9rem;border:1px solid #CBD5E1;border-radius:8px;background:#fff;color:var(--ink);min-height:46px;width:100%}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--accent);outline:3px solid #CFE0F8}
+.ok-msg{border:1px solid #86C9A0;background:#F0FAF4;border-radius:8px;padding:1rem 1.2rem}
+/* design system page */
+.sw{display:grid;gap:.4rem}
+.sw i{display:block;height:64px;border-radius:10px;border:1px solid var(--line)}
+.sw b{font-size:.9rem;font-weight:600;color:var(--head)}
+.sw span{font-size:.82rem;color:var(--muted)}
+.spec{display:grid;grid-template-columns:150px 1fr;gap:1rem;align-items:baseline;padding:.9rem 0;border-bottom:1px solid var(--line)}
+.spec .k{font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:560px){.spec{grid-template-columns:1fr;gap:.2rem}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+<div class="proto"><div class="wrap"><b>Website prototype for approval.</b><span>Copy is from your document. Photos and project images are placeholders; forms are not connected.</span><label for="jump" style="margin-left:auto">Jump to page</label><select id="jump" aria-label="Jump to any page" style="font:inherit;background:#fff;color:var(--ink);border:1px solid #CBD5E1;border-radius:6px;padding:.25rem .4rem;max-width:220px"></select></div></div>
+<header class="hdr"><div class="wrap">
+  <a class="brand" href="#home" aria-label="FluiDimensions home">Flui<span>Dimensions</span></a>
+  <nav class="nav" id="nav" aria-label="Primary"></nav>
+  <a class="btn pri sm cta" href="#contact">Contact us</a>
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mob"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div><div class="mob" id="mob"></div></header>
+<main id="app"></main>
+<footer id="foot"></footer>
+<script>
+/* ---------- CONTENT (drawn from websitecentral_aboutus_vision.docx) ---------- */
+const CAPS=[
+ {id:"simulation",t:"Engineering Simulation",ic:"sim",d:"CFD, FEA, multiphase flow, combustion, heat and mass transfer, and other specialisations, applied to understand and improve equipment performance."},
+ {id:"process",t:"Chemical Engineering & Process Consulting",ic:"flask",d:"Process troubleshooting, root-cause analysis, optimisation and engineering consulting for process industries."},
+ {id:"design",t:"Engineering Design",ic:"ruler",d:"Process and equipment design, design evaluation and simulation-led optimisation."},
+ {id:"ml",t:"Machine Learning & Data Intelligence",ic:"nodes",d:"Predictive modelling, soft sensors, process monitoring and physics-and-data integration."},
+ {id:"software",t:"Software & Automation",ic:"code",d:"Custom engineering applications, automated simulation workflows and integrated engineering solutions."},
+ {id:"software",t:"Digital Engineering",ic:"layers",d:"Digital twins and integrated models that connect simulation, process models and operational data.",hash:"software"}
+];
+const INDS=[
+ {id:"chemical",t:"Chemical & Process",tag:"Engineering Better Processes. Driving Performance."},
+ {id:"pharma",t:"Pharmaceuticals",tag:"Improving Process Understanding. Enabling Better Manufacturing Decisions."},
+ {id:"cement",t:"Cement",tag:"Improving Plant Performance. Reducing Energy Consumption and Emissions."},
+ {id:"steel",t:"Steel & Metals",tag:"Engineering Smarter Production. Strengthening Performance."},
+ {id:"oil-gas",t:"Oil & Gas",tag:"Understanding Complex Engineering Challenges. Improving Equipment and Process Performance."},
+ {id:"automotive",t:"Automotive",tag:"Engineering Innovation. Advancing Product Performance."},
+ {id:"aerospace",t:"Aerospace",tag:"Engineering Precision. Advancing Performance & Reliability."},
+ {id:"marine",t:"Marine",tag:"Advancing Marine Engineering. Enhancing Vessel Performance."},
+ {id:"food",t:"Food & Beverage",tag:"Improving Production Efficiency. Ensuring Product Consistency."}
+];
+const APPROACH=[
+ ["Understand the challenge","We start with the customer’s requirements: an operating issue, an equipment concern, a design challenge or an improvement opportunity."],
+ ["Identify the real problem","Often the underlying issue needs further investigation. We clarify it and define the problem appropriately."],
+ ["Choose the right methods","We agree objectives and deliverables, select suitable engineering methodologies and explain the proposed approach."],
+ ["Analyse and translate","Our teams analyse and develop the solution, then interpret the findings into practical engineering recommendations."]
+];
+const PROOF=[
+ {sec:"Cement",cap:"Process & equipment",big:"53% · 10% · 15%",t:"Predicted pressure-drop reductions across three duct sections",d:"A duct network optimisation study for a cement plant identified modifications with predicted pressure-drop reductions of 53%, 10% and 15%, and improved flow distribution.",to:"cement"},
+ {sec:"Cement",cap:"Software & Automation",big:"Automated",t:"Cyclone design and CFD application for a cement R&D team",d:"A custom application let plant engineers evaluate cyclone design parameters and automate simulation workflows without specialist CFD knowledge.",to:"software"},
+ {sec:"Pharmaceuticals",cap:"Simulation + Data",big:"CFD to ROM",t:"Reactor performance prediction without a new simulation each time",d:"Detailed reactor simulations were converted into reduced-order models that predict average shear, mixing time and power consumption in a custom interface.",to:"pharma"},
+ {sec:"Oil & Gas",cap:"Simulation",big:"Tank mixing",t:"Rotating jet mixing analysis for heavy-oil storage tanks",d:"Modelling of tank circulation and jet configuration, alongside work on separators, inline mixers, roasters and pool-fire consequence analysis.",to:"oil-gas"},
+ {sec:"Cement",cap:"Simulation + Design",big:"Cyclones",t:"Cyclone redesign aimed at lower pressure drop and sustained collection performance",d:"CFD predictions were validated against experimental data, and in several projects recommendations for inlet and dip-tube changes were implemented by cement plants.",to:"cement"},
+ {sec:"Pharmaceuticals",cap:"Data Intelligence · Demonstration",big:"Ferment IQ",t:"A process-intelligence demonstration for fermentation",d:"Shows how monitoring, Golden Batch comparison, machine learning and an AI process assistant can work together. Presented as a demonstration, not a validated product.",to:"pharma"}
+];
+const VALUES=[
+ ["Passion","Driven by curiosity. Inspired by engineering.","We enjoy exploring challenging engineering problems, questioning conventional approaches and discovering better ways to solve them."],
+ ["Integrity","Honesty in our words. Integrity in our work.","Trust is earned through transparency, honest communication and sound professional judgement. We stand by our recommendations."],
+ ["Commitment","Taking ownership. Delivering with purpose.","We take responsibility for understanding our customers’ challenges, value long-term relationships and stand behind the quality of our work."]
+];
+const SIEMENS=[
+ ["Computational Fluid Dynamics","Software for analysing fluid flow, heat transfer, multiphase systems, combustion and other complex flow phenomena.","Siemens Simcenter STAR-CCM+"],
+ ["FEA & Multiphysics","Structural, thermal and multiphysics analysis of component and system behaviour under different loading and operating conditions.","Siemens Simcenter 3D"],
+ ["Molecular Modelling","Molecular-level modelling and simulation to investigate molecular properties and material behaviour.","Siemens Simcenter portfolio"],
+ ["Process Modelling","Technologies for simulation, analysis and optimisation of complex process systems.","Discuss options with our team"],
+ ["System Simulation","System-level simulation of component and subsystem behaviour and interaction.","Siemens Simcenter Amesim"],
+ ["Design Engineering Tools","Tools that support product development, design evaluation and integrated engineering workflows.","Siemens engineering simulation portfolio"]
+];
+const ENGAGE=[
+ ["Software licensing & technology enquiries","We help customers explore relevant Siemens engineering software and how different solutions may address their requirements."],
+ ["Technical training","Training in engineering software, structured around fundamentals, specialised topics or application-oriented needs."],
+ ["Proof-of-concept studies","Define a relevant technical problem, demonstrate the technology and evaluate its value before a wider commitment."],
+ ["Engineering application support","Beyond software menus: modelling approaches, workflow development and interpretation of engineering results."],
+ ["Technology integration","How simulation, process modelling, data-driven methods and custom applications can work together in one workflow."]
+];
+
+/* capability pages */
+const SIM=[
+ {t:"Computational Fluid Dynamics (CFD)",s:"Understanding and improving fluid flow and transport phenomena.",d:"We use CFD to understand fluid flow and its interaction with heat transfer, mass transfer, chemical reactions and equipment geometry, to investigate performance limitations and identify design improvements.",ch:["Flow distribution, pressure drop and hydraulic performance","Heat and mass transfer limitations","Equipment performance and process bottlenecks","Flow-induced problems and design optimisation"],ap:"Process equipment, industrial furnaces, reactors, cyclones, separators, ducts, heat exchangers and other flow-related systems."},
+ {t:"Finite Element Analysis (FEA)",s:"Understanding structural behaviour. Improving equipment integrity and reliability.",d:"FEA evaluates how equipment, components and structures respond to mechanical and thermal loads, using stresses, strains, deformation and temperature distribution to assess design adequacy and failure mechanisms.",ch:["Stresses, deformation and potential structural failure","Thermal stresses and thermal cycling","Fatigue, buckling and pressure-induced stresses","Root-cause investigation of equipment failures"],ap:"Pressure vessels, reactors, columns, heat exchangers, piping and supports, furnaces and kilns, agitators and impellers, conveyors and hoppers.",note:"FEA supports engineering assessment and design decisions. It does not by itself establish equipment safety or certify design compliance; conclusions depend on inputs, assumptions, modelling and applicable design codes."},
+ {t:"Multiphase Flow & Reactor Engineering",s:"Understanding complex phase interactions. Optimising reactor performance.",d:"Modelling of gas, liquid and solid phases whose interactions govern process behaviour: phase distribution, mixing, dispersion, residence time and transport, combined with chemical engineering and equipment design.",ch:["Phase distribution, holdup and flow regimes","Bubble, droplet and particle size dynamics","Mixing, dispersion, segregation and separation","Scale-up and the influence of geometry on performance"],ap:"Bubble columns, stirred tanks, fluidised beds, slurry reactors, cyclones, separators, scrubbers, crystallisers and spray dryers."},
+ {t:"Combustion Engineering & Modelling",s:"Understanding combustion. Optimising equipment design. Improving thermal performance.",d:"Analysis of combustion integrating flow, turbulence, reactions, heat transfer and species transport, from flame behaviour and emissions to burner and furnace design, combined with process modelling.",ch:["Combustion efficiency and fuel utilisation","Flame shape, stability and heat release","Hot spots, thermal loading and NOx / CO formation","Fuel composition, hydrogen and multi-fuel effects"],ap:"Cement and lime kilns, reheating furnaces, boilers, calciners, carbon black reactors, thermal oxidisers, incinerators and flares."},
+ {t:"Heat & Mass Transfer",s:"Understanding transport phenomena. Improving thermal performance.",d:"Conduction, convection, radiation, diffusion and phase change analysed with CFD and process modelling, including thermal-structural coupling with FEA.",ch:["Non-uniform temperature and concentration","Heat and mass transfer limitations","Phase change and interphase transport","Thermal stresses and deformation"],ap:"Heat exchangers, condensers, evaporators, dryers, reactors, furnaces, kilns and gas-liquid contacting equipment."},
+ {t:"Molecular Modelling",tagnew:"Emerging capability",s:"Molecular-level insight for material and product development.",d:"Molecular modelling investigates molecular structures, interactions and the link between molecular characteristics and material properties. Through our association with CULGI, this is an emerging area we intend to develop progressively.",ch:["Molecular exploration and design","Property prediction","Study of molecular interactions"],ap:"Material development and product innovation in chemical and process industries."}
+];
+const MLCAP=[
+ ["Data-driven modelling & predictive analytics","Models that relate process variables, operating conditions and equipment performance, including surrogate models for computationally intensive simulations.",["Predictive modelling of process and equipment performance","Engineering correlations from process and simulation data","Prediction of product quality and critical parameters"]],
+ ["Process optimisation & intelligent operations","Machine learning and optimisation to find better operating strategies within constraints and competing objectives.",["Operating conditions, energy efficiency and throughput","Multi-objective optimisation of productivity, quality, energy and emissions","Operating windows and process constraints"]],
+ ["Predictive maintenance & equipment monitoring","Using equipment data to establish normal behaviour and detect deterioration.",["Performance assessment and operating trends","Abnormal behaviour and deterioration","Degradation prediction where suitable history exists"]],
+ ["Anomaly detection & fault diagnosis","Patterns across many variables that single measurements do not reveal.",["Abnormal conditions and deviations","Relationships between variables during upsets","Support for root-cause troubleshooting"]],
+ ["Hybrid modelling & digital twins","Physics-based, data-driven and hybrid models combined while keeping a link to engineering principles.",["Physics-informed machine learning","Reduced-order and surrogate models from CFD","Digital twins for prediction, analysis and optimisation"]],
+ ["Soft sensors, golden batch & dashboards","Estimate hard-to-measure variables and compare operations against high-performing references.",["Soft sensors and Golden Batch analysis","Golden reference periods","Integrated dashboards and operator advisory"]]
+];
+const STAGES=[
+ ["Offline analysis and model development","Historical data analysis, soft sensors, golden batches and reference periods, and validated predictive models."],
+ ["Operator advisory mode","Models give recommendations while existing procedures and control systems stay in place and operators keep responsibility."],
+ ["Parallel performance validation","Models run alongside the plant and are compared with actual decisions and outcomes over an extended period."],
+ ["Supervised and assisted automation","With confidence established, control actions are introduced with operator oversight, constraints and safety safeguards."],
+ ["Autonomous process optimisation","Validated models make and implement decisions within defined operating limits, safety requirements and control-system safeguards."]
+];
+const SWCAP=[
+ ["Automated engineering simulation workflows","From geometry preparation and meshing to solving, post-processing and reporting, with engineering knowledge built in.",["Application-specific interfaces and meshing strategies","Automated physics, boundary conditions and solver settings","Automatic graphs, images, indicators and reports"]],
+ ["Custom engineering software","Specialised applications where standard commercial software does not fit.",["Reactor design and simulation codes in Python","Design, analysis and calculation tools","Integration with commercial engineering software"]],
+ ["Machine learning applications","Models deployed through interfaces that engineers and operators can use.",["Interactive applications for predictions and recommendations","Streamlit-based tools","Soft sensors, analytics and optimisation in one workflow"]],
+ ["Industrial data integration","Connecting analytics to plant databases and control environments.",["Plant databases, DCS and SCADA connectivity","Data exchange between systems and analytical applications","A development path towards supervised control"]],
+ ["Digital twins & software integration","Equipment-level and process-level models combined with data-driven models.",["CFD results with process models","Integration with process simulation such as gPROMS","Molecular modelling applications, including Siemens CULGI"]],
+ ["Advanced software technologies","Modern frameworks applied to engineering problems.",["Python, FastAPI, Flask, Django, Java, APIs","TensorFlow, PyTorch, scikit-learn, XGBoost","Generative and agentic AI tooling"]]
+];
+const INEFF=[
+ ["Equipment & process design","Suboptimal geometry, configuration and sizing, causing poor performance and higher energy use.","Equipment design, CFD, FEA, process modelling"],
+ ["Operating conditions","Non-optimal temperature, pressure, flow, impeller speed, residence time or utilities.","Process modelling, CFD, data-driven modelling"],
+ ["Process variability & stability","Fluctuations causing instability, inconsistent quality and lower yield.","Data-driven and process modelling, CFD"],
+ ["Utility & energy efficiency","Inefficient use of steam, cooling water, compressed air and electricity.","CFD, process and data-driven modelling"],
+ ["Equipment integrity & reliability","Degradation, structural failures and unplanned downtime.","FEA, equipment design, CFD"],
+ ["Instrumentation & control","Sensor gaps, measurement errors and weak control strategies.","Data-driven and process modelling"],
+ ["Monitoring & predictive intelligence","Limited visibility, trend analysis and prediction of deviations.","Data-driven and process modelling"],
+ ["Decision-making & response","Delayed or suboptimal responses to deviations, causing off-spec production.","Data-driven modelling, predictive analytics"]
+];
+const EQUIP=["Bubble columns","Stirred tanks and reactors","Fluidised beds","Slurry reactors","Gas-liquid separators","Cyclones and hydrocyclones","Crystallisers","Burners and combustion chambers","Furnaces, kilns and calciners","Heat exchangers","Dryers, evaporators, condensers","Mixers and dispersers"];
+
+/* industry pages */
+const IND={
+ chemical:{intro:["Chemical process industries face challenges involving molecules, materials, chemistry, fluid flow, heat and mass transfer, reactions and equipment performance. Understanding these interactions is essential to reliable, efficient and consistent operation.","Our work spans bulk chemicals, specialty chemicals, petrochemicals and process manufacturing."],
+  areas:[
+  {t:"Create and develop: from molecules to industrial processes",p:["Evaluating feasibility of new products and process concepts","Developing configurations and operating conditions","Translating laboratory and pilot work to industrial scale"],d:["Process feasibility and proof-of-concept studies","Process models and engineering assessments","Scale-up studies and development recommendations"],note:"Molecular modelling is an emerging capability we intend to develop progressively."},
+  {t:"Design and engineer processes and equipment",p:["Inadequate mixing, flow distribution or contacting","Reactor limitations and heat or mass transfer shortfalls","High pressure drop and poor separation"],d:["Equipment sizing and configuration recommendations","Reactor, mixing and hydraulic performance assessments","Design comparisons and optimisation recommendations"]},
+  {t:"Improve performance and reduce losses",p:["Low capacity, throughput or yield","Excessive energy and utility consumption","Inefficient combustion and recurring downtime"],d:["Root-cause investigation reports","Energy and utility efficiency studies","Equipment integrity and structural analysis"]},
+  {t:"Improve quality, consistency and operational intelligence",p:["Batch-to-batch variation and instability","Limited visibility into process performance","Difficulty transferring processes across sites or scales"],d:["Sensitivity and operating-window studies","Predictive models and monitoring applications","Reduced-order models and what-if tools"]},
+  {t:"Digital twins for the process industries",p:["Physics-based process and equipment models","CFD, reduced-order and data-driven models","Operational data integration and decision-support applications"],d:["Predictive and integrated modelling solutions","Scenario evaluation tools","Digital-twin solutions tailored to the application"],note:"The scope can range from standalone predictive models to more connected digital-twin solutions."}]},
+ cement:{intro:["Cement manufacturing is energy intensive: small improvements in efficiency, combustion, equipment performance and material handling can have a significant impact on plant operation.","We address challenges across the pyro-process and associated equipment, combining process understanding, combustion modelling, equipment design and custom software."],
+  areas:[
+  {t:"Process engineering and pyro-process optimisation",p:["Integrated pyro-section performance modelling","Evaluation of operating strategies for fuel, air and raw meal distribution","Assessment of combustion and calcination performance"],d:["Integrated process models","Analysis of bottlenecks and operating constraints","Recommendations for performance improvement"]},
+  {t:"Combustion engineering and emissions reduction",p:["Validated coal combustion models for kiln burner design","Burner design involving coal, petcoke and alternative fuels","Calciner studies of raw meal, tertiary air and fuel splits for NOx reduction"],d:["Combustion and burner design assessments","Fuel and air distribution strategies","Recommendations for emissions-related improvements"]},
+  {t:"Equipment engineering and design improvement",p:["Preheater cyclones: evaluation and redesign to reduce pressure drop while improving collection efficiency","Electrostatic precipitators: guide-vane modifications for collection efficiency","Bag filters and duct networks: design evaluation for bag life and pressure loss"],d:["Equipment performance assessments","Flow-distribution and pressure-drop assessments","Inputs for equipment upgrades and redesign"],note:"In a duct network project, proposed modifications gave predicted pressure-drop reductions of 53%, 10% and 15% across three sections. In several cyclone projects, recommendations were implemented by cement plants."},
+  {t:"Modelling, simulation and analysis",p:["CFD and gas-solid and multiphase flow","Combustion and reacting-flow modelling","Heat and mass transfer and integrated system analysis"],d:["Flow, combustion and thermal performance assessments","Design comparisons and evaluation of alternatives","Engineering interpretation and recommendations"]},
+  {t:"Engineering software and automation",p:["Automated cyclone design and CFD application built for a cement producer’s R&D team","Automation of design and analysis workflows","User-friendly interfaces for specialised calculations"],d:["Custom engineering applications","Automated design and analysis workflows","Tools that make methods accessible to plant and R&D teams"]}]},
+ pharma:{intro:["Pharmaceutical manufacturing demands a high level of process control and consistency. Product quality depends on how processes behave inside reactors, bioreactors and other production equipment.","We combine chemical engineering, process modelling, CFD, equipment engineering and software development to connect engineering insight with manufacturing needs."],
+  areas:[
+  {t:"Process consistency and product quality",p:["Influence of operating conditions on performance","Mixing and temperature non-uniformity","Process sensitivity to variations in inputs"],d:["Process performance assessments","Sensitivity studies and operating-parameter evaluation","Recommendations for more consistent operation"]},
+  {t:"Reactor and bioreactor engineering",p:["Mixing, shear and flow distribution","Impeller and sparger configuration","Gas-liquid mass transfer, including oxygen transfer and CO₂ stripping"],d:["Reactor and bioreactor performance assessments","Evaluation of impeller and sparger configurations","Equipment design and operating-condition recommendations"]},
+  {t:"Scale-up, scale-down and technology transfer",p:["Differences in geometry, impellers and mixing across scales","Shear levels and local hydrodynamics","Heat and mass transfer limitations"],d:["Scale-up and scale-down assessments","Recommended operating windows","Modelling support for technology transfer"]},
+  {t:"Crystallisation and process development",p:["Mixing and flow analysis in crystallisation equipment","Temperature and concentration distribution","Scale-up effects on mixing and process conditions"],d:["Crystalliser mixing and performance assessments","Equipment configuration and operating evaluations","Modelling support for development"],note:"Presented as an engineering capability. Dryers, granulators, blenders and tablet coating are not presented as established project experience."},
+  {t:"Process modelling, continuous manufacturing and optimisation",p:["Flowsheet, steady-state and dynamic process analysis","Batch-to-continuous development","Sensitivity analysis and control strategy evaluation"],d:["Process flowsheet models","Optimisation and sensitivity studies","Inputs for monitoring and control strategies"]}]},
+ "oil-gas":{intro:["Oil and gas facilities operate with complex fluids, multiphase systems, high temperatures and pressures, and demanding safety and reliability requirements.","Our experience covers separation systems, storage tank mixing, inline mixers, multiphase reactors, roasters, flue gas desulphurisation and fire modelling, supported by capabilities developed across other process industries."],
+  areas:[
+  {t:"Oil, gas and water separation systems",p:["Two-phase and three-phase separators","Flow distribution and separation behaviour","Separator geometry and internals"],d:["Separator performance assessments","Evaluation of alternative configurations","Recommendations for design and operating improvements"]},
+  {t:"Storage tank mixing and inline mixers",p:["Rotating jet mixing in heavy-oil storage tanks","Tank circulation and jet configuration","Inline static mixer performance and pressure drop"],d:["Tank mixing assessments","Evaluation of rotating jet configurations","Inline mixer performance evaluations"]},
+  {t:"Multiphase reactors and process equipment",p:["Gas-liquid and gas-liquid-solid flow","Mixing and phase distribution","Heat and mass transfer behaviour"],d:["Multiphase reactor performance assessments","Equipment design alternatives","Recommendations for improved performance"]},
+  {t:"Combustion, roasters and thermal equipment",p:["Catalyst roaster and cooler performance","Fuel and air distribution, temperature fields","Flue gas desulphurisation flow-related performance"],d:["Combustion and thermal performance assessments","Flow and temperature distribution analysis","Recommendations for equipment improvement"]},
+  {t:"Fire modelling and thermal consequence analysis",p:["Pool fires in storage tanks and containment areas","Jet-fire modelling","Thermal radiation and heat exposure"],d:["CFD-based pool-fire and jet-fire simulations","Thermal radiation and consequence assessments","Inputs to facility safety studies and risk assessments"],note:"Fire modelling and consequence analysis are distinct from formal regulatory or safety certification services."},
+  {t:"Structural and mechanical engineering using FEA",p:["Stress and deformation analysis","Mechanical and thermal loading of equipment and supports","Design evaluation and comparison of alternatives"],d:["Structural and mechanical performance assessments","Identification of critical regions under specified loads","Design improvement recommendations"]}]}
+};
+const CAFE_TOPICS=[
+ ["Engineering and process challenges","Equipment performance, process bottlenecks, mixing, heat and mass transfer, multiphase flows, combustion."],
+ ["Simulation and advanced modelling","CFD, multiphysics, simulation strategy, validation and interpretation of results."],
+ ["Equipment design and optimisation","Design, troubleshooting, scale-up and evaluation of alternatives."],
+ ["Process modelling and digital technologies","Reduced-order modelling, machine learning, industrial AI, digital twins and automation."],
+ ["Research, innovation and new ideas","Emerging technologies, research problems and academic-industry collaboration."]
+];
+const CAFE_WHO=[["Industry professionals","Engineering, process, manufacturing, R&D and technology teams."],["Plant and equipment engineers","People looking to understand or improve equipment and process performance."],["Researchers and academics","Modelling challenges, new applications and collaborations."],["Young engineers","Students and early-career professionals curious about simulation and emerging technology."],["Organisations","Companies exploring advanced engineering solutions and digital technologies."]];
+/* ---------- RENDERING ---------- */
+const $=s=>document.querySelector(s);
+const S='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">';
+const ICON={
+ sim:S+'<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>',
+ flask:S+'<path d="M9 3h6M10 3v6l-5 9a2 2 0 001.8 3h10.4A2 2 0 0019 18l-5-9V3"/><path d="M7.5 14h9"/></svg>',
+ ruler:S+'<path d="M3 17L17 3l4 4L7 21l-4-4z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg>',
+ nodes:S+'<circle cx="5" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 6.5l3.2 4M7 17.5l3.2-4M14 11l3.3-3.7M14 13l3.3 3.7"/></svg>',
+ code:S+'<path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>',
+ layers:S+'<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5M3 17.5l9 5 9-5" opacity=".6"/></svg>'
+};
+const arrow='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const A=(id,t,cls)=>`<a${cls?` class="${cls}"`:""} href="#${id}">${t}</a>`;
+const list=a=>`<ul class="tick">${a.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+const sec=(inner,o={})=>`<section class="sec ${o.cls||""}"><div class="wrap">${o.h?`<div class="sec-h">${o.e?`<div class="eyebrow">${o.e}</div>`:""}<h2>${o.h}</h2>${o.l?`<p class="lead">${o.l}</p>`:""}</div>`:""}${inner}</div></section>`;
+const head=(o)=>`<div class="pagehead"><div class="wrap"><div class="crumbs">${A("home","Home")} / ${(o.crumbs||[]).map(c=>A(c[0],c[1])+" /").join(" ")} <span>${o.crumb||o.title}</span></div>${o.e?`<div class="eyebrow">${o.e}</div>`:""}<h1>${o.title}</h1>${o.tag?`<p class="lead" style="color:var(--ink);font-weight:500">${o.tag}</p>`:""}${o.lead?`<p class="lead">${o.lead}</p>`:""}<div class="dim"><i></i><span>${o.dim||"FluiDimensions"}</span></div></div></div>`;
+const cta=(h,p,b,to)=>sec(`<div class="band-cta"><h2>${h}</h2><p>${p}</p><div><a class="btn pri" href="#${to||"contact"}">${b||"Discuss an Engineering Challenge"} ${arrow}</a></div></div>`);
+
+function hub(){return `<div class="cappanel"><div class="ph-h">Our six capability areas</div><div class="tiles">${CAPS.map(c=>`<a href="#${c.hash||c.id}"><span class="ico">${ICON[c.ic]}</span>${c.t.replace("Chemical Engineering & Process Consulting","Process Consulting")}</a>`).join("")}</div></div>`}
+const capCard=c=>`<a class="card link" href="#${c.hash||c.id}"><div class="ico">${ICON[c.ic]}</div><h3>${c.t}</h3><p>${c.d}</p><span class="more">Explore ${arrow}</span></a>`;
+const indCard=i=>`<a class="card link" href="#${i.id}"><h3>${i.t}</h3><p>${i.tag}</p><span class="more">Industry solutions ${arrow}</span></a>`;
+const proofCard=p=>`<div class="card"><div class="tags"><span class="tag">${p.sec}</span><span class="tag">${p.cap}</span></div><div class="big" style="font-size:1.6rem">${p.big}</div><h4>${p.t}</h4><p>${p.d}</p>${A(p.to,"Read more "+arrow,"more")}</div>`;
+
+function home(){
+ return `<section class="hero"><div class="wrap"><div class="copy"><div class="tagline">Your engineering solutions &amp; digital innovation partner</div><h1>Solving Complex Engineering Challenges. Driving Better Performance.</h1><p class="lead">We combine engineering consultancy, advanced modelling and simulation, machine learning and digital technologies to solve complex technical challenges and deliver practical engineering solutions across industries.</p><div class="row"><a class="btn pri" href="#contact">Discuss an Engineering Challenge ${arrow}</a><a class="btn ghost" href="#capabilities-anchor" onclick="document.getElementById('capabilities-anchor').scrollIntoView({behavior:'smooth'});return false">Explore Our Capabilities</a></div><p class="muted" style="font-weight:500">Understand. Optimise. Innovate.</p></div><div>${hub()}</div></div></section>`
+ +sec(`<div class="grid g3">${[["Understand the problem","Sound engineering begins with the right question, before any tool is chosen."],["Apply the right engineering","Fundamental knowledge combined with appropriate analytical and digital tools."],["Deliver a practical solution","Insight translated into decisions, designs, models and tools you can use."]].map(x=>`<div class="proof"><h4>${x[0]}</h4><p class="muted">${x[1]}</p></div>`).join("")}</div>`,{cls:"alt"})
+ +`<div id="capabilities-anchor"></div>`+sec(`<div class="grid g3">${CAPS.map(capCard).join("")}</div>`,{e:"Capabilities",h:"Engineering Knowledge. Integrated Solutions.",l:"Our capabilities are not isolated services. We combine them as appropriate to address the engineering problem as a whole."})
+ +sec(`<div class="grid g3">${INDS.map(indCard).join("")}</div>`,{cls:"alt",e:"Industries",h:"Engineering Solutions for Demanding Industries",l:"Every industry has its own operating environment and performance requirements, so our approach is centred on each application rather than standardised solutions."})
+ +sec(`<div class="steps">${APPROACH.map(a=>`<div class="step"><h3>${a[0]}</h3><p>${a[1]}</p></div>`).join("")}</div>`,{cls:"navy",e:"How we work",h:"From Engineering Understanding to Practical Solutions",l:"We stay engaged from the first question to the explanation of results and the decisions they support."})
+ +sec(`<div class="grid g3">${PROOF.map(proofCard).join("")}</div><p class="muted" style="margin-top:1.2rem;font-size:.9rem">Project details are taken from your document. Each needs client permission and exact wording confirmed before publication.</p>`,{e:"Selected experience",h:"Engineering Insight Backed by Practical Experience",l:"Examples across industries and capabilities. Real project images and results replace the placeholders on the live site."})
+ +sec(`<div class="split"><div class="grid" style="gap:1.2rem"><p class="lead" style="color:var(--ink)">As a Siemens software channel partner, we help organisations explore and adopt engineering software across CFD, FEA, molecular modelling, process modelling, system simulation and design.</p><p class="muted">Software licensing enquiries, technical training, proof-of-concept studies, application support and technology integration.</p><div><a class="btn ghost" href="#technologies">Explore Engineering Technologies &amp; Software</a></div></div><div class="grid g2">${SIEMENS.slice(0,4).map(s=>`<div class="card"><h4>${s[0]}</h4><p>${s[1].split(".")[0]}.</p></div>`).join("")}</div></div>`,{cls:"alt",e:"Engineering Technologies & Software",h:"The Right Technology, Applied with Engineering Understanding"})
+ +sec(`<div class="split"><div class="grid" style="gap:1.2rem"><p class="quote">“Engineering expertise, combined with digital innovation and the right technologies, can help businesses solve complex challenges and keep improving.”</p><p class="muted">Our vision: to be the engineering solutions partner of choice for organisations striving to drive engineering and digital innovation, improve effectiveness and achieve sustainable performance.</p></div><div class="card"><div class="eyebrow">Technical leadership</div><h3>Over 25 years across industry, research and technology development</h3><p>FluiDimensions is led by a chemical engineering professional with a Ph.D. and postdoctoral research experience, with senior technical and managerial roles at UOP India and Aditya Birla Science and Technology Centre.</p>${A("about","About FluiDimensions "+arrow,"more")}</div></div>`,{e:"Vision & leadership",h:"Partners, not just providers"})
+ +sec(`<div class="grid g3">${VALUES.map(v=>`<div class="card"><div class="eyebrow">${v[0]}</div><h3>${v[1]}</h3><p>${v[2]}</p></div>`).join("")}</div>`,{cls:"alt",e:"Our values",h:"Passion. Integrity. Commitment."})
+ +sec(`<div class="grid g2"><div class="band-cta"><div class="eyebrow" style="color:var(--on-navy-muted)">Engineering Café</div><h2>Bring a Challenge. Share an Idea. Explore a Solution.</h2><p>An open, informal space for technical conversations. You do not need a fully defined project.</p><div><a class="btn pri" href="#cafe">Visit Engineering Café ${arrow}</a></div></div><div class="band-cta" style="background:var(--surface);color:var(--ink);border:1px solid var(--line)"><div class="eyebrow">Blog</div><h2 style="color:var(--ink)">Engineering insights</h2><p style="color:var(--muted)">Articles on simulation, process engineering, equipment design and digital technologies from the FluiDimensions team.</p><div><a class="btn ghost" href="#blog">Read the blog</a></div></div></div>`)
+ +cta("Have an Engineering Challenge to Solve?","Whether you need to understand a complex process, investigate equipment performance, evaluate a design or develop a technology-enabled solution, we can work with you to find a practical way forward.");
+}
+
+function about(){
+ return head({title:"About FluiDimensions",e:"About us",tag:"Solving Complex Engineering Challenges. Driving Better Performance.",lead:"We bring together engineering expertise, advanced modelling and simulation, machine learning and digital technologies to solve complex technical challenges and develop practical engineering solutions."})
+ +sec(`<div class="cols"><div class="prose"><p class="quote" style="max-width:28ch">To be the engineering solutions partner of choice.</p></div><div class="prose"><p>Our vision is to be the engineering solutions partner of choice for organisations striving to drive engineering and digital innovation, improve effectiveness, enhance efficiency and achieve sustainable performance.</p><p>We want to become a trusted partner for organisations that look to innovate, improve the way they operate and achieve lasting performance improvements.</p></div></div>`,{e:"Vision",h:"Where we are heading"})
+ +sec(`<div class="cols"><div class="prose"><p>FluiDimensions is an engineering solutions company with a strong foundation in chemical engineering, computational modelling, process engineering and technology development.</p><p>We place particular emphasis on technically challenging problems that need deeper engineering understanding rather than standard tools or routine analysis.</p></div><div class="grid">${APPROACH.map((a,i)=>`<div class="proof"><h4>${a[0]}</h4><p class="muted">${a[1]}</p></div>`).join("")}</div></div>`,{cls:"alt",e:"Who we are",h:"A multidisciplinary engineering company"})
+ +sec(`<div class="grid g3">${[["Engineering consultancy & process engineering","Assessment, analysis, troubleshooting, debottlenecking, optimisation and equipment performance improvement."],["Advanced modelling & simulation","CFD, FEA, multiphase flow, reactive flow and combustion, heat and mass transfer, molecular modelling."],["Process & equipment design","Process modelling, equipment design, design evaluation and performance assessment."],["Data-driven modelling & machine learning","Analytics, predictive modelling and data-driven approaches to engineering problems."],["Digital engineering & software","Custom engineering software, simulation integration, automation and digital workflows."],["Industries we serve","Chemicals, pharma, oil and gas, refining, cement, steel and metals, automotive, aerospace, marine, food and beverage."]].map(x=>`<div class="card"><h4>${x[0]}</h4><p>${x[1]}</p></div>`).join("")}</div>`,{e:"Capabilities",h:"What we bring together"})
+ +sec(`<div class="grid g3">${VALUES.map(v=>`<div class="card"><div class="eyebrow">${v[0]}</div><h3>${v[1]}</h3><p>${v[2]}</p></div>`).join("")}</div>`,{cls:"alt",e:"Values",h:"For us, engineering is more than a profession"})
+ +sec(`<div class="split"><div class="prose"><p>FluiDimensions is led by a chemical engineering professional with a Ph.D. and postdoctoral research experience, and over 25 years of experience across industrial engineering, research and development, and technology development.</p><p>Experience includes senior technical and managerial roles at UOP India and Aditya Birla Science and Technology Centre, alongside research collaborations, academic engagement and engineering consultancy.</p></div><div class="ph"><b>Leadership portrait</b>Photo and short biography, once supplied</div></div>`,{e:"Technical leadership",h:"Research depth and industrial experience"})
+ +cta("Let’s talk about your engineering challenge","FluiDimensions: engineering expertise, practical solutions, lasting performance.");
+}
+
+function capHead(id){const c=CAPS.find(x=>x.id===id);return head({title:c.t,e:"Engineering",crumbs:[["home","Engineering"]],crumb:c.t,lead:c.d});}
+function relCaps(ex){return sec(`<div class="grid g3">${CAPS.filter(c=>c.id!==ex).slice(0,3).map(capCard).join("")}</div>`,{cls:"alt",e:"Related capabilities",h:"Used together, not in isolation"});}
+
+function simulation(){
+ return capHead("simulation")
+ +sec(`${SIM.map((s,i)=>`<details class="acc" ${i<2?"open":""}><summary><span>${s.t}${s.tagnew?` <span class="tag badge-new">${s.tagnew}</span>`:""}</span></summary><div class="in"><p class="muted" style="font-weight:500">${s.s}</p><p>${s.d}</p><div class="cols"><div><h5>Engineering challenges we address</h5>${list(s.ch)}</div><div><h5>Typical applications</h5><p>${s.ap}</p></div></div>${s.note?`<div class="note">${s.note}</div>`:""}</div></details>`).join("")}`,{e:"Specialisations",h:"Six specialisations, each led by the engineering problem",l:"We organise simulation around technical capability, and show applications to demonstrate where each is useful. Many real problems combine several: a cement kiln may need CFD, combustion, heat transfer and reaction modelling together."})
+ +sec(`<div class="steps">${[["Problem definition","What decision does the analysis need to support?"],["Modelling strategy","Which physics, models and level of detail are appropriate?"],["Analysis and validation","Run, check against data where available, and test sensitivity."],["Engineering recommendations","Interpretation in the context of real plant behaviour."]].map(x=>`<div class="step"><h3>${x[0]}</h3><p>${x[1]}</p></div>`).join("")}</div>`,{cls:"navy",e:"Our approach",h:"Software is a tool. The offering is understanding."})
+ +relCaps("simulation")+cta("Discuss a challenging engineering problem","Bring a flow, thermal, structural or combustion question and we will help frame it.");
+}
+function ml(){
+ return capHead("ml")
+ +sec(`<div class="grid g3">${MLCAP.map(m=>`<div class="card"><h3>${m[0]}</h3><p>${m[1]}</p>${list(m[2])}</div>`).join("")}</div>`,{e:"Capabilities",h:"Transforming process data into engineering insight",l:"Machine learning is not treated as an isolated analysis activity. Insight emerges when data is interpreted in the context of the underlying physical and chemical phenomena."})
+ +sec(`<div class="cols"><div class="prose"><p>Industrial processes cannot be entrusted to automated intelligence overnight. Confidence in predictive models and recommended actions must be built through validation under real operating conditions.</p><p>Our approach follows a structured progression, so clients can evaluate the technology and move towards greater automation as confidence grows.</p></div><div class="stages">${STAGES.map((s,i)=>`<div class="stage"><div class="eyebrow">Stage ${i+1}</div><h4>${s[0]}</h4><p class="muted">${s[1]}</p></div>`).join("")}</div></div>`,{cls:"alt",e:"Progressive adoption",h:"From offline analysis to intelligent automation"})
+ +sec(`<div class="tags">${["Regression & predictive modelling","Neural networks & deep learning","SVM, trees, random forest, gradient boosting","Clustering & dimensionality reduction","Time-series & anomaly detection","Physics-informed & hybrid modelling","Reduced-order & surrogate models","Single & multi-objective optimisation"].map(t=>`<span class="tag" style="font-size:.78rem;padding:.4rem .8rem">${t}</span>`).join("")}</div>`,{e:"Techniques",h:"Methods chosen by the problem, not by fashion"})
+ +relCaps("ml")+cta("Explore what your process data can tell you","Start with a conversation about the problem and the data available.");
+}
+function design(){
+ return capHead("design")
+ +sec(`<div class="cols"><div class="prose"><p>We apply chemical engineering principles and simulation-based insight to the design, evaluation and improvement of process equipment and reactors, covering configuration, sizing, geometry development, internals, distribution arrangements and integration with the overall process.</p><p>Together with process modelling and CFD, this supports new equipment development, design improvements, scale-up studies, retrofits and performance enhancement of existing systems.</p></div><div><h5 class="eyebrow" style="margin-bottom:1rem">Equipment we evaluate and design</h5><div class="tags">${EQUIP.map(e=>`<span class="tag" style="font-size:.78rem;padding:.4rem .8rem">${e}</span>`).join("")}</div></div></div>`,{e:"Process & equipment design",h:"Design decisions backed by engineering analysis"})
+ +sec(`<div class="grid g3">${[["Equipment configuration and sizing","Geometry, internals and distribution arrangements matched to the process."],["Design evaluation and comparison","Alternatives compared on a consistent engineering basis."],["Scale-up, retrofits and improvement","Engineering input when changing scale or upgrading existing systems."]].map(x=>`<div class="card"><h3>${x[0]}</h3><p>${x[1]}</p></div>`).join("")}</div>`,{cls:"alt",e:"What we do",h:"From concept to improvement"})
+ +relCaps("design")+cta("Evaluate or improve an equipment design","Share the equipment, the performance concern and what you would like to achieve.");
+}
+function software(){
+ return capHead("software")
+ +sec(`<div class="grid g3">${SWCAP.map(m=>`<div class="card"><h3>${m[0]}</h3><p>${m[1]}</p>${list(m[2])}</div>`).join("")}</div>`,{e:"Capabilities",h:"Converting engineering knowledge into software",l:"We do not treat software as a programming exercise. Solutions are built around the engineering problem, the physics and the intended use."})
+ +sec(`<div class="cols"><div class="prose"><p>We have developed automated simulation workflows for stirred tank reactors, cyclone separators and two-phase separators used in oil and gas. Our automation experience includes integration with commercial CFD platforms such as ANSYS and STAR-CCM+, and GUI-based automation of OpenFOAM workflows.</p><p>The aim is to encapsulate engineering expertise in structured workflows that make advanced simulation more accessible, consistent and efficient.</p></div><div class="ph"><b>Workflow screenshot</b>Cyclone design application interface, once cleared for publication</div></div>`,{cls:"alt",e:"Experience",h:"Automation built from real workflows"})
+ +relCaps("software")+cta("Automate a workflow or build an engineering tool","Describe the repetitive analysis or the specialised calculation you need.");
+}
+function process(){
+ return capHead("process")
+ +sec(`<div class="grid g3">${[["Process troubleshooting & root-cause analysis","Investigating operational problems and identifying their underlying causes."],["Process & plant performance optimisation","Throughput, productivity, energy efficiency, yield and product quality."],["Equipment performance evaluation","Identifying design and operational limitations and recommending improvements."],["Process & equipment design","Process development, design evaluation, modifications and equipment improvement."],["Advanced engineering investigations","CFD, process modelling, multiphase and combustion analysis, FEA and data analytics applied to complex problems."]].map(x=>`<div class="card"><h3>${x[0]}</h3><p>${x[1]}</p></div>`).join("")}</div>`,{e:"Consulting",h:"Interpreting results in the context of the real process",l:"Engagements range from engineering interpretation within technical projects to dedicated troubleshooting, optimisation and consulting assignments."})
+ +sec(`<div class="tbl"><table><thead><tr><th>Area of inefficiency</th><th>Description</th><th>Relevant capabilities</th></tr></thead><tbody>${INEFF.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div>`,{cls:"alt",e:"Process industry inefficiency",h:"Where performance is lost, and how we help"})
+ +relCaps("process")+cta("Investigate a process or equipment problem","We will help you define it and agree how to approach it.");
+}
+
+function industries(){
+ return head({title:"Industries",e:"Industries",lead:"Our engineering capabilities are relevant wherever fluid flow, mixing, reactions, combustion, heat and mass transfer and equipment performance matter."})
+ +sec(`<div class="grid g3">${INDS.map(indCard).join("")}</div>`,{h:"Nine industries, one integrated approach"})+cta("Not sure where your challenge fits?","Tell us about the process or equipment and we will point you to the right expertise.");
+}
+function industry(id){
+ const i=INDS.find(x=>x.id===id),d=IND[id];
+ let h=head({title:i.t,e:"Industry solutions",crumbs:[["industries","Industries"]],tag:i.tag});
+ if(!d)return h+sec(`<div class="grid g2"><div class="note">Full page content for this industry is in preparation. The document supplies the headline only; capabilities such as data intelligence for steel and food and beverage are listed on the Machine Learning page.</div><div class="ph"><b>Industry image</b>Approved project or plant imagery</div></div>`,{h:"Coming next"})+sec(`<div class="grid g3">${CAPS.slice(0,3).map(capCard).join("")}</div>`,{cls:"alt",h:"Relevant capabilities"})+cta("Discuss a "+i.t+" challenge","Tell us about the process or equipment and we will help frame the problem.");
+ return h+sec(`<div class="cols"><div class="prose">${d.intro.map(p=>`<p>${p}</p>`).join("")}</div><div class="ph"><b>${i.t} image</b>Approved project or plant imagery</div></div>`,{e:"Overview",h:"Understanding the engineering behind performance"})
+ +sec(d.areas.map((a,k)=>`<details class="acc" ${k===0?"open":""}><summary><span>${a.t}</span></summary><div class="in"><div class="cols"><div><h5>Problems we can help address</h5>${list(a.p)}</div><div><h5>What this can deliver</h5>${list(a.d)}</div></div>${a.note?`<div class="note">${a.note}</div>`:""}</div></details>`).join(""),{cls:"alt",e:"Where we can help",h:"Areas of work"})
+ +(id==="pharma"?sec(`<div class="grid g2"><div class="card"><div class="tags"><span class="tag">Example</span><span class="tag">Simulation + Software</span></div><h3>CFD to fast performance prediction</h3><p>Reactor simulations at different operating volumes and impeller speeds (STAR-CCM+, Fluent) were converted into reduced-order models (Siemens ROM Builder, Python) that predict average shear, mixing time and power consumption, deployed through a Python and Streamlit interface. It helps compare available reactors for a production requirement without a full simulation each time.</p><div class="note">A model-based prediction and decision-support tool, not a live digital twin connected to plant data.</div></div><div class="card"><div class="tags"><span class="tag">Demonstration</span><span class="tag badge-new">Co-development</span></div><h3>Ferment IQ</h3><p>Monitor critical parameters, compare batches with Golden Batch references, predict KPIs with machine learning, and explore deviations with an AI process assistant and an offline simulator.</p><div class="note">Presented as a demonstration of what can be developed around your process, not as a finished, validated pharmaceutical manufacturing solution.</div></div></div>`,{e:"Advanced modelling",h:"From detailed simulation to process intelligence"}):"")
+ +sec(`<div class="grid g3">${CAPS.slice(0,3).map(capCard).join("")}</div>`,{cls:id==="pharma"?"alt":"",e:"Beyond conventional simulation",h:"Related capabilities"})
+ +cta("An engineering partner for "+i.t.toLowerCase(),"Solving Complex Engineering Challenges. Driving Better Performance.","Discuss a "+i.t+" Engineering Challenge");
+}
+
+function technologies(){
+ return head({title:"Engineering Technologies & Software",e:"Technologies",tag:"Bringing Engineering Knowledge and Technology Together to Solve Complex Industrial Challenges",lead:"Technology creates value when it is applied with a clear understanding of the engineering problem. As a Siemens software channel partner, we help organisations explore and adopt engineering software through licensing enquiries, training, proof-of-concept studies, application support and integration."})
+ +sec(`<div class="grid g3">${[["Engineering simulation & analysis","CFD, FEA, multiphase flow and particle dynamics, combustion, heat and mass transfer, multiphysics."],["Process modelling & optimisation","Flowsheet modelling, sensitivity studies, troubleshooting and integration with other tools."],["Machine learning & industrial data","Predictive models, monitoring, reduced-order and surrogate models."],["Digital twins & integration","Physics-based, CFD, reduced-order and data-driven models with operational data."],["Software development & automation","Custom applications, calculators, ROM deployment, interfaces and workflow integration."],["Molecular modelling","An emerging area developed through our association with CULGI."]].map(x=>`<div class="card"><h3>${x[0]}</h3><p>${x[1]}</p></div>`).join("")}</div>`,{e:"Technology areas",h:"Applied with engineering understanding"})
+ +sec(`<div class="grid g3">${SIEMENS.map(s=>`<div class="card"><h3>${s[0]}</h3><p>${s[1]}</p><span class="tag" style="align-self:flex-start">${s[2]}</span></div>`).join("")}</div><p class="muted" style="margin-top:1rem;font-size:.9rem">For product features, specifications and the latest information, refer to the respective Siemens product pages.</p>`,{cls:"alt",e:"Siemens engineering software",h:"Access to advanced technologies through FluiDimensions"})
+ +sec(`<div class="grid g3">${ENGAGE.map(x=>`<div class="card"><h3>${x[0]}</h3><p>${x[1]}</p></div>`).join("")}</div>`,{e:"More than software supply",h:"Helping you adopt, apply and get value"})
+ +sec(`<div class="grid g2"><div class="band-cta"><h2>Discuss an engineering challenge</h2><p>Have a process, equipment or engineering problem you would like to explore?</p><div><a class="btn pri" href="#contact">Start a conversation</a></div></div><div class="band-cta" style="background:var(--surface-2);color:var(--ink)"><h2 style="color:var(--ink)">Enquire about Siemens software &amp; training</h2><p style="color:var(--muted)">Licensing, training or a proof-of-concept? Talk to our team.</p><div><a class="btn ghost" href="#contact">Software &amp; training enquiry</a></div></div></div>`);
+}
+
+function cafe(){
+ return head({title:"Engineering Café",e:"Engineering Café",tag:"Bring a Challenge. Share an Idea. Explore a Solution.",lead:"An open, informal space for technical conversations, exchange of ideas and exploration of engineering possibilities. You don’t need a fully defined project or a ready-made scope of work."})
+ +sec(`<div class="grid g3">${CAFE_TOPICS.map(t=>`<div class="card"><h3>${t[0]}</h3><p>${t[1]}</p></div>`).join("")}</div>`,{e:"What can we discuss?",h:"Five conversation areas"})
+ +sec(`<div class="cols"><div class="grid">${CAFE_WHO.map(w=>`<div class="proof"><h4>${w[0]}</h4><p class="muted">${w[1]}</p></div>`).join("")}</div><div class="steps" style="grid-template-columns:1fr">${[["Get in touch","Tell us briefly what you would like to discuss."],["Find a convenient time","We arrange an online or in-person conversation."],["Exchange ideas","Discuss your challenge, question or area of interest."],["Explore possibilities","If there is an opportunity, we explore next steps together."]].map(x=>`<div class="step"><h4>${x[0]}</h4><p class="muted">${x[1]}</p></div>`).join("")}</div></div>`,{cls:"alt",e:"Who is it for · How it works",h:"Open to curious engineers"})
+ +sec(`<div class="cols"><div class="prose"><h2 style="margin-bottom:1rem">Let’s talk engineering</h2><p>No elaborate presentations. No need for a fully defined project. Just an open engineering conversation, with a 30 to 45 minute online discussion as a starting point.</p><div class="note" style="margin-top:1rem">We respect the confidentiality of our discussions. Please avoid sharing proprietary documents, sensitive process data or confidential customer information until appropriate confidentiality arrangements are in place.</div></div>${formBlock("cafe",[["Your name","text"],["Email address","email"],["Organisation (optional)","text"],["What would you like to discuss?","select",["Engineering or process challenge","Simulation and modelling","Equipment design","Digital technologies","Research and ideas"]],["A brief note about the topic (optional)","textarea"]],"Submit enquiry")}</div>`,{e:"Start a conversation",h:""});
+}
+function formBlock(id,fields,btn){
+ return `<form class="f card" id="f-${id}" onsubmit="return protoSubmit(event,'${id}')">${fields.map((f,i)=>`<div class="fld"><label for="${id}-${i}">${f[0]}</label>${f[1]==="textarea"?`<textarea id="${id}-${i}" rows="4"></textarea>`:f[1]==="select"?`<select id="${id}-${i}">${f[2].map(o=>`<option>${o}</option>`).join("")}</select>`:`<input id="${id}-${i}" type="${f[1]}">`}</div>`).join("")}<button class="btn pri" type="submit">${btn}</button><p class="muted" style="font-size:.82rem">Prototype form. In the live site it sends to your inbox through the form service.</p></form>`;
+}
+window.protoSubmit=function(e,id){e.preventDefault();const f=document.getElementById("f-"+id);f.innerHTML='<div class="ok-msg"><b>Thank you.</b> This is how the confirmation will look. Nothing was sent from this prototype.</div>';return false};
+
+const CONTACT=[
+ ["business","Business & Engineering",[["Full name","text"],["Email","email"],["Company / organisation","text"],["Industry","select",INDS.map(i=>i.t).concat(["Other"])],["Your engineering challenge","textarea"]],"Send enquiry"],
+ ["training","Software & Training",[["Full name","text"],["Email","email"],["Organisation","text"],["Area of interest","select",["Siemens engineering software","Technical training","Proof-of-concept study","Integration / application support"]],["Your enquiry","textarea"]],"Send enquiry"],
+ ["careers","Careers",[["Full name","text"],["Email","email"],["Role or area of interest","text"],["Link to your resume or profile","url"],["Cover note (optional)","textarea"]],"Submit application"],
+ ["general","General",[["Full name","text"],["Email","email"],["Message","textarea"]],"Send message"]
+];
+function contact(){
+ return head({title:"Contact FluiDimensions",e:"Contact",lead:"Choose the kind of enquiry so it reaches the right person."})
+ +sec(`<div class="tabs" role="tablist" id="ctabs">${CONTACT.map((c,i)=>`<button class="tab" role="tab" aria-selected="${i===0}" data-k="${c[0]}">${c[1]}</button>`).join("")}</div><div style="margin-top:1.6rem;max-width:720px" id="cpanel">${formBlock(CONTACT[0][0],CONTACT[0][2],CONTACT[0][3])}</div><p class="muted" style="margin-top:1.4rem;font-size:.9rem">Engineering Café is separate: ${A("cafe","start an open conversation")} without a project brief.</p>`);
+}
+function blog(){
+ return head({title:"Blog",e:"Engineering insights",lead:"Articles on simulation, process engineering, equipment design, machine learning and digital technologies from the FluiDimensions team."})
+ +sec(`<div class="grid g3">${[1,2,3].map(i=>`<div class="card"><div class="ph" style="min-height:140px"><b>Article image</b></div><div class="eyebrow">Date · Topic</div><h3>Article title appears here</h3><p>A two-sentence summary written by the author in the editor appears on this card.</p></div>`).join("")}</div><div class="note" style="margin-top:1.4rem">The blog is a real section of the site at <b>/blog/</b>, linked from the main menu and the footer. Posts are written and published in the FluiDimensions editor, and appear here about a minute after publishing. This prototype shows placeholder cards because there are no published articles yet.</div>`,{e:"Latest",h:"Articles"});
+}
+function dsys(){
+ const sw=[["--head","Heading blue","Titles and headings"],["--ink","Body text","Paragraphs"],["--accent","Primary blue","Buttons and links"],["--tint","Soft blue","Highlights and bands"],["--alt","Section background","Alternate sections"],["--line","Border","Cards and dividers"]];
+ return head({title:"Design system",e:"Prototype guide",lead:"The choices behind the look, and the standard website elements proposed in addition to your document."})
+ +sec(`<div class="grid g3">${sw.map(s=>`<div class="sw"><i style="background:var(${s[0]})"></i><b>${s[1]}</b><span>${s[2]}</span></div>`).join("")}</div>`,{e:"Colour",h:"A light palette with one primary blue",l:"White and soft-blue sections with a single primary colour for buttons and links, so no capability or industry is highlighted over another. The exact blue can be matched to your brand colours."})
+ +sec(`<div class="prose"><div class="spec"><div class="k">H1 · Inter Bold 54</div><div style="font:800 clamp(2rem,4vw,3rem)/1.05 var(--f-display);letter-spacing:-.03em">Solving Complex Engineering Challenges</div></div><div class="spec"><div class="k">H2 · Inter Bold 35</div><h2>Engineering Knowledge. Integrated Solutions.</h2></div><div class="spec"><div class="k">H3 · Inter Semibold 19</div><h3>Process troubleshooting and root-cause analysis</h3></div><div class="spec"><div class="k">Subtitle · Inter 20</div><p class="lead">A short, plain statement that tells the reader what this page is for.</p></div><div class="spec"><div class="k">Body · Inter 17</div><p>Body copy is set at a comfortable 17px with generous line spacing, limited to roughly 65 characters per line so long technical text stays readable.</p></div><div class="spec"><div class="k">Label · Inter 13</div><div class="eyebrow">Capabilities</div></div></div>`,{cls:"alt",e:"Typography",h:"A clear hierarchy: title, subtitle, body, label",l:"Inter is a widely used, highly readable typeface for business websites. One family in several weights keeps the site consistent and fast to load."})
+ +sec(`<div class="grid g2"><div class="card"><h3>Applied across the site</h3>${list(["One H1 per page, then H2 sections and H3 items","A short subtitle under every title","Consistent card, spacing and button styles","Large tap targets and visible keyboard focus","Reduced motion respected; no flashing animation","Real project images instead of stock photos where available"])}</div><div class="card"><h3>Proposed additions to your document</h3>${list(["Case studies and projects page, with the Challenge / Approach / Insight / Value format","Technical publications page (your document refers to publications per industry)","Careers page (resume link for now; uploads need a paid form plan)","Terms of use, accessibility statement and cookie notice","FAQ for common questions on engagement, confidentiality and scope","Custom 404, sitemap, search and breadcrumbs","Partner badge for the Siemens channel partnership","LinkedIn and company details in the footer once confirmed"])}</div></div>`,{e:"Standards",h:"What a professional engineering site includes"});
+}
+
+const PAGES={home,about,industries,technologies,cafe,contact,blog,simulation,ml,design,software,process,"design-system":dsys};
+INDS.forEach(i=>PAGES[i.id]=()=>industry(i.id));
+
+/* ---------- NAV / FOOTER / ROUTER ---------- */
+const ENG=CAPS.filter((c,i)=>i<5);
+function nav(){
+ const dd=(label,items,two)=>`<div class="dd"><button type="button" aria-haspopup="true">${label}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></button><div class="menu${two?" two":""}">${items.map(i=>A(i.id,i.t)).join("")}</div></div>`;
+ $("#nav").innerHTML=`${A("home","Home")}${A("about","About")}${dd("Engineering",ENG)}${dd("Industries",INDS,true)}${A("technologies","Technologies & Software")}${A("cafe","Engineering Café")}${A("blog","Blog")}`;
+ $("#mob").innerHTML=`<div class="wrap">${A("home","Home")}${A("about","About")}<details><summary>Engineering</summary>${ENG.map(i=>A(i.id,i.t)).join("")}</details><details><summary>Industries</summary>${INDS.map(i=>A(i.id,i.t)).join("")}</details>${A("technologies","Technologies & Software")}${A("cafe","Engineering Café")}${A("blog","Blog")}<div style="padding:1rem 0">${A("contact","Contact","btn pri")}</div></div>`;
+ document.querySelectorAll(".dd>button").forEach(b=>b.addEventListener("click",()=>b.parentElement.classList.toggle("open")));
+ $("#burger").addEventListener("click",()=>{const m=$("#mob");const o=m.classList.toggle("open");$("#burger").setAttribute("aria-expanded",o)});
+}
+function foot(){
+ $("#foot").innerHTML=`<div class="wrap"><div class="fg"><div><b style="color:var(--head);font-size:1.3rem;letter-spacing:-.02em">Flui<span style="color:var(--accent)">Dimensions</span></b><p style="margin-top:.6rem">Solving Complex Engineering Challenges. Driving Better Performance.</p><p style="margin-top:.8rem;font-weight:600;color:var(--head)">Understand. Optimise. Innovate.</p></div><div><h4>Engineering</h4>${ENG.map(i=>A(i.id,i.t)).join("")}</div><div><h4>Industries</h4>${INDS.slice(0,5).map(i=>A(i.id,i.t)).join("")}${A("industries","All industries →")}</div><div><h4>Company</h4>${A("about","About")}${A("technologies","Technologies & Software")}${A("cafe","Engineering Café")}${A("blog","Blog")}${A("contact","Contact")}${A("design-system","Design system (prototype)")}</div></div><div class="legal"><span>© FluiDimensions. All rights reserved.</span><span>Privacy Policy · Terms · Accessibility</span></div></div>`;
+}
+function route(){
+ let id=(location.hash||"#home").slice(1);if(!PAGES[id])id="home";
+ $("#app").innerHTML=PAGES[id]();
+ document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+id));
+ $("#mob").classList.remove("open");document.querySelectorAll(".dd").forEach(d=>d.classList.remove("open"));
+ window.scrollTo({top:0,behavior:"instant"});
+ if(id==="contact"){$("#ctabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(!b)return;document.querySelectorAll("#ctabs .tab").forEach(t=>t.setAttribute("aria-selected",t===b));const c=CONTACT.find(x=>x[0]===b.dataset.k);$("#cpanel").innerHTML=formBlock(c[0],c[2],c[3])})}
+}
+nav();foot();route();
+window.addEventListener("hashchange",route);
+/* page jump (prototype only) */
+(function(){const sel=document.getElementById("jump");const groups=[["Main",[["home","Home"],["about","About"],["technologies","Technologies & Software"],["cafe","Engineering Café"],["blog","Blog"],["contact","Contact"],["design-system","Design system"]]],["Engineering",ENG.map(c=>[c.id,c.t])],["Industries",[["industries","All industries"]].concat(INDS.map(i=>[i.id,i.t]))]];
+sel.innerHTML=groups.map(g=>`<optgroup label="${g[0]}">${g[1].map(p=>`<option value="${p[0]}">${p[1]}</option>`).join("")}</optgroup>`).join("");
+sel.addEventListener("change",()=>{location.hash="#"+sel.value});
+window.addEventListener("hashchange",()=>{const id=(location.hash||"#home").slice(1);if([...sel.options].some(o=>o.value===id))sel.value=id});})();
+</script>

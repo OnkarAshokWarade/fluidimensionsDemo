@@ -45,3 +45,13 @@ Written to match what the site does today (Web3Forms for enquiries, Vercel hosti
 - [ ] Confirm which laws to cite (it mentions India's DPDP Act 2023 and the GDPR) and whether a cookie-consent banner is needed once Analytics is on.
 - [ ] Update the policy whenever forms, analytics or hosting providers change (for example if Web3Forms is replaced, or resume uploads are enabled).
 - [ ] Delete `draft: true` for `privacyPage` in `src/data/site.js` to publish it.
+
+## Document-based content (added from websitecentral_aboutus_vision.docx)
+Pages now carry real content condensed from your document. These need your sign-off before publishing (each page is still `draft`, so `noindex`).
+- [ ] **Cement:** the predicted pressure-drop reductions (53%, 10%, 15%), "recommendations implemented by cement plants", and the automated cyclone design app. Confirm client permission and wording.
+- [ ] **Pharmaceuticals:** the reactor reduced-order model example and Ferment IQ (labelled a demonstration). Confirm images and wording.
+- [ ] **Oil & Gas:** separators, rotating jet tank mixing, roasters, FGD, fire modelling (distinguished from safety certification), FEA. Confirm exactly what was done on roasters and FGD.
+- [ ] **Siemens:** product names on Technologies & Software (STAR-CCM+, Simcenter 3D, Amesim, CULGI) are taken from your document. Confirm the partner scope.
+- [ ] **Leadership:** Ph.D., 25+ years, UOP India and Aditya Birla Science and Technology Centre. Confirm wording; add a name, photo and biography if wanted.
+- [ ] **Steel & Metals, Automotive, Aerospace, Marine, Food & Beverage:** only the headline and generic application areas exist. Supply full content if you want full pages.
+- [ ] Remove any claim you cannot support; condensed copy is in `src/data/doc.js`.

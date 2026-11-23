@@ -1,0 +1,193 @@
+---
+import { Icon } from 'astro-icon/components';
+import Cta from './Cta.astro';
+import { CAPS, SIM, MLCAP, STAGES, SWCAP, INEFF, EQUIP, IND, INDS, STUB_AREAS } from '../../data/doc';
+import { capabilityPages } from '../../data/site';
+
+interface Props { kind: 'capability' | 'industry'; id: string }
+const { kind, id } = Astro.props;
+
+const capPath: Record<string, string> = { simulation: '/engineering-simulation/', process: '/chemical-engineering-process-consulting/', design: '/engineering-design/', ml: '/machine-learning-data-intelligence/', software: '/software-automation/' };
+const related = CAPS.filter((c) => c.id !== id && c.t !== 'Digital Engineering').slice(0, 3);
+const h2 = 'font-heading text-2xl font-bold text-primary sm:text-3xl';
+const eyebrow = 'text-sm font-bold uppercase tracking-widest text-accent';
+const card = 'rounded-2xl border border-slate-200 bg-white p-6 shadow-sm';
+const tick = 'space-y-2.5 font-body text-[0.95rem] leading-relaxed text-slate-600';
+const industry = kind === 'industry' ? IND[id as keyof typeof IND] : null;
+const indMeta = INDS.find((i) => i.id === id);
+---
+{kind === 'capability' && id === 'simulation' && (
+  <>
+    <section>
+      <p class={eyebrow}>Specialisations</p>
+      <h2 class={`${h2} mt-2`}>Six specialisations, each led by the engineering problem</h2>
+      <p class="mt-4 max-w-3xl font-body text-base leading-relaxed text-slate-600">We organise simulation around technical capability and show applications to demonstrate where each is useful. Many real problems combine several: a cement kiln may need CFD, combustion, heat transfer and reaction modelling together.</p>
+      <div class="mt-8 space-y-3">
+        {SIM.map((s, i) => (
+          <details class="group rounded-2xl border border-slate-200 bg-white shadow-sm" open={i < 2}>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 font-heading text-lg font-semibold text-primary">
+              <span>{s.t} {s.tagnew && <span class="ml-2 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">{s.tagnew}</span>}</span>
+              <span class="text-2xl text-accent transition group-open:rotate-45" aria-hidden="true">+</span>
+            </summary>
+            <div class="space-y-5 px-6 pb-7">
+              <p class="font-heading text-base font-medium text-slate-700">{s.s}</p>
+              <p class="font-body text-base leading-relaxed text-slate-600">{s.d}</p>
+              <div class="grid gap-6 md:grid-cols-2">
+                <div><p class="mb-2 text-xs font-bold uppercase tracking-widest text-secondary">Engineering challenges we address</p><ul class={tick}>{s.ch.map((c) => <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"></span>{c}</li>)}</ul></div>
+                <div><p class="mb-2 text-xs font-bold uppercase tracking-widest text-secondary">Typical applications</p><p class="font-body text-[0.95rem] leading-relaxed text-slate-600">{s.ap}</p></div>
+              </div>
+              {s.note && <p class="rounded-lg border-l-4 border-amber-400 bg-amber-50 px-4 py-3 text-sm text-amber-900">{s.note}</p>}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+    <section class="mt-20">
+      <p class={eyebrow}>Our approach</p>
+      <h2 class={`${h2} mt-2`}>Software is a tool. The offering is understanding.</h2>
+      <ol class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {[['Problem definition', 'What decision does the analysis need to support?'], ['Modelling strategy', 'Which physics, models and level of detail are appropriate?'], ['Analysis and validation', 'Run, check against data where available and test sensitivity.'], ['Engineering recommendations', 'Interpretation in the context of real plant behaviour.']].map(([t, d], i) => (
+          <li class={card}><span class="flex h-9 w-9 items-center justify-center rounded-full bg-accent font-heading text-sm font-bold text-white">{i + 1}</span><h3 class="mt-4 font-heading text-base font-bold text-primary">{t}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{d}</p></li>
+        ))}
+      </ol>
+    </section>
+  </>
+)}
+
+{kind === 'capability' && (id === 'ml' || id === 'software') && (
+  <>
+    <section>
+      <p class={eyebrow}>Capabilities</p>
+      <h2 class={`${h2} mt-2`}>{id === 'ml' ? 'Transforming process data into engineering insight' : 'Converting engineering knowledge into software'}</h2>
+      <p class="mt-4 max-w-3xl font-body text-base leading-relaxed text-slate-600">{id === 'ml' ? 'Machine learning is not treated as an isolated analysis activity. Meaningful insight emerges when process data is interpreted in the context of the underlying physical and chemical phenomena.' : 'We do not treat software as a programming exercise. Solutions are built around the engineering problem, the underlying physics and the intended use.'}</p>
+      <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {(id === 'ml' ? MLCAP : SWCAP).map((m) => (
+          <div class={card}><h3 class="font-heading text-lg font-bold text-primary">{m[0]}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{m[1]}</p><ul class={`${tick} mt-4`}>{(m[2] as string[]).map((b) => <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"></span>{b}</li>)}</ul></div>
+        ))}
+      </div>
+    </section>
+    {id === 'ml' && (
+      <section class="mt-20 grid items-start gap-10 lg:grid-cols-2">
+        <div>
+          <p class={eyebrow}>Progressive adoption</p>
+          <h2 class={`${h2} mt-2`}>From offline analysis to intelligent automation</h2>
+          <p class="mt-4 font-body text-base leading-relaxed text-slate-600">Industrial processes cannot be entrusted to automated intelligence overnight. Confidence in predictive models must be built through validation under real operating conditions, so clients can move towards greater automation as confidence grows.</p>
+        </div>
+        <ol class="space-y-3">
+          {STAGES.map((s, i) => (
+            <li class={`${card} flex gap-4`}><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent font-heading text-sm font-bold text-white">{i + 1}</span><div><h3 class="font-heading text-base font-bold text-primary">{s[0]}</h3><p class="mt-1 font-body text-sm leading-relaxed text-slate-600">{s[1]}</p></div></li>
+          ))}
+        </ol>
+      </section>
+    )}
+    {id === 'software' && (
+      <section class="mt-20 max-w-3xl">
+        <p class={eyebrow}>Experience</p>
+        <h2 class={`${h2} mt-2`}>Automation built from real workflows</h2>
+        <p class="mt-4 font-body text-base leading-relaxed text-slate-600">We have developed automated simulation workflows for stirred tank reactors, cyclone separators and two-phase separators used in oil and gas. Our automation experience includes integration with commercial CFD platforms such as ANSYS and STAR-CCM+, and GUI-based automation of OpenFOAM workflows. The aim is to encapsulate engineering expertise in structured workflows that make advanced simulation more accessible, consistent and efficient.</p>
+      </section>
+    )}
+  </>
+)}
+
+{kind === 'capability' && id === 'design' && (
+  <>
+    <section class="grid items-start gap-10 lg:grid-cols-2">
+      <div>
+        <p class={eyebrow}>Process &amp; equipment design</p>
+        <h2 class={`${h2} mt-2`}>Design decisions backed by engineering analysis</h2>
+        <p class="mt-4 font-body text-base leading-relaxed text-slate-600">We apply chemical engineering principles and simulation-based insight to the design, evaluation and improvement of process equipment and reactors, covering configuration, sizing, geometry, internals, distribution arrangements and integration with the overall process.</p>
+        <p class="mt-4 font-body text-base leading-relaxed text-slate-600">Together with process modelling and simulation, this supports new equipment development, design improvements, scale-up studies, retrofits and performance enhancement of existing systems.</p>
+      </div>
+      <div>
+        <p class="mb-3 text-xs font-bold uppercase tracking-widest text-secondary">Equipment we evaluate and design</p>
+        <ul class="flex flex-wrap gap-2">{EQUIP.map((e) => <li class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700">{e}</li>)}</ul>
+      </div>
+    </section>
+    <section class="mt-20 grid gap-5 md:grid-cols-3">
+      {[['Equipment configuration and sizing', 'Geometry, internals and distribution arrangements matched to the process.'], ['Design evaluation and comparison', 'Alternatives compared on a consistent engineering basis.'], ['Scale-up, retrofits and improvement', 'Engineering input when changing scale or upgrading existing systems.']].map(([t, d]) => (
+        <div class={card}><h3 class="font-heading text-lg font-bold text-primary">{t}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{d}</p></div>
+      ))}
+    </section>
+  </>
+)}
+
+{kind === 'capability' && id === 'process' && (
+  <>
+    <section>
+      <p class={eyebrow}>Consulting</p>
+      <h2 class={`${h2} mt-2`}>Interpreting results in the context of the real process</h2>
+      <p class="mt-4 max-w-3xl font-body text-base leading-relaxed text-slate-600">Engagements range from engineering interpretation within technical projects to dedicated troubleshooting, optimisation and consulting assignments.</p>
+      <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {[['Process troubleshooting and root-cause analysis', 'Investigating operational problems and identifying their underlying causes.'], ['Process and plant performance optimisation', 'Throughput, productivity, energy efficiency, yield and product quality.'], ['Equipment performance evaluation', 'Identifying design and operational limitations and recommending improvements.'], ['Process and equipment design', 'Process development, design evaluation, modifications and equipment improvement.'], ['Advanced engineering investigations', 'CFD, process modelling, multiphase and combustion analysis, FEA and data analytics applied to complex problems.']].map(([t, d]) => (
+          <div class={card}><h3 class="font-heading text-lg font-bold text-primary">{t}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{d}</p></div>
+        ))}
+      </div>
+    </section>
+    <section class="mt-20">
+      <p class={eyebrow}>Process industry inefficiency</p>
+      <h2 class={`${h2} mt-2`}>Where performance is lost, and how we help</h2>
+      <div class="mt-8 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <table class="w-full min-w-[640px] text-left text-sm">
+          <thead class="bg-slate-50 text-xs font-bold uppercase tracking-wider text-slate-500"><tr><th class="px-5 py-3">Area of inefficiency</th><th class="px-5 py-3">Description</th><th class="px-5 py-3">Relevant capabilities</th></tr></thead>
+          <tbody class="divide-y divide-slate-100">{INEFF.map((r) => <tr><td class="px-5 py-4 font-semibold text-primary">{r[0]}</td><td class="px-5 py-4 text-slate-600">{r[1]}</td><td class="px-5 py-4 text-slate-600">{r[2]}</td></tr>)}</tbody>
+        </table>
+      </div>
+    </section>
+  </>
+)}
+
+{kind === 'industry' && industry && (
+  <>
+    <section class="max-w-3xl">
+      <p class={eyebrow}>Overview</p>
+      <h2 class={`${h2} mt-2`}>Understanding the engineering behind performance</h2>
+      <div class="mt-5 space-y-4 font-body text-base leading-relaxed text-slate-600">{industry.intro.map((p) => <p>{p}</p>)}</div>
+    </section>
+    <section class="mt-16">
+      <p class={eyebrow}>Where we can help</p>
+      <h2 class={`${h2} mt-2`}>Areas of work</h2>
+      <div class="mt-8 space-y-3">
+        {industry.areas.map((a, i) => (
+          <details class="group rounded-2xl border border-slate-200 bg-white shadow-sm" open={i === 0}>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 font-heading text-lg font-semibold text-primary"><span>{a.t}</span><span class="text-2xl text-accent transition group-open:rotate-45" aria-hidden="true">+</span></summary>
+            <div class="space-y-5 px-6 pb-7">
+              <div class="grid gap-6 md:grid-cols-2">
+                <div><p class="mb-2 text-xs font-bold uppercase tracking-widest text-secondary">Problems we can help address</p><ul class={tick}>{a.p.map((x) => <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"></span>{x}</li>)}</ul></div>
+                <div><p class="mb-2 text-xs font-bold uppercase tracking-widest text-secondary">What this can deliver</p><ul class={tick}>{a.d.map((x) => <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"></span>{x}</li>)}</ul></div>
+              </div>
+              {a.note && <p class="rounded-lg border-l-4 border-amber-400 bg-amber-50 px-4 py-3 text-sm text-amber-900">{a.note}</p>}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+    {id === 'pharma' && (
+      <section class="mt-16 grid gap-5 md:grid-cols-2">
+        <div class={card}><span class="w-fit rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-secondary">Example</span><h3 class="font-heading text-lg font-bold text-primary">CFD to fast performance prediction</h3><p class="font-body text-sm leading-relaxed text-slate-600">Reactor simulations at different operating volumes and impeller speeds (STAR-CCM+, Fluent) were converted into reduced-order models (Siemens ROM Builder, Python) that predict average shear, mixing time and power consumption, deployed through a Python and Streamlit interface. It helps compare available reactors for a production requirement without a full simulation each time.</p><p class="rounded-lg border-l-4 border-amber-400 bg-amber-50 px-4 py-3 text-sm text-amber-900">A model-based prediction and decision-support tool, not a live digital twin connected to plant data.</p></div>
+        <div class={card}><span class="w-fit rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">Demonstration</span><h3 class="font-heading text-lg font-bold text-primary">Ferment IQ</h3><p class="font-body text-sm leading-relaxed text-slate-600">Monitor critical parameters, compare batches with Golden Batch references, predict KPIs with machine learning, and explore deviations with an AI process assistant and an offline simulator.</p><p class="rounded-lg border-l-4 border-amber-400 bg-amber-50 px-4 py-3 text-sm text-amber-900">Presented as a demonstration of what can be developed around your process, not as a finished, validated pharmaceutical manufacturing solution.</p></div>
+      </section>
+    )}
+  </>
+)}
+
+{kind === 'industry' && !industry && (
+  <section class="max-w-3xl">
+    <h2 class={h2}>{indMeta?.t}</h2>
+    <p class="mt-4 font-body text-base leading-relaxed text-slate-600">{indMeta?.tag}</p>
+    <p class="mt-8 text-sm font-bold uppercase tracking-widest text-secondary">Where our capabilities apply</p>
+    <ul class={`${tick} mt-4`}>{(STUB_AREAS[id as keyof typeof STUB_AREAS] ?? []).map((x) => <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"></span>{x}</li>)}</ul>
+    <p class="mt-6 rounded-xl border border-dashed border-slate-300 bg-white p-5 font-body text-sm leading-relaxed text-slate-500">These are application areas for our engineering capabilities, not a list of completed projects. A detailed industry page is in preparation.</p>
+  </section>
+)}
+
+<section class="mt-20">
+  <p class={eyebrow}>{kind === 'industry' ? 'Related capabilities' : 'Related capabilities'}</p>
+  <h2 class={`${h2} mt-2`}>Used together, not in isolation</h2>
+  <ul class="mt-8 grid gap-5 md:grid-cols-3">
+    {(kind === 'industry' ? CAPS.filter((c) => c.t !== 'Digital Engineering').slice(0, 3) : related).map((c) => (
+      <li><a href={capPath[c.id]} class="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg"><h3 class="font-heading text-base font-bold text-primary group-hover:text-accent">{c.t}</h3><p class="mt-2 flex-1 font-body text-sm leading-relaxed text-slate-600">{c.d}</p><span class="mt-4 inline-flex items-center gap-1 font-heading text-xs font-bold text-secondary">Explore <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" /></span></a></li>
+    ))}
+  </ul>
+</section>
+<Cta />
