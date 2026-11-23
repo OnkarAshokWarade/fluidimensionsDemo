@@ -40,10 +40,14 @@ const steps = [['Get in touch', 'Tell us briefly what you would like to discuss.
       <p class="mt-4 font-body text-base leading-relaxed text-slate-600">No elaborate presentations. No need for a fully defined project. Just an open engineering conversation, with a 30 to 45 minute online discussion as a starting point and no commitment to a paid assignment.</p>
       <p class="mt-5 rounded-xl bg-amber-50 p-4 font-body text-sm leading-relaxed text-amber-900">We respect the confidentiality of our discussions. Please avoid sharing proprietary documents, sensitive process data or confidential customer information until appropriate confidentiality arrangements are in place.</p>
     </div>
-    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9">
-      <h3 class="font-heading text-xl font-bold text-primary">{cafeForm.title}</h3>
-      <p class="mb-6 mt-2 font-body text-sm leading-relaxed text-slate-600">{cafeForm.intro}</p>
-      <EnquiryForm id={cafeForm.id} type={cafeForm.type} fields={cafeForm.fields} submit={cafeForm.submit} successTitle="Thanks for sharing" successText="We have received your message and will join the conversation." />
+    <div class="overflow-hidden rounded-2xl border-2 border-slate-300 bg-white shadow-md">
+      <div class="border-b-2 border-slate-300 bg-sky-100 px-6 py-6 sm:px-9">
+        <h3 class="font-heading text-xl font-bold text-primary">{cafeForm.title}</h3>
+        <p class="mt-2 font-body text-sm leading-relaxed text-slate-700">{cafeForm.intro}</p>
+      </div>
+      <div class="p-6 sm:p-9">
+        <EnquiryForm id={cafeForm.id} type={cafeForm.type} fields={cafeForm.fields} submit={cafeForm.submit} successTitle="Thanks for sharing" successText="We have received your message and will join the conversation." />
+      </div>
     </div>
   </section>
 

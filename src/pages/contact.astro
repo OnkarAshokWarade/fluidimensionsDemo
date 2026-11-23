@@ -42,10 +42,14 @@ const steps = [
 
     <div>
       {contactForms.map((form) => (
-        <section id={form.id} role="tabpanel" aria-labelledby={`tab-${form.id}`} data-panel class="scroll-mt-28 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9 [&:not(:first-child)]:mt-8" hidden={false}>
-          <h2 class="font-heading text-2xl font-bold text-primary">{form.title}</h2>
-          <p class="mb-7 mt-2 font-body text-base leading-relaxed text-slate-600">{form.intro}</p>
-          <EnquiryForm id={form.id} type={form.type} fields={form.fields} submit={form.submit} successTitle={form.type === 'careers' ? 'Application received' : 'Enquiry received'} />
+        <section id={form.id} role="tabpanel" aria-labelledby={`tab-${form.id}`} data-panel class="scroll-mt-28 overflow-hidden rounded-2xl border-2 border-slate-300 bg-white shadow-md [&:not(:first-child)]:mt-8" hidden={false}>
+          <div class="border-b-2 border-slate-300 bg-sky-100 px-6 py-6 sm:px-9">
+            <h2 class="font-heading text-2xl font-bold text-primary">{form.title}</h2>
+            <p class="mt-2 font-body text-base leading-relaxed text-slate-700">{form.intro}</p>
+          </div>
+          <div class="p-6 sm:p-9">
+            <EnquiryForm id={form.id} type={form.type} fields={form.fields} submit={form.submit} successTitle={form.type === 'careers' ? 'Application received' : 'Enquiry received'} />
+          </div>
         </section>
       ))}
     </div>

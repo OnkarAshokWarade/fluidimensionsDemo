@@ -1,5 +1,6 @@
 ---
-interface Field { name: string; label: string; type: string; required?: boolean; options?: string[][]; placeholder?: string; autocomplete?: string; accept?: string; rows?: number; hint?: string }
+import { Icon } from 'astro-icon/components';
+interface Field { name: string; label: string; type: string; required?: boolean; options?: string[][]; placeholder?: string; autocomplete?: string; accept?: string; rows?: number; hint?: string; group?: string }
 interface Props { id: string; type: string; fields: Field[]; submit: string; successTitle?: string; successText?: string }
 const { id, type, fields, submit, successTitle = 'Thank you', successText = 'Your message has been received. We will get back to you as soon as we can.' } = Astro.props;
 // Forms post to a form service (Formspree, Web3Forms, ...). Set PUBLIC_FORM_ENDPOINT in Vercel.
@@ -7,39 +8,62 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
 const fallbackEmail = import.meta.env.PUBLIC_CONTACT_EMAIL || '';
 // Web3Forms-style access key (public by design). Leave empty for services that do not need one.
 const accessKey = import.meta.env.PUBLIC_FORM_ACCESS_KEY || '';
-const control = 'min-h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-body text-base text-primary transition-colors focus:border-accent focus:bg-white focus:outline-none';
+
+// Fields are grouped into titled, bordered sections (consecutive fields with the same group).
+const groups: { title: string; fields: Field[] }[] = [];
+for (const field of fields) {
+  const title = field.group || 'Details';
+  const last = groups[groups.length - 1];
+  if (last && last.title === title) last.fields.push(field);
+  else groups.push({ title, fields: [field] });
+}
+const control = 'min-h-12 w-full rounded-lg border border-slate-400 bg-white px-4 py-3 font-body text-base text-primary shadow-sm transition placeholder:text-slate-400 hover:border-slate-500 focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/20';
+const isWide = (field: Field, group: Field[], index: number) =>
+  field.type === 'textarea' || field.type === 'file' || field.name === 'message' || (index === group.length - 1 && group.length % 2 === 1);
 ---
 <div data-enquiry-root>
-  <form data-enquiry data-type={type} data-endpoint={endpoint} data-key={accessKey} data-email={fallbackEmail} novalidate={false} class="grid gap-5 sm:grid-cols-2" id={`${id}-form`}>
-    {fields.map((field) => {
-      const fieldId = `${id}-${field.name}`;
-      return (
-        <div class={field.type === "textarea" || field.type === "file" || field.name === "message" ? "sm:col-span-2" : ""}>
-          <label for={fieldId} class="mb-2 block font-heading text-xs font-bold uppercase tracking-wider text-primary">{field.label}{field.required && <span class="text-accent" aria-hidden="true"> *</span>}</label>
-          {field.type === 'textarea' ? (
-            <textarea id={fieldId} name={field.name} rows={field.rows ?? 4} required={field.required} placeholder={field.placeholder} class:list={[control, 'min-h-28 resize-y']}></textarea>
-          ) : field.type === 'select' ? (
-            <select id={fieldId} name={field.name} class={control}>
-              {field.options!.map(([value, label]) => <option value={label}>{label}</option>)}
-            </select>
-          ) : field.type === 'file' ? (
-            <input id={fieldId} name={field.name} type="file" accept={field.accept} required={field.required} class={`${control} file:mr-4 file:rounded-lg file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white`} />
-          ) : (
-            <input id={fieldId} name={field.name} type={field.type} required={field.required} autocomplete={field.autocomplete} placeholder={field.placeholder} class={control} />
-          )}
-          {field.hint && <p class="mt-1 font-body text-xs text-slate-500">{field.hint}</p>}
+  <form data-enquiry data-type={type} data-endpoint={endpoint} data-key={accessKey} data-email={fallbackEmail} class="space-y-6" id={`${id}-form`}>
+    {groups.map((group) => (
+      <fieldset class="rounded-xl border border-slate-300 bg-slate-50 p-5 sm:p-6">
+        <legend class="rounded-md bg-primary px-3 py-1 font-heading text-xs font-bold uppercase tracking-wider text-white">{group.title}</legend>
+        <div class="mt-2 grid gap-x-5 gap-y-5 sm:grid-cols-2">
+          {group.fields.map((field, index) => {
+            const fieldId = `${id}-${field.name}`;
+            return (
+              <div class={isWide(field, group.fields, index) ? 'sm:col-span-2' : ''}>
+                <label for={fieldId} class="mb-1.5 block font-body text-sm font-semibold text-primary">{field.label}{field.required && <span class="text-accent" aria-hidden="true"> *</span>}</label>
+                {field.type === 'textarea' ? (
+                  <textarea id={fieldId} name={field.name} rows={field.rows ?? 4} required={field.required} placeholder={field.placeholder} class:list={[control, 'min-h-32 resize-y']}></textarea>
+                ) : field.type === 'select' ? (
+                  <div class="relative">
+                    <select id={fieldId} name={field.name} class={`${control} appearance-none pr-11`}>
+                      {field.options!.map(([value, label]) => <option value={label}>{label}</option>)}
+                    </select>
+                    <Icon name="ion:chevron-down" class="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" aria-hidden="true" />
+                  </div>
+                ) : field.type === 'file' ? (
+                  <input id={fieldId} name={field.name} type="file" accept={field.accept} required={field.required} class={`${control} file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white`} />
+                ) : (
+                  <input id={fieldId} name={field.name} type={field.type} required={field.required} autocomplete={field.autocomplete} placeholder={field.placeholder} class={control} />
+                )}
+                {field.hint && <p class="mt-1.5 font-body text-xs text-slate-500">{field.hint}</p>}
+              </div>
+            );
+          })}
         </div>
-      );
-    })}
+      </fieldset>
+    ))}
     <!-- Honeypot: real visitors never see or fill this. -->
-    <div class="absolute -left-[9999px] sm:col-span-2" aria-hidden="true">
+    <div class="absolute -left-[9999px]" aria-hidden="true">
       <label>Leave this field empty<input type="text" name="company_website" tabindex="-1" autocomplete="off" /></label>
     </div>
-    <p class="font-body text-xs leading-relaxed text-slate-500 sm:col-span-2">We use the details you send only to respond to your message. See our <a href="/privacy-policy/" class="underline underline-offset-2 hover:text-accent">Privacy Policy</a>.</p>
-    <p data-status role="alert" class="hidden rounded-xl sm:col-span-2 border border-red-200 bg-red-50 p-4 font-body text-sm text-red-700"></p>
-    <button type="submit" class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-accent px-5 font-heading text-sm font-semibold text-white shadow-md transition hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2 sm:w-fit sm:px-9">{submit}</button>
+    <p data-status role="alert" class="hidden rounded-lg border border-red-300 bg-red-50 p-4 font-body text-sm text-red-700"></p>
+    <div class="flex flex-col gap-4 border-t border-slate-300 pt-6 sm:flex-row sm:items-center sm:justify-between">
+      <p class="max-w-md font-body text-xs leading-relaxed text-slate-500">We use the details you send only to respond to your message. See our <a href="/privacy-policy/" class="underline underline-offset-2 hover:text-accent">Privacy Policy</a>.</p>
+      <button type="submit" class="inline-flex min-h-12 w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-accent px-9 font-heading text-sm font-semibold text-white shadow-md transition hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto">{submit}</button>
+    </div>
   </form>
-  <div data-success tabindex="-1" class="hidden rounded-2xl border border-emerald-100 bg-emerald-50 p-8 text-center" role="status">
+  <div data-success tabindex="-1" class="hidden rounded-2xl border border-emerald-300 bg-emerald-50 p-8 text-center" role="status">
     <h3 class="font-heading text-lg font-bold text-primary">{successTitle}</h3>
     <p class="mt-2 font-body text-sm text-slate-600">{successText}</p>
   </div>

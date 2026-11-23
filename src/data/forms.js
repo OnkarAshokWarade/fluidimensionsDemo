@@ -13,9 +13,9 @@ const industryOptions = [
 // the service/plan supports them; until then Careers asks for a resume link instead.
 const fileUploads = import.meta.env.PUBLIC_FORM_FILE_UPLOADS === 'true';
 
-const name = { name: 'name', label: 'Full name', type: 'text', required: true, autocomplete: 'name' };
-const email = { name: 'email', label: 'Email', type: 'email', required: true, autocomplete: 'email' };
-const organisation = { name: 'organisation', label: 'Company / organisation', type: 'text', autocomplete: 'organization' };
+const name = { name: 'name', label: 'Full name', type: 'text', required: true, autocomplete: 'name', group: 'Your details' };
+const email = { name: 'email', label: 'Email', type: 'email', required: true, autocomplete: 'email', group: 'Your details' };
+const organisation = { name: 'organisation', label: 'Company / organisation', type: 'text', autocomplete: 'organization', group: 'Your details' };
 
 export const contactForms = [
   {
@@ -27,8 +27,8 @@ export const contactForms = [
     submit: 'Send enquiry',
     fields: [
       name, email, { ...organisation, required: true },
-      { name: 'industry', label: 'Industry', type: 'select', options: industryOptions },
-      { name: 'message', label: 'Your engineering challenge', type: 'textarea', required: true, rows: 5, placeholder: 'What are you trying to understand, improve or solve?' },
+      { name: 'industry', label: 'Industry', type: 'select', options: industryOptions, group: 'Your enquiry' },
+      { name: 'message', label: 'Your engineering challenge', type: 'textarea', required: true, rows: 5, group: 'Your enquiry', placeholder: 'What are you trying to understand, improve or solve?' },
     ],
   },
   {
@@ -40,8 +40,8 @@ export const contactForms = [
     submit: 'Send enquiry',
     fields: [
       name, email, organisation,
-      { name: 'interest', label: 'Area of interest', type: 'select', options: [['software', 'Engineering software'], ['training', 'Technical training'], ['proof-of-concept', 'Proof-of-concept study'], ['integration', 'Integration / application support'], ['other', 'Other']] },
-      { name: 'message', label: 'Your enquiry', type: 'textarea', required: true, rows: 5 },
+      { name: 'interest', group: 'Your enquiry', label: 'Area of interest', type: 'select', options: [['software', 'Engineering software'], ['training', 'Technical training'], ['proof-of-concept', 'Proof-of-concept study'], ['integration', 'Integration / application support'], ['other', 'Other']] },
+      { name: 'message', label: 'Your enquiry', type: 'textarea', required: true, rows: 5, group: 'Your enquiry' },
     ],
   },
   {
@@ -53,11 +53,11 @@ export const contactForms = [
     submit: 'Submit application',
     fields: [
       name, email,
-      { name: 'role', label: 'Role or area of interest', type: 'text' },
+      { name: 'role', label: 'Role or area of interest', type: 'text', group: 'Your application' },
       fileUploads
-        ? { name: 'resume', label: 'Resume', type: 'file', required: true, accept: '.pdf,.doc,.docx', hint: 'PDF, DOC or DOCX, up to 5 MB.' }
-        : { name: 'resume_link', label: 'Link to your resume or profile', type: 'url', required: true, placeholder: 'https://...', hint: 'A shared Google Drive / Dropbox link or your LinkedIn profile.' },
-      { name: 'message', label: 'Cover note (optional)', type: 'textarea', rows: 4 },
+        ? { name: 'resume', group: 'Your application', label: 'Resume', type: 'file', required: true, accept: '.pdf,.doc,.docx', hint: 'PDF, DOC or DOCX, up to 5 MB.' }
+        : { name: 'resume_link', group: 'Your application', label: 'Link to your resume or profile', type: 'url', required: true, placeholder: 'https://...', hint: 'A shared Google Drive / Dropbox link or your LinkedIn profile.' },
+      { name: 'message', label: 'Cover note (optional)', type: 'textarea', rows: 4, group: 'Your application' },
     ],
   },
   {
@@ -67,7 +67,7 @@ export const contactForms = [
     title: 'General enquiries',
     intro: 'Anything else you would like to ask or tell us.',
     submit: 'Send message',
-    fields: [name, email, { name: 'message', label: 'Message', type: 'textarea', required: true, rows: 5 }],
+    fields: [name, email, { name: 'message', label: 'Message', type: 'textarea', required: true, rows: 5, group: 'Your message' }],
   },
 ];
 
@@ -78,8 +78,8 @@ export const cafeForm = {
   intro: 'No project brief needed. Share a question, a challenge or an idea. Add an email if you would like us to reply.',
   submit: 'Share with the Café',
   fields: [
-    { name: 'message', label: 'Your question or idea', type: 'textarea', required: true, rows: 5, placeholder: 'For example: we see uneven gas distribution in a vessel and wonder how to approach it...' },
-    { name: 'name', label: 'Name (optional)', type: 'text', autocomplete: 'name' },
-    { name: 'email', label: 'Email (optional)', type: 'email', autocomplete: 'email' },
+    { name: 'message', group: 'Your conversation', label: 'Your question or idea', type: 'textarea', required: true, rows: 5, placeholder: 'For example: we see uneven gas distribution in a vessel and wonder how to approach it...' },
+    { name: 'name', group: 'About you (optional)', label: 'Name', type: 'text', autocomplete: 'name' },
+    { name: 'email', group: 'About you (optional)', label: 'Email', type: 'email', autocomplete: 'email' },
   ],
 };

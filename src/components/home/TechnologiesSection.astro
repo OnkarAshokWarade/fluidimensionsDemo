@@ -2,7 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import { technologiesSection as content } from '../../data/home';
 ---
-<section id="technologies" aria-labelledby="technologies-heading" class="bg-white py-20 sm:py-24 lg:py-28">
+<section id="technologies" aria-labelledby="technologies-heading" class="bg-tint py-20 sm:py-24 lg:py-28">
   <div class="site-container">
     <div class="reveal grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
       <div>
@@ -13,7 +13,7 @@ import { technologiesSection as content } from '../../data/home';
         </a>
       </div>
       <ul class="flex flex-wrap gap-3" aria-label="Technology areas">
-        {content.areas.map((area) => <li class="rounded-full border border-slate-200 bg-brand-bg px-5 py-3 font-heading text-sm font-semibold text-secondary">{area}</li>)}
+        {content.areas.map((area) => <li class="rounded-full border border-slate-300 bg-white px-5 py-3 font-heading text-sm font-semibold text-secondary">{area}</li>)}
       </ul>
     </div>
   </div>
