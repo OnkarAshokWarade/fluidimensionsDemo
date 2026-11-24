@@ -123,15 +123,6 @@ input, select, textarea { max-width: 100%; }
   background: radial-gradient(ellipse 80% 100% at 50% 0%, rgb(255 107 0 / .28), transparent 75%);
 }
 
-/* Over a light section the bar turns white-ish with dark text; over a dark section it is navy with white text. */
-.site-header[data-theme='light'] .site-pill { background: #ffffff; box-shadow: 0 6px 20px rgb(7 27 58 / .10); }
-.site-header[data-theme='light'] .brand-name, .site-header[data-theme='light'] .menu-btn { color: var(--color-primary); }
-.site-header[data-theme='light'] .nav-link { color: #334155; }
-.site-header[data-theme='light'] .nav-link:hover { color: var(--color-accent); background: rgb(7 27 58 / .05); }
-.site-header[data-theme='light'] .nav-link[aria-current='page'] {
-  color: var(--color-accent-dark); text-shadow: none;
-  background: radial-gradient(ellipse 80% 100% at 50% 0%, rgb(255 107 0 / .16), transparent 75%);
-}
 /* The lamp: a bar on the top edge of the pill and a cone of light falling onto the item. */
 .lamp { position: absolute; inset: -.5rem 0 0 0; pointer-events: none; opacity: 0; transition: opacity .3s; }
 .lamp-bar {
