@@ -2,7 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import PageLayout from '../layouts/PageLayout.astro';
 import Cta from '../components/pages/Cta.astro';
-import FlowViz from '../components/FlowViz.astro';
+import ReactorViz from '../components/ReactorViz.astro';
 import { aboutPage, industryPages } from '../data/site';
 import { APPROACH, VALUES, CAPS } from '../data/doc';
 import { visionSection } from '../data/home';
@@ -31,7 +31,7 @@ const eyebrow = 'text-sm font-bold uppercase tracking-widest text-accent';
 const h2 = 'font-heading text-2xl font-bold text-primary sm:text-3xl';
 ---
 <PageLayout page={aboutPage} banner badge="About us" chips={['Chemical engineering', 'Modelling & simulation', 'Machine learning', 'Digital technologies', 'Process consulting']} lead="We bring together engineering expertise, advanced modelling and simulation, machine learning and digital technologies to solve complex technical challenges and develop practical engineering solutions.">
-  <FlowViz slot="aside" />
+  <ReactorViz slot="aside" />
   <!-- Fact tiles -->
   <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
     {facts.map(([icon, title, sub], i) => (
