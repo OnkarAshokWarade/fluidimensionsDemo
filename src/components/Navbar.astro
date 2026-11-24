@@ -9,7 +9,7 @@ const groupActive = (item: any) => item.children?.some((child: any) => isActive(
 const slug = (label: string) => label.toLowerCase().replace(/\W+/g, '-');
 ---
 <header class="site-header" data-solid={isHome ? 'false' : 'true'} data-home={isHome ? 'true' : 'false'} id="site-header">
-  <nav class="site-pill mx-auto flex items-center justify-between gap-3" aria-label="Primary navigation">
+  <nav class="site-container flex items-center justify-between gap-4" aria-label="Primary navigation">
     <a href="/" class="flex min-h-11 min-w-0 items-center gap-2.5 rounded-lg sm:gap-3" aria-label="FluiDimensions home">
       <img src="/logo.png" alt="" width="40" height="40" class="h-9 w-auto shrink-0 sm:h-10" />
       <div class="min-w-0">
