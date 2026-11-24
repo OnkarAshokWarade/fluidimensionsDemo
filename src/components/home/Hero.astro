@@ -2,6 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import { hero, capabilitiesSection } from '../../data/home';
 import { CONTACT_BUSINESS } from '../../data/site';
+import FlowViz from '../FlowViz.astro';
 const tiles = capabilitiesSection.cards;
 ---
 <section id="home" aria-labelledby="hero-heading" class="relative overflow-hidden bg-primary">
@@ -22,9 +23,11 @@ const tiles = capabilitiesSection.cards;
       <p class="mt-8 font-heading text-sm font-medium tracking-wide text-slate-300">{hero.tagline}</p>
     </div>
 
-    <div class="rounded-2xl border border-white/15 bg-white/[0.06] p-5 backdrop-blur-sm sm:p-6">
-      <p class="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-slate-300">Our six capability areas</p>
-      <ul class="grid gap-3 sm:grid-cols-2">
+    <div class="min-w-0"><FlowViz /></div>
+
+    <div class="lg:col-span-2">
+      <p class="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-slate-300">Our six capability areas</p>
+      <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {tiles.map((tile) => (
           <li>
             <a href={tile.to} class="flex h-full items-center gap-3 rounded-xl border border-white/10 bg-white/10 p-4 text-white transition hover:border-accent/60 hover:bg-white/15">

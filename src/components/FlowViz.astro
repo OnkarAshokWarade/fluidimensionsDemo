@@ -1,13 +1,13 @@
 ---
 // Illustrative 3D flow animation (potential flow around a cylinder). Not project data.
 ---
-<figure class="flow-viz relative overflow-hidden rounded-2xl border border-white/20 bg-primary/60 shadow-2xl backdrop-blur" data-flow-viz>
-  <div class="relative aspect-[4/3] w-full">
+<figure class="flow-viz relative" data-flow-viz>
+  <div class="relative aspect-[4/3] max-h-[26rem] w-full sm:aspect-[16/10]">
     <canvas class="block h-full w-full cursor-grab touch-pan-y" role="img" aria-label="Animated 3D visualisation of flow particles passing around a cylinder inside a duct, coloured by velocity"></canvas>
     <button type="button" data-flow-toggle aria-pressed="false" class="absolute right-3 top-3 min-h-9 rounded-lg border border-white/25 bg-primary/80 px-3 text-xs font-semibold text-white hover:border-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300">Pause</button>
     <p data-flow-fallback class="absolute inset-0 hidden place-content-center p-6 text-center text-sm text-slate-300">The 3D view is not available in this browser.</p>
   </div>
-  <figcaption class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-white/15 px-4 py-3 text-xs text-slate-300">
+  <figcaption class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-1 pt-3 text-xs text-slate-300">
     <span class="flex min-w-[10rem] flex-1 flex-col gap-1">
       <span class="font-semibold uppercase tracking-widest">Velocity (illustrative)</span>
       <span class="h-2 rounded-full border border-white/20" style="background:linear-gradient(90deg,#1E3A8A,#1D63C8 25%,#22D3EE 50%,#FACC15 75%,#FF6B00)"></span>
