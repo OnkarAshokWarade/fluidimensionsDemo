@@ -16,10 +16,10 @@ const socials = [
 ---
 <footer class="relative overflow-hidden border-t border-white/5 bg-primary text-white">
   <div class="cfd-grid pointer-events-none absolute inset-0 opacity-5"></div>
-  <div class="site-container relative z-10 pb-10 pt-16 sm:pb-12 sm:pt-20">
-    <div class="mb-12 grid grid-cols-1 gap-10 min-[480px]:grid-cols-2 lg:mb-16 lg:grid-cols-5 lg:gap-8">
-      <div class="min-w-0 min-[480px]:col-span-2 lg:pr-8">
-        <a href="/" class="mb-6 flex w-fit items-center gap-3 rounded-lg" aria-label="FluiDimensions home">
+  <div class="site-container relative z-10 pb-6 pt-12 sm:pb-6 sm:pt-12">
+    <div class="mb-8 grid grid-cols-2 gap-x-5 gap-y-6 lg:mb-8 lg:grid-cols-5 lg:gap-6">
+      <div class="col-span-2 min-w-0 lg:pr-8">
+        <a href="/" class="mb-4 flex w-fit items-center gap-3 rounded-lg" aria-label="FluiDimensions home">
           <img src="/logo.png" alt="" width="40" height="40" class="h-10 w-auto" />
           <div>
             <span class="block font-heading text-base font-black leading-none">FLUIDIMENSIONS</span>
@@ -29,16 +29,16 @@ const socials = [
         <p class="max-w-sm text-sm leading-6 text-slate-400">Integrated engineering consulting and technology-driven solutions to help industries understand complex processes, improve equipment performance and solve challenging engineering problems.</p>
       </div>
       {columns.map((column) => (
-        <div>
-          <h2 class="mb-5 font-heading text-xs font-bold uppercase tracking-widest text-accent">{column.title}</h2>
-          <ul class="space-y-1 font-body text-sm text-slate-400">
-            {column.links.map(([label, to]) => <li><a href={to} class="inline-flex min-h-11 items-center transition hover:text-white">{label}</a></li>)}
+        <div class={column.title === 'Industries' ? 'col-span-2 lg:col-span-1' : ''}>
+          <h2 class="mb-2 font-heading text-xs font-bold uppercase tracking-widest text-accent lg:mb-3">{column.title}</h2>
+          <ul class:list={['font-body text-sm text-slate-400 lg:text-[0.8125rem]', column.title === 'Industries' && 'grid grid-cols-2 gap-x-5 lg:block']}>
+            {column.links.map(([label, to]) => <li><a href={to} class="inline-flex min-h-11 items-center transition hover:text-white lg:min-h-0 lg:py-1">{label}</a></li>)}
           </ul>
         </div>
       ))}
     </div>
-    <div class="flex flex-col items-center justify-between gap-6 border-t border-white/5 pt-8 text-center sm:flex-row sm:text-left">
-      <div class="flex flex-col items-center gap-2 text-xs leading-5 text-slate-500 sm:flex-row sm:gap-5"><span>© {new Date().getFullYear()} FluiDimensions. All rights reserved.</span><a href="/privacy-policy/" class="inline-flex min-h-11 items-center transition hover:text-white">Privacy Policy</a></div>
+    <div class="flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-5 text-center sm:flex-row sm:text-left">
+      <div class="flex flex-col items-center gap-2 text-xs leading-5 text-slate-500 sm:flex-row sm:gap-5"><span>© {new Date().getFullYear()} FluiDimensions. All rights reserved.</span><a href="/privacy-policy/" class="inline-flex min-h-11 items-center lg:min-h-0 transition hover:text-white lg:min-h-0 lg:py-1">Privacy Policy</a></div>
       <div class="flex gap-3">
         {socials.map((social) => (
           <a href={social.href} target="_blank" rel="noreferrer" aria-label={`FluiDimensions on ${social.label}`} class="transition hover:-translate-y-0.5">
