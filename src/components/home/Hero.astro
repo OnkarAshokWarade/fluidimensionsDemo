@@ -2,7 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import { hero, capabilitiesSection } from '../../data/home';
 import { CONTACT_BUSINESS } from '../../data/site';
-import FlowViz from '../FlowViz.astro';
+import ReactorViz from '../ReactorViz.astro';
 const tiles = capabilitiesSection.cards;
 ---
 <section id="home" aria-labelledby="hero-heading" class="relative overflow-hidden bg-primary">
@@ -23,7 +23,7 @@ const tiles = capabilitiesSection.cards;
       <p class="mt-8 font-heading text-sm font-medium tracking-wide text-slate-300">{hero.tagline}</p>
     </div>
 
-    <div class="min-w-0"><FlowViz /></div>
+    <div class="min-w-0"><ReactorViz /></div>
 
     <div class="lg:col-span-2">
       <p class="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-slate-300">Our six capability areas</p>
