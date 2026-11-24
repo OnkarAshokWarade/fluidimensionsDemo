@@ -68,9 +68,9 @@ const steps = [
     <section aria-labelledby="choose-heading" class="order-1 min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg lg:order-2">
       <div class="bg-gradient-to-br from-primary via-[#0B2D5B] to-secondary px-5 pb-0 pt-5 sm:px-7 sm:pt-6">
         <h2 id="choose-heading" class="font-heading text-lg font-bold text-white sm:text-xl">What would you like to do?</h2>
-        <div role="tablist" aria-label="Enquiry type" id="enquiry-tabs" class="-mx-1 mt-4 flex gap-1 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div role="tablist" aria-label="Enquiry type" id="enquiry-tabs" class="mt-4 grid grid-cols-2 gap-2 pb-4 sm:flex sm:gap-1 sm:overflow-x-auto sm:pb-0 sm:[scrollbar-width:none] sm:[&::-webkit-scrollbar]:hidden">
           {contactForms.map((form, index) => (
-            <a href={`#${form.id}`} role="tab" id={`tab-${form.id}`} aria-controls={form.id} aria-selected={index === 0 ? 'true' : 'false'} class="flex shrink-0 items-center gap-2 rounded-t-xl border border-b-0 border-transparent px-4 py-3 font-heading text-sm font-semibold text-white/80 transition hover:bg-white/10 hover:text-white aria-selected:border-white aria-selected:bg-white aria-selected:text-primary">
+            <a href={`#${form.id}`} role="tab" id={`tab-${form.id}`} aria-controls={form.id} aria-selected={index === 0 ? 'true' : 'false'} class="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/20 px-3 py-2.5 text-center font-heading text-xs font-semibold text-white/85 transition hover:bg-white/10 hover:text-white aria-selected:border-white aria-selected:bg-white aria-selected:text-primary sm:shrink-0 sm:justify-start sm:rounded-b-none sm:rounded-t-xl sm:border-b-0 sm:border-transparent sm:px-4 sm:py-3 sm:text-sm">
               <Icon name={icons[form.type]} class="h-4 w-4" aria-hidden="true" />{form.tab}
             </a>
           ))}

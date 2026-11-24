@@ -33,10 +33,10 @@ const counts = Object.fromEntries(sectors.map((s) => [s, content.projects.filter
         return (
           <li class="reveal exp-item" data-sector={project.sec} style={`--reveal-delay:${(index % 2) * 0.06}s`}>
             <article class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl sm:flex-row">
-              <div class={`relative flex shrink-0 flex-col justify-between bg-gradient-to-br p-5 text-white sm:w-48 ${tone.block}`}>
+              <div class={`relative flex shrink-0 flex-wrap items-center justify-between gap-x-4 gap-y-1 bg-gradient-to-br px-5 py-4 text-white sm:w-48 sm:flex-col sm:items-stretch sm:justify-between sm:p-5 ${tone.block}`}>
                 <span class="font-heading text-xs font-bold uppercase tracking-widest text-white/80">Case {String(index + 1).padStart(2, '0')}</span>
-                <p class="mt-6 break-words font-heading text-2xl font-black leading-tight sm:mt-0 sm:text-[1.4rem]">{project.big}</p>
-                <span class="mt-4 inline-flex w-fit items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-semibold">Key result</span>
+                <p class="break-words font-heading text-2xl font-black leading-tight sm:text-[1.4rem]">{project.big}</p>
+                <span class="hidden w-fit items-center gap-1 rounded-full bg-white/20 sm:inline-flex sm:mt-4 px-2.5 py-0.5 text-[11px] font-semibold">Key result</span>
               </div>
               <div class="flex flex-1 flex-col p-5 sm:p-6">
                 <div class="flex flex-wrap gap-2">

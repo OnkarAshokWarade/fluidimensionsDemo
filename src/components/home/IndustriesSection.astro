@@ -37,11 +37,11 @@ const trim = (text: string, max = 260) => (text.length > max ? `${text.slice(0, 
         <!-- Industry list -->
         <div class="border-b border-slate-200 bg-slate-50 p-3 lg:border-b-0 lg:border-r lg:p-4">
           <p class="hidden px-3 pb-2 pt-1 text-xs font-bold uppercase tracking-widest text-slate-500 lg:block">Choose an industry</p>
-          <div role="tablist" aria-label="Industries" aria-orientation="vertical" class="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0">
+          <div role="tablist" aria-label="Industries" aria-orientation="vertical" class="grid grid-cols-3 gap-2 sm:grid-cols-5 lg:flex lg:flex-col">
             {items.map((item, i) => (
-              <button type="button" role="tab" id={`ind-tab-${item.id}`} aria-controls={`ind-panel-${item.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} class="ind-tab group flex shrink-0 items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-left transition hover:bg-white lg:w-full">
+              <button type="button" role="tab" id={`ind-tab-${item.id}`} aria-controls={`ind-panel-${item.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} class="ind-tab group flex min-h-[5.25rem] flex-col items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-1.5 py-2.5 text-center transition hover:border-accent/40 lg:min-h-0 lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:border-transparent lg:bg-transparent lg:px-3 lg:text-left lg:hover:bg-white">
                 <span class={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white ${item.tone.num}`}><Icon name={item.icon} class="h-5 w-5" aria-hidden="true" /></span>
-                <span class="whitespace-nowrap font-heading text-sm font-semibold text-primary lg:whitespace-normal">{item.label}</span>
+                <span class="font-heading text-[11px] font-semibold leading-tight text-primary min-[400px]:text-xs lg:text-sm">{item.label}</span>
                 <Icon name="ion:chevron-forward" class="ml-auto hidden h-4 w-4 text-slate-400 transition group-aria-selected:translate-x-0.5 group-aria-selected:text-accent lg:block" aria-hidden="true" />
               </button>
             ))}
@@ -51,7 +51,7 @@ const trim = (text: string, max = 260) => (text.length > max ? `${text.slice(0, 
         <!-- Detail panels -->
         <div class="min-w-0">
           {items.map((item, i) => (
-            <div role="tabpanel" id={`ind-panel-${item.id}`} aria-labelledby={`ind-tab-${item.id}`} class:list={['ind-panel', i === 0 && 'is-active']} tabindex="0">
+            <div role="tabpanel" id={`ind-panel-${item.id}`} aria-labelledby={`ind-tab-${item.id}`} class:list={['ind-panel scroll-mt-20', i === 0 && 'is-active']} tabindex="0">
               <div class={`bg-gradient-to-br px-6 py-7 text-white sm:px-8 ${item.tone.band}`}>
                 <div class="flex items-center gap-4">
                   <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/15"><Icon name={item.icon} class="h-8 w-8" aria-hidden="true" /></span>
@@ -114,7 +114,11 @@ const trim = (text: string, max = 260) => (text.length > max ? `${text.slice(0, 
       if (focus) tabs[index].focus();
     };
     tabs.forEach((tab, i) => {
-      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('click', () => {
+        select(i);
+        // On phones and small tablets the detail sits below the tiles, so bring it into view.
+        if (window.matchMedia('(max-width: 1023px)').matches) panels[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
       tab.addEventListener('keydown', (e) => {
         const key = (e as KeyboardEvent).key;
         if (key === 'ArrowDown' || key === 'ArrowRight') { e.preventDefault(); select((i + 1) % tabs.length, true); }
