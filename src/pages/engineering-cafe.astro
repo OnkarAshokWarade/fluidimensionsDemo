@@ -41,6 +41,17 @@ const eyebrow = 'text-sm font-bold uppercase tracking-widest text-accent';
 const h2 = 'font-heading text-2xl font-bold text-primary sm:text-3xl';
 ---
 <PageLayout page={cafePage} banner badge="Open conversations" chips={['Challenges', 'Ideas', 'Solutions', 'No project brief needed']} lead="An open, informal space for technical conversations, exchange of ideas and exploration of engineering possibilities. You do not need a fully defined project or a ready-made scope of work.">
+  <div slot="aside" class="rounded-2xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur">
+    <p class="text-xs font-bold uppercase tracking-widest text-accent">What you can talk about</p>
+    <ul class="mt-4 space-y-3">
+      {CAFE_TOPICS.map(([title], n) => (
+        <li class="flex items-center gap-3 font-heading text-sm font-semibold text-white sm:text-base">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent text-white"><Icon name={topicIcons[n]} class="h-5 w-5" aria-hidden="true" /></span>{title}
+        </li>
+      ))}
+    </ul>
+    <a href="#start" class="mt-5 inline-block rounded-lg bg-accent px-5 py-2.5 font-heading text-sm font-bold text-white hover:bg-accent-dark">Start a conversation</a>
+  </div>
   <!-- Intro -->
   <section class="grid items-center gap-8 rounded-3xl border border-sky-200 bg-sky-50 p-6 sm:p-10 lg:grid-cols-[1.2fr_0.8fr]">
     <div>
