@@ -22,7 +22,8 @@
     "@sanity/image-url": "^2.2.0",
     "@tailwindcss/vite": "^4.3.2",
     "astro": "^7.3.8",
-    "astro-icon": "^1.2.0"
+    "astro-icon": "^1.2.0",
+    "three": "^0.170.0"
   },
   "devDependencies": {
     "oxlint": "^1.71.0",

@@ -37,14 +37,19 @@ const breadcrumbLd = {
               <li aria-current="page" class="font-semibold text-white">{page.label}</li>
             </ol>
           </nav>
-          <span class="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">{badge ?? (isIndustry ? 'Industry solutions' : 'Engineering capability')}</span>
-          <h1 class="mt-4 max-w-4xl font-heading text-[clamp(2rem,4.8vw,3.3rem)] font-bold leading-[1.12] text-white">{page.h1}</h1>
-          <p class="mt-5 max-w-3xl font-body text-lg leading-8 text-slate-200">{lead ?? page.intro}</p>
-          {chips.length > 0 && (
-            <ul class="mt-8 flex flex-wrap gap-2.5" aria-label="Key topics">
-              {chips.map((chip) => <li class="rounded-full border border-white/25 bg-white/10 px-4 py-1.5 font-heading text-sm font-medium text-white backdrop-blur">{chip}</li>)}
-            </ul>
-          )}
+          <div class={Astro.slots.has('aside') ? 'grid items-center gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]' : ''}>
+            <div class="min-w-0">
+              <span class="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">{badge ?? (isIndustry ? 'Industry solutions' : 'Engineering capability')}</span>
+              <h1 class="mt-4 max-w-4xl font-heading text-[clamp(2rem,4.8vw,3.3rem)] font-bold leading-[1.12] text-white">{page.h1}</h1>
+              <p class="mt-5 max-w-3xl font-body text-lg leading-8 text-slate-200">{lead ?? page.intro}</p>
+              {chips.length > 0 && (
+                <ul class="mt-8 flex flex-wrap gap-2.5" aria-label="Key topics">
+                  {chips.map((chip) => <li class="rounded-full border border-white/25 bg-white/10 px-4 py-1.5 font-heading text-sm font-medium text-white backdrop-blur">{chip}</li>)}
+                </ul>
+              )}
+            </div>
+            {Astro.slots.has('aside') && <div class="min-w-0"><slot name="aside" /></div>}
+          </div>
         </div>
       </header>
     ) : (
