@@ -97,7 +97,6 @@ const slug = (label: string) => label.toLowerCase().replace(/\W+/g, '-');
     toggle.querySelector('.menu-open')!.classList.toggle('hidden', open);
     toggle.querySelector('.menu-close')!.classList.toggle('hidden', !open);
     document.body.style.overflow = open ? 'hidden' : '';
-    if (open) window.scrollTo(0, 0);
     syncSolid();
   };
   toggle.addEventListener('click', () => setMenu(!menuOpen));
