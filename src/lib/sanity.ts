@@ -1,6 +1,7 @@
 import { createClient } from '@sanity/client';
 import { createImageUrlBuilder } from '@sanity/image-url';
 import { toHTML } from '@portabletext/to-html';
+import { samplePosts } from '../data/samplePosts';
 
 const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'wwt4wlxz';
 const dataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
@@ -17,6 +18,8 @@ export interface PostSummary {
   excerpt: string;
   author?: string;
   mainImage?: { asset?: unknown; alt?: string };
+  // Present only on sample posts (see src/data/samplePosts.ts).
+  sample?: boolean; category?: string; icon?: string; tone?: string; readMins?: number; html?: string;
 }
 export interface Post extends PostSummary { body: any[]; _updatedAt: string }
 
@@ -33,11 +36,19 @@ async function safeFetch<T>(query: string, params: Record<string, unknown>, fall
   }
 }
 
-export const getPosts = () =>
-  safeFetch<PostSummary[]>(`*[${published}] | order(publishedAt desc){${summaryFields}}`, {}, []);
+// Sample articles fill the blog only while Sanity has no published posts; real posts replace them automatically.
+const samples = (): (PostSummary & { html: string; _updatedAt: string; body: any[] })[] =>
+  samplePosts.map((p) => ({ ...p, _updatedAt: p.publishedAt, body: [] }));
 
-export const getPost = (slug: string) =>
-  safeFetch<Post | null>(`*[${published} && slug.current == $slug][0]{${summaryFields}, _updatedAt, body}`, { slug }, null);
+export const getPosts = async () => {
+  const real = await safeFetch<PostSummary[]>(`*[${published}] | order(publishedAt desc){${summaryFields}}`, {}, []);
+  return real.length ? real : (samples() as PostSummary[]);
+};
+
+export const getPost = async (slug: string) => {
+  const real = await safeFetch<Post | null>(`*[${published} && slug.current == $slug][0]{${summaryFields}, _updatedAt, body}`, { slug }, null);
+  return real ?? (samples().find((p) => p.slug === slug) as Post | undefined) ?? null;
+};
 
 const esc = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 

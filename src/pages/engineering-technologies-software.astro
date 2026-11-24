@@ -2,10 +2,24 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import Cta from '../components/pages/Cta.astro';
 import { technologiesPage } from '../data/site';
-import { SIEMENS, ENGAGE } from '../data/doc';
+import { Icon } from 'astro-icon/components';
+import { ENGAGE } from '../data/doc';
 
 const h2 = 'font-heading text-2xl font-bold text-primary sm:text-3xl';
 const eyebrow = 'text-sm font-bold uppercase tracking-widest text-accent';
+const software = [
+  { name: 'Simcenter STAR-CCM+', kind: 'CFD & multiphysics', icon: 'ion:water-outline', tone: 'sky', blurb: 'Siemens software for analysing fluid flow, heat transfer, multiphase systems and combustion in complex equipment.', uses: ['Flow distribution and pressure drop', 'Multiphase and reacting flows', 'Heat and mass transfer in equipment'], help: 'Licensing enquiries, training, proof-of-concept studies' },
+  { name: 'Simcenter 3D', kind: 'FEA & multiphysics', icon: 'ion:construct-outline', tone: 'violet', blurb: 'Structural, thermal and multiphysics analysis of components and systems under different loading and operating conditions.', uses: ['Stress, strain and deformation', 'Thermal and thermo-mechanical loading', 'Vibration and structural response'], help: 'Application support and workflow development' },
+  { name: 'Simcenter Amesim', kind: 'System simulation', icon: 'ion:git-network-outline', tone: 'emerald', blurb: 'System-level simulation of how components and subsystems behave and interact within a larger system.', uses: ['Fluid, thermal and control systems', 'Early-stage design evaluation', 'Operating-condition studies'], help: 'Training and technology integration' },
+  { name: 'Molecular modelling', kind: 'Simcenter portfolio and CULGI', icon: 'ion:flask-outline', tone: 'amber', blurb: 'Molecular-level modelling and simulation to investigate molecular properties and material behaviour, an emerging area for us.', uses: ['Molecular properties', 'Material behaviour', 'Formulation-related questions'], help: 'Technical discussion and exploratory studies' },
+  { name: 'Process modelling', kind: 'Flowsheet & process analysis', icon: 'ion:analytics-outline', tone: 'rose', blurb: 'Technologies for simulating, analysing and optimising complex process systems and operating decisions.', uses: ['Flowsheet and sensitivity studies', 'Troubleshooting', 'Integration with CFD and data models'], help: 'Discuss suitable options with our team' },
+  { name: 'Design engineering tools', kind: 'Integrated design workflows', icon: 'ion:layers-outline', tone: 'cyan', blurb: 'Tools that support product development, design evaluation and integrated engineering workflows.', uses: ['Design evaluation', 'Engineering workflows', 'Multi-tool integration'], help: 'Technology integration and adoption support' },
+];
+const toneCls = {
+  sky: ['bg-sky-600', 'border-t-sky-500', 'bg-sky-50 text-sky-900'], violet: ['bg-violet-600', 'border-t-violet-500', 'bg-violet-50 text-violet-900'],
+  emerald: ['bg-emerald-600', 'border-t-emerald-500', 'bg-emerald-50 text-emerald-900'], amber: ['bg-amber-600', 'border-t-amber-500', 'bg-amber-50 text-amber-900'],
+  rose: ['bg-rose-600', 'border-t-rose-500', 'bg-rose-50 text-rose-900'], cyan: ['bg-cyan-600', 'border-t-cyan-500', 'bg-cyan-50 text-cyan-900'],
+};
 const areas = [
   ['Engineering simulation & analysis', 'CFD, FEA, multiphase flow and particle dynamics, combustion, heat and mass transfer, and multiphysics.'],
   ['Process modelling & optimisation', 'Flowsheet modelling, sensitivity studies, troubleshooting and integration with other tools.'],
@@ -15,22 +29,33 @@ const areas = [
   ['Molecular modelling', 'An emerging area developed through our association with CULGI.'],
 ];
 ---
-<PageLayout page={technologiesPage} lead="Technology creates value when it is applied with a clear understanding of the engineering problem. As a Siemens software channel partner, we help organisations explore and adopt engineering software through licensing enquiries, training, proof-of-concept studies, application support and integration.">
-  <section>
+<PageLayout page={technologiesPage} banner badge="Software & training" chips={['Simulation software', 'Training', 'Proof of concept', 'Application support']} lead="Technology creates value when it is applied with a clear understanding of the engineering problem. As a Siemens software channel partner, we help organisations explore and adopt engineering software through licensing enquiries, training, proof-of-concept studies, application support and integration.">
+  <section id="software" class="scroll-mt-28">
+    <p class={eyebrow}>Software we serve</p>
+    <h2 class={`${h2} mt-2`}>Engineering software available through FluiDimensions</h2>
+    <p class="mt-3 max-w-3xl font-body text-base leading-relaxed text-slate-600">As a Siemens software channel partner we help you choose, learn and apply the right tool for the problem, not just supply a licence.</p>
+    <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {software.map((sw) => { const c = toneCls[sw.tone]; return (
+        <li class={`flex flex-col rounded-2xl border border-t-4 border-slate-200 bg-white p-6 shadow-sm ${c[1]}`}>
+          <div class="flex items-center gap-3">
+            <span class={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white ${c[0]}`}><Icon name={sw.icon} class="h-6 w-6" aria-hidden="true" /></span>
+            <div><h3 class="font-heading text-base font-bold leading-tight text-primary">{sw.name}</h3><span class={`mt-1 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${c[2]}`}>{sw.kind}</span></div>
+          </div>
+          <p class="mt-4 font-body text-sm leading-relaxed text-slate-600">{sw.blurb}</p>
+          <p class="mt-4 text-xs font-bold uppercase tracking-widest text-slate-500">Typical uses</p>
+          <ul class="mt-2 space-y-1.5 font-body text-sm text-slate-700">{sw.uses.map((u) => <li class="flex gap-2"><Icon name="ion:checkmark-circle" class="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />{u}</li>)}</ul>
+          <p class="mt-auto border-t border-slate-200 pt-4 font-body text-sm text-slate-600"><span class="font-semibold text-primary">How we help: </span>{sw.help}</p>
+        </li>); })}
+    </ul>
+    <p class="mt-5 text-sm text-slate-500">For product features, specifications and the latest information, please refer to the respective Siemens product pages.</p>
+  </section>
+
+  <section class="mt-20">
     <p class={eyebrow}>Technology areas</p>
     <h2 class={`${h2} mt-2`}>Applied with engineering understanding</h2>
     <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {areas.map(([t, d]) => <li class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{d}</p></li>)}
     </ul>
-  </section>
-
-  <section class="mt-20">
-    <p class={eyebrow}>Siemens engineering software</p>
-    <h2 class={`${h2} mt-2`}>Access to advanced technologies through FluiDimensions</h2>
-    <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {SIEMENS.map(([t, d, product]) => <li class="flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="mt-2 flex-1 font-body text-sm leading-relaxed text-slate-600">{d}</p><span class="mt-4 w-fit rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-secondary">{product}</span></li>)}
-    </ul>
-    <p class="mt-5 text-sm text-slate-500">For product features, specifications and the latest information, please refer to the respective Siemens product pages.</p>
   </section>
 
   <section class="mt-20">
