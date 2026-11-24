@@ -108,9 +108,9 @@ input, select, textarea { max-width: 100%; }
 .site-pill {
   pointer-events: auto; width: 100%; padding: .55rem max(1rem, calc((100% - 80rem) / 2 + 1rem));
   border: 0; border-radius: 0;
-  background: rgb(7 27 58 / .58);
+  background: #071B3A;
   box-shadow: 0 6px 20px rgb(7 27 58 / .12); transition: background-color .3s, box-shadow .3s;
-  backdrop-filter: blur(16px) saturate(1.25); -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  
 }
 .site-header .brand-name, .site-header .menu-btn { color: #fff; }
 .site-header .nav-link {
@@ -124,7 +124,7 @@ input, select, textarea { max-width: 100%; }
 }
 
 /* Over a light section the bar turns white-ish with dark text; over a dark section it is navy with white text. */
-.site-header[data-theme='light'] .site-pill { background: rgb(255 255 255 / .72); box-shadow: 0 6px 20px rgb(7 27 58 / .08); }
+.site-header[data-theme='light'] .site-pill { background: #ffffff; box-shadow: 0 6px 20px rgb(7 27 58 / .10); }
 .site-header[data-theme='light'] .brand-name, .site-header[data-theme='light'] .menu-btn { color: var(--color-primary); }
 .site-header[data-theme='light'] .nav-link { color: #334155; }
 .site-header[data-theme='light'] .nav-link:hover { color: var(--color-accent); background: rgb(7 27 58 / .05); }
