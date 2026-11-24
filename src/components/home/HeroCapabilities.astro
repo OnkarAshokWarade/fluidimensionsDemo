@@ -1,0 +1,18 @@
+---
+import { Icon } from 'astro-icon/components';
+import { capabilitiesSection } from '../../data/home';
+const items = capabilitiesSection.cards;
+---
+<nav aria-label="Our capabilities" class="relative z-10">
+  <p class="mb-2.5 font-heading text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-slate-400">Our six capabilities</p>
+  <ul class="grid grid-cols-2 gap-2 min-[560px]:grid-cols-3">
+    {items.map((item) => (
+      <li>
+        <a href={item.to} class="group flex h-full min-h-14 items-center gap-2.5 rounded-lg border border-white/15 bg-primary/70 px-3 py-2.5 backdrop-blur-md transition hover:-translate-y-0.5 hover:border-accent/70 hover:bg-primary/90">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-accent/15 text-accent transition group-hover:bg-accent group-hover:text-white"><Icon name={item.icon} class="h-4 w-4" aria-hidden="true" /></span>
+          <span class="font-body text-xs font-medium leading-snug text-slate-200 group-hover:text-white">{item.title}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

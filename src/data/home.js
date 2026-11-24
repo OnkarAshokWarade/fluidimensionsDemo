@@ -7,7 +7,7 @@ export const hero = {
   eyebrow: 'Your engineering solutions & digital innovation partner',
   h1: 'Solving Complex Engineering Challenges. Driving Better Performance.',
   tagline: 'Understand. Optimise. Innovate.',
-  body: 'We combine engineering consultancy, advanced modelling and simulation, machine learning and digital technologies to solve complex technical challenges and deliver practical engineering solutions across industries.',
+  body: 'Simulation, machine learning and digital tools that turn complex process problems into practical results.',
 };
 
 export const capabilitiesSection = {

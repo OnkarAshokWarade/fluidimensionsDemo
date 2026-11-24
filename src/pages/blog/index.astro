@@ -5,60 +5,71 @@ import { SITE } from '../../data/site';
 import { getPosts, urlFor, formatDate } from '../../lib/sanity';
 
 const posts = await getPosts();
+const [featured, ...rest] = posts;
 const title = `Blog: Engineering Insights | ${SITE.name}`;
 const description = 'Articles on engineering simulation, process modelling, equipment design and technology from the FluiDimensions team.';
 ---
 <BaseLayout {title} {description} path="/blog/">
-  <main class="pb-20 pt-28 sm:pt-32">
-    <div class="site-container">
-      <nav aria-label="Breadcrumb" class="mb-6 text-xs font-medium text-slate-500">
-        <ol class="flex items-center gap-2"><li><a href="/" class="hover:text-accent">Home</a></li><li aria-hidden="true">/</li><li aria-current="page" class="text-primary">Blog</li></ol>
-      </nav>
-      <header class="max-w-3xl">
-        <h1 class="font-heading text-[clamp(2rem,6vw,3.25rem)] font-black leading-tight text-primary">Engineering Insights</h1>
-        <p class="mt-5 font-body text-base leading-relaxed text-slate-600 sm:text-lg">{description}</p>
-      </header>
+  <main>
+    <!-- Banner header, same treatment as the article and contact pages -->
+    <header class="relative overflow-hidden bg-gradient-to-br from-primary via-[#0B2D5B] to-secondary pb-14 pt-28 text-white sm:pb-20 sm:pt-36">
+      <div class="cfd-grid pointer-events-none absolute inset-0 opacity-10" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-accent/20 blur-[100px]" aria-hidden="true"></div>
+      <div class="site-container relative">
+        <nav aria-label="Breadcrumb" class="mb-6 text-sm text-slate-300">
+          <ol class="flex flex-wrap items-center gap-2"><li><a href="/" class="hover:text-white">Home</a></li><li aria-hidden="true">/</li><li aria-current="page" class="font-semibold text-white">Blog</li></ol>
+        </nav>
+        <span class="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">Blog</span>
+        <h1 class="mt-4 max-w-3xl font-heading text-[clamp(2rem,4.8vw,3.3rem)] font-bold leading-[1.12] text-white">Engineering Insights</h1>
+        <p class="mt-5 max-w-2xl font-body text-lg leading-8 text-slate-200">{description}</p>
+      </div>
+    </header>
 
+    <div class="site-container py-12 sm:py-16">
       {posts.length === 0 ? (
-        <p class="mt-12 max-w-3xl rounded-xl border border-dashed border-slate-300 bg-white p-6 font-body text-sm text-slate-500">Articles are coming soon.</p>
+        <p class="max-w-3xl rounded-xl border border-dashed border-slate-300 bg-white p-6 font-body text-sm text-slate-500">Articles are coming soon.</p>
       ) : (
         <>
           <!-- Featured (latest) article -->
-          <a href={`/blog/${posts[0].slug}/`} class="group mt-10 grid overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:shadow-xl lg:grid-cols-2">
-            {posts[0].mainImage?.asset ? (
-              <img src={urlFor(posts[0].mainImage).width(1000).height(600).fit('crop').auto('format').url()} alt={posts[0].mainImage.alt || ''} width="1000" height="600" decoding="async" class="h-full min-h-56 w-full object-cover" />
+          <a href={`/blog/${featured.slug}/`} class="group grid overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:shadow-xl lg:grid-cols-[1.05fr_1fr]">
+            {featured.mainImage?.asset ? (
+              <img src={urlFor(featured.mainImage).width(1000).height(600).fit('crop').auto('format').url()} alt={featured.mainImage.alt || ''} width="1000" height="600" decoding="async" class="h-full min-h-56 w-full object-cover" />
             ) : (
-              <div class="flex min-h-56 items-center justify-between bg-gradient-to-br from-primary to-secondary p-8">
-                <span class="rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">{posts[0].category ?? 'Article'}</span>
-                {posts[0].icon && <Icon name={posts[0].icon} class="h-20 w-20 text-white/80" aria-hidden="true" />}
+              <div class="relative flex min-h-56 items-end overflow-hidden bg-gradient-to-br from-primary via-[#0B2D5B] to-secondary p-6 sm:p-8 lg:min-h-72">
+                <div class="cfd-grid absolute inset-0 opacity-10" aria-hidden="true"></div>
+                <div class="absolute -right-10 -top-10 h-56 w-56 rounded-full bg-accent/25 blur-[70px]" aria-hidden="true"></div>
+                {featured.icon && <Icon name={featured.icon} class="absolute right-6 top-6 h-24 w-24 text-white/25 transition duration-500 group-hover:scale-110 group-hover:text-accent/60 sm:h-32 sm:w-32" aria-hidden="true" />}
+                <span class="relative rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-white backdrop-blur">{featured.category ?? 'Article'}</span>
               </div>
             )}
             <div class="flex flex-col justify-center p-6 sm:p-10">
-              <p class="flex flex-wrap items-center gap-2 font-body text-xs font-semibold uppercase tracking-wider text-accent"><span class="rounded-full bg-accent px-2.5 py-0.5 text-white">Latest</span><time datetime={posts[0].publishedAt}>{formatDate(posts[0].publishedAt)}</time>{posts[0].readMins && <span class="text-slate-500">· {posts[0].readMins} min read</span>}</p>
-              <h2 class="mt-3 font-heading text-2xl font-bold leading-tight text-primary group-hover:text-accent sm:text-3xl">{posts[0].title}</h2>
-              <p class="mt-3 font-body text-base leading-relaxed text-slate-600">{posts[0].excerpt}</p>
+              <p class="flex flex-wrap items-center gap-2 font-body text-xs font-semibold uppercase tracking-wider text-accent"><span class="rounded-full bg-accent px-2.5 py-0.5 text-white">Latest</span><time datetime={featured.publishedAt}>{formatDate(featured.publishedAt)}</time>{featured.readMins && <span class="text-slate-500">· {featured.readMins} min read</span>}</p>
+              <h2 class="mt-3 font-heading text-2xl font-bold leading-tight text-primary group-hover:text-accent sm:text-3xl">{featured.title}</h2>
+              <p class="mt-3 font-body text-base leading-relaxed text-slate-600">{featured.excerpt}</p>
               <span class="mt-5 inline-flex items-center gap-1 font-heading text-sm font-bold text-secondary group-hover:text-accent">Read article <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" /></span>
             </div>
           </a>
 
-          {posts.length > 1 && (
+          {rest.length > 0 && (
             <>
               <h2 class="mt-14 font-heading text-xl font-bold text-primary sm:text-2xl">More articles</h2>
               <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {posts.slice(1).map((post) => (
+                {rest.map((post) => (
                   <li>
                     <a href={`/blog/${post.slug}/`} class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
                       {post.mainImage?.asset ? (
-                        <img src={urlFor(post.mainImage).width(800).height(450).fit('crop').auto('format').url()} alt={post.mainImage.alt || ''} width="800" height="450" loading="lazy" decoding="async" class="aspect-video w-full object-cover" />
+                        <img src={urlFor(post.mainImage).width(800).height(450).fit('crop').auto('format').url()} alt={post.mainImage.alt || ''} width="800" height="450" loading="lazy" decoding="async" class="aspect-[16/8] w-full object-cover" />
                       ) : (
-                        <div class="flex aspect-video w-full items-center justify-between bg-gradient-to-br from-primary to-secondary p-5">
-                          <span class="rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">{post.category ?? 'Article'}</span>
-                          {post.icon && <Icon name={post.icon} class="h-12 w-12 text-white/80" aria-hidden="true" />}
+                        <div class="relative flex aspect-[16/8] w-full items-end overflow-hidden bg-gradient-to-br from-primary via-[#0B2D5B] to-secondary p-4">
+                          <div class="cfd-grid absolute inset-0 opacity-10" aria-hidden="true"></div>
+                          <div class="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-accent/25 blur-[50px]" aria-hidden="true"></div>
+                          {post.icon && <Icon name={post.icon} class="absolute right-4 top-4 h-14 w-14 text-white/25 transition duration-500 group-hover:scale-110 group-hover:text-accent/60" aria-hidden="true" />}
+                          <span class="relative rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-white backdrop-blur">{post.category ?? 'Article'}</span>
                         </div>
                       )}
                       <div class="flex flex-1 flex-col p-6">
                         <p class="flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-wider text-accent"><time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time>{post.readMins && <span class="text-slate-500">· {post.readMins} min read</span>}</p>
-                        <h3 class="mt-2 font-heading text-lg font-bold text-primary group-hover:text-accent">{post.title}</h3>
+                        <h3 class="mt-2 font-heading text-lg font-bold leading-snug text-primary group-hover:text-accent">{post.title}</h3>
                         <p class="mt-2 flex-1 font-body text-sm leading-relaxed text-slate-600">{post.excerpt}</p>
                         <span class="mt-4 inline-flex items-center gap-1 font-heading text-sm font-bold text-secondary group-hover:text-accent">Read article <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" /></span>
                       </div>

@@ -1,0 +1,105 @@
+---
+// Decorative 3D liquid surface: a shader-driven, mirror-like fluid that fades into white at the horizon. Not interactive.
+---
+<div class="pointer-events-none absolute inset-0" data-fluid aria-hidden="true">
+  <canvas class="pointer-events-none block h-full w-full"></canvas>
+</div>
+
+<script>
+  import { WebGLRenderer, Scene, PerspectiveCamera, Mesh, PlaneGeometry, ShaderMaterial } from 'three';
+
+  const NOISE = /* glsl */ `
+    float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+    float vnoise(vec2 p){
+      vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+      return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
+    }
+    float fbm(vec2 p){ float v = 0.0, a = 0.5; for (int i = 0; i < 4; i++) { v += a * vnoise(p); p = p * 2.03 + vec2(17.1, 9.7); a *= 0.5; } return v; }
+    uniform float uTime;
+    // Domain-warped noise plus slow swells: smooth, organic, flowing liquid height.
+    float height(vec2 p){
+      vec2 q = p * 0.11; float t = uTime * 0.18;
+      float a = fbm(q + vec2(t * 0.6, t * 0.3));
+      float b = fbm(q * 1.3 + 2.2 * a + vec2(-t * 0.4, t * 0.5));
+      float swell = sin(p.x * 0.35 + uTime * 0.55 + a * 3.0) * 0.35 + sin(p.y * 0.28 - uTime * 0.4) * 0.25;
+      return (b - 0.5) * 3.2 + swell * 0.6;
+    }
+  `;
+
+  const VERT = /* glsl */ `
+    ${NOISE}
+    varying vec3 vWorld;
+    void main(){
+      vec4 w = modelMatrix * vec4(position, 1.0);
+      w.y += height(w.xz);
+      vWorld = w.xyz;
+      gl_Position = projectionMatrix * viewMatrix * w;
+    }
+  `;
+
+  const FRAG = /* glsl */ `
+    ${NOISE}
+    varying vec3 vWorld;
+    vec3 env(vec3 R){
+      float g = smoothstep(-0.05, 0.85, R.y);
+      vec3 col = mix(vec3(0.02, 0.13, 0.30), vec3(0.80, 0.89, 0.99), g);          // navy at grazing angles -> pale sky overhead
+      float soft = smoothstep(0.72, 1.0, sin(R.x * 5.0 + R.y * 3.2 + 1.0) * 0.5 + 0.5) * smoothstep(0.08, 0.5, R.y);
+      col = mix(col, vec3(1.0), soft * 0.95);                                       // bright studio softboxes
+      float warm = pow(max(dot(R, normalize(vec3(-0.55, 0.45, -0.7))), 0.0), 18.0);
+      col += vec3(1.0, 0.42, 0.0) * warm * 1.15;                                    // brand-orange reflection
+      return col;
+    }
+    void main(){
+      vec2 xz = vWorld.xz; float e = 0.12;
+      float h0 = height(xz), hx = height(xz + vec2(e, 0.0)), hz = height(xz + vec2(0.0, e));
+      vec3 N = normalize(vec3(-(hx - h0) / e * 1.8, 1.0, -(hz - h0) / e * 1.8));
+      vec3 toCam = cameraPosition - vWorld; float dist = length(toCam); vec3 V = toCam / dist;
+      N = normalize(mix(N, vec3(0.0, 1.0, 0.0), smoothstep(26.0, 70.0, dist)));
+      vec3 R = reflect(-V, N);
+      float F = 0.04 + 0.96 * pow(1.0 - max(dot(N, V), 0.0), 4.0);
+      vec3 body = mix(vec3(0.06, 0.30, 0.51), vec3(0.18, 0.50, 0.84), clamp(h0 * 0.35 + 0.5, 0.0, 1.0));
+      vec3 col = mix(body, env(R), clamp(F + 0.38, 0.0, 1.0));
+      col += vec3(1.0) * pow(max(dot(R, normalize(vec3(0.4, 0.8, -0.5))), 0.0), 220.0) * 1.6;   // sharp sun glint
+      col = mix(col, vec3(1.0), smoothstep(11.0, 48.0, dist));                      // melt into the white page
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `;
+
+  const root = document.querySelector<HTMLElement>('[data-fluid]');
+  if (root) {
+    let renderer: WebGLRenderer | null = null;
+    try { renderer = new WebGLRenderer({ canvas: root.querySelector('canvas')!, antialias: true }); } catch { /* white background remains */ }
+    if (renderer) init(renderer, root);
+  }
+
+  function init(renderer: WebGLRenderer, stage: HTMLElement) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setClearColor(0xffffff, 1);
+    const scene = new Scene();
+    const camera = new PerspectiveCamera(40, 1, 0.1, 400);
+    camera.position.set(0, 2.6, 10);
+    camera.lookAt(0, 1.9, -4);
+
+    const geo = new PlaneGeometry(260, 260, 220, 220); geo.rotateX(-Math.PI / 2);
+    const mat = new ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG, uniforms: { uTime: { value: 8 } } });
+    const plane = new Mesh(geo, mat); plane.position.z = -70; plane.frustumCulled = false; scene.add(plane);
+
+    let t = 8, last = performance.now(), visible = true;
+    const draw = () => { mat.uniforms.uTime.value = t; renderer.render(scene, camera); };
+    const resize = () => {
+      const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.fov = w / h < 0.9 ? 52 : 40; camera.updateProjectionMatrix(); draw();
+    };
+    new ResizeObserver(resize).observe(stage);
+    new IntersectionObserver((e) => { visible = e[0].isIntersecting; last = performance.now(); }).observe(stage);
+    resize();
+    const loop = (now: number) => {
+      const dt = Math.min((now - last) / 1000, 0.05); last = now;
+      if (visible && !document.hidden) { if (!reduce) t += dt; draw(); }
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame((now) => { last = now; requestAnimationFrame(loop); });
+  }
+</script>
