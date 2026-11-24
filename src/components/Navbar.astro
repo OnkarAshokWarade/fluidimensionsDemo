@@ -96,16 +96,17 @@ const slug = (label: string) => label.toLowerCase().replace(/\W+/g, '-');
   };
   const syncTheme = () => {
     const y = header.getBoundingClientRect().bottom + 6;
-    const stack = document.elementsFromPoint(window.innerWidth / 2, y).filter((el) => !header.contains(el));
+    const under = document.elementsFromPoint(window.innerWidth / 2, y).find((el) => !header.contains(el));
+    // Judge the page section behind the bar, never a card or box inside it.
+    let node: Element | null = under?.closest('section, header, footer, main') ?? under ?? null;
     let lum: number | null = null;
-    for (const el of stack) { lum = lumAt(el); if (lum !== null) break; }
-    header.dataset.theme = lum !== null && lum > 0.6 ? 'light' : 'dark';
+    while (node && lum === null) { lum = lumAt(node); node = node.parentElement; }
+    header.dataset.theme = lum !== null && lum < 0.45 ? 'dark' : 'light';
   };
-  let ticking = false;
-  const onScroll = () => { if (ticking) return; ticking = true; requestAnimationFrame(() => { syncTheme(); ticking = false; }); };
   syncTheme();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
+  window.addEventListener('scroll', syncTheme, { passive: true });
+  window.addEventListener('resize', syncTheme);
+  window.addEventListener('load', syncTheme);
 
   // Switch the lamp on the instant a page is chosen
   document.querySelectorAll<HTMLAnchorElement>('a.nav-link').forEach((link) => link.addEventListener('click', () => link.classList.add('is-lit')));
