@@ -9,7 +9,7 @@ const groupActive = (item: any) => item.children?.some((child: any) => isActive(
 const slug = (label: string) => label.toLowerCase().replace(/\W+/g, '-');
 ---
 <header class="site-header" data-solid={isHome ? 'false' : 'true'} data-home={isHome ? 'true' : 'false'} id="site-header">
-  <nav class="site-container flex items-center justify-between gap-4" aria-label="Primary navigation">
+  <nav class="site-pill mx-auto flex items-center justify-between gap-3" aria-label="Primary navigation">
     <a href="/" class="flex min-h-11 min-w-0 items-center gap-2.5 rounded-lg sm:gap-3" aria-label="FluiDimensions home">
       <img src="/logo.png" alt="" width="40" height="40" class="h-9 w-auto shrink-0 sm:h-10" />
       <div class="min-w-0">
@@ -18,10 +18,12 @@ const slug = (label: string) => label.toLowerCase().replace(/\W+/g, '-');
       </div>
     </a>
 
-    <ul class="hidden items-center gap-5 xl:flex 2xl:gap-7">
+    <ul class="hidden items-center gap-1 xl:flex">
       {NAV.map((item) => item.children ? (
         <li class="dd relative">
-          <button type="button" class="dd-btn nav-link flex items-center gap-1 rounded-md py-2 font-body text-sm font-medium transition" aria-expanded="false" aria-haspopup="true" aria-controls={`dd-${slug(item.label)}`} aria-current={groupActive(item) ? 'page' : undefined}>
+          <button type="button" class="dd-btn nav-link flex items-center gap-1 whitespace-nowrap font-body text-sm font-medium transition" aria-expanded="false" aria-haspopup="true" aria-controls={`dd-${slug(item.label)}`} aria-current={groupActive(item) ? 'page' : undefined}>
+            
+            <span class="lamp" aria-hidden="true"><span class="lamp-cone"></span><span class="lamp-bar"></span></span>
             {item.label}
             <Icon name="ion:chevron-down" class="dd-chevron h-3.5 w-3.5 transition-transform" aria-hidden="true" />
           </button>
@@ -35,12 +37,12 @@ const slug = (label: string) => label.toLowerCase().replace(/\W+/g, '-');
         </li>
       ) : (
         <li>
-          <a href={item.to} aria-current={isActive(item.to) ? 'page' : undefined} class:list={['nav-link relative block rounded-md py-2 font-body text-sm font-medium transition', isActive(item.to) && 'border-b-2 border-accent']}>{item.label}</a>
+          <a href={item.to} aria-current={isActive(item.to) ? 'page' : undefined} class="nav-link block whitespace-nowrap font-body text-sm font-medium transition"><span class="lamp" aria-hidden="true"><span class="lamp-cone"></span><span class="lamp-bar"></span></span>{item.shortLabel ?? item.label}</a>
         </li>
       ))}
     </ul>
 
-    <a href={NAV_CTA.to} class="ml-auto hidden min-h-11 items-center justify-center rounded-full bg-accent px-6 font-heading text-sm font-semibold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-accent-dark xl:inline-flex">{NAV_CTA.label}</a>
+    <a href={NAV_CTA.to} class="ml-auto hidden min-h-10 items-center justify-center rounded-full bg-accent px-5 font-heading text-sm font-semibold text-white shadow-md transition hover:bg-accent-dark xl:inline-flex">{NAV_CTA.label}</a>
     <button type="button" id="menu-toggle" class="menu-btn flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition hover:bg-white/10 xl:hidden" aria-expanded="false" aria-controls="mobile-navigation" aria-label="Open navigation menu">
       <Icon name="ion:menu" class="menu-open h-6 w-6" aria-hidden="true" />
       <Icon name="ion:close" class="menu-close hidden h-6 w-6" aria-hidden="true" />
@@ -81,6 +83,9 @@ const slug = (label: string) => label.toLowerCase().replace(/\W+/g, '-');
   };
   syncSolid();
   window.addEventListener('scroll', syncSolid, { passive: true });
+
+  // Switch the lamp on the instant a page is chosen
+  document.querySelectorAll<HTMLAnchorElement>('a.nav-link').forEach((link) => link.addEventListener('click', () => link.classList.add('is-lit')));
 
   // Mobile menu
   const setMenu = (open: boolean) => {

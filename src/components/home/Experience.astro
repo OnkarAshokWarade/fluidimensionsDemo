@@ -2,25 +2,72 @@
 import { Icon } from 'astro-icon/components';
 import SectionHeading from './SectionHeading.astro';
 import { experienceSection as content } from '../../data/home';
+
+// Static class strings so Tailwind can see them.
+const sectorTone: Record<string, { block: string; chip: string; dot: string }> = {
+  Cement: { block: 'from-amber-500 to-orange-600', chip: 'border-amber-200 bg-amber-50 text-amber-900', dot: 'bg-amber-500' },
+  Pharmaceuticals: { block: 'from-emerald-500 to-teal-600', chip: 'border-emerald-200 bg-emerald-50 text-emerald-900', dot: 'bg-emerald-500' },
+  'Oil & Gas': { block: 'from-sky-500 to-blue-700', chip: 'border-sky-200 bg-sky-50 text-sky-900', dot: 'bg-sky-500' },
+};
+const fallback = { block: 'from-violet-500 to-indigo-700', chip: 'border-violet-200 bg-violet-50 text-violet-900', dot: 'bg-violet-500' };
+const toneOf = (sec: string) => sectorTone[sec] ?? fallback;
+const sectors = [...new Set(content.projects.map((p) => p.sec))];
+const counts = Object.fromEntries(sectors.map((s) => [s, content.projects.filter((p) => p.sec === s).length]));
 ---
 <section id="experience" aria-labelledby="experience-heading" class="bg-brand-bg py-20 sm:py-24 lg:py-28">
   <div class="site-container">
     <SectionHeading id="experience-heading" eyebrow="Selected experience" title={content.heading} intro={content.intro} />
-    <ul class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {content.projects.map((project, index) => (
-        <li class="reveal" style={`--reveal-delay:${(index % 3) * 0.05}s`}>
-          <article class="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <div class="flex flex-wrap gap-2">
-              <span class="rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-secondary">{project.sec}</span>
-              <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">{project.cap}</span>
-            </div>
-            <p class="mt-4 font-heading text-2xl font-bold leading-tight text-primary">{project.big}</p>
-            <h3 class="mt-2 font-heading text-base font-semibold text-slate-800">{project.t}</h3>
-            <p class="mt-2 flex-1 font-body text-sm leading-relaxed text-slate-600">{project.d}</p>
-            <a href={project.to} class="mt-5 inline-flex items-center gap-1 font-heading text-xs font-bold text-secondary hover:text-accent">Read more <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" /></a>
-          </article>
-        </li>
+
+    <!-- Sector filter -->
+    <div class="reveal mb-8 flex flex-wrap items-center gap-2" role="group" aria-label="Filter experience by industry" data-exp-filters>
+      <span class="mr-1 text-xs font-bold uppercase tracking-widest text-slate-500">Show</span>
+      <button type="button" data-filter="all" aria-pressed="true" class="exp-filter rounded-full border border-slate-300 bg-white px-4 py-1.5 font-heading text-sm font-semibold text-primary transition hover:border-accent">All <span class="text-slate-500">· {content.projects.length}</span></button>
+      {sectors.map((s) => (
+        <button type="button" data-filter={s} aria-pressed="false" class="exp-filter inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-1.5 font-heading text-sm font-semibold text-primary transition hover:border-accent"><span class={`h-2.5 w-2.5 rounded-full ${toneOf(s).dot}`} aria-hidden="true"></span>{s} <span class="text-slate-500">· {counts[s]}</span></button>
       ))}
+    </div>
+
+    <ul class="grid grid-cols-1 gap-5 lg:grid-cols-2" data-exp-list>
+      {content.projects.map((project, index) => {
+        const tone = toneOf(project.sec);
+        return (
+          <li class="reveal exp-item" data-sector={project.sec} style={`--reveal-delay:${(index % 2) * 0.06}s`}>
+            <article class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl sm:flex-row">
+              <div class={`relative flex shrink-0 flex-col justify-between bg-gradient-to-br p-5 text-white sm:w-48 ${tone.block}`}>
+                <span class="font-heading text-xs font-bold uppercase tracking-widest text-white/80">Case {String(index + 1).padStart(2, '0')}</span>
+                <p class="mt-6 break-words font-heading text-2xl font-black leading-tight sm:mt-0 sm:text-[1.4rem]">{project.big}</p>
+                <span class="mt-4 inline-flex w-fit items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-semibold">Key result</span>
+              </div>
+              <div class="flex flex-1 flex-col p-5 sm:p-6">
+                <div class="flex flex-wrap gap-2">
+                  <span class={`rounded-full border px-3 py-1 text-xs font-semibold ${tone.chip}`}>{project.sec}</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600">{project.cap}</span>
+                </div>
+                <h3 class="mt-3 font-heading text-base font-bold leading-snug text-primary">{project.t}</h3>
+                <p class="mt-2 flex-1 font-body text-sm leading-relaxed text-slate-600">{project.d}</p>
+                <a href={project.to} class="mt-4 inline-flex items-center gap-1 font-heading text-xs font-bold text-secondary transition-colors group-hover:text-accent">Read more <Icon name="ion:arrow-forward" class="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></a>
+              </div>
+            </article>
+          </li>
+        );
+      })}
     </ul>
   </div>
 </section>
+
+<style is:global>
+  .exp-filter[aria-pressed='true'] { background: #071B3A; color: #fff; border-color: #071B3A; }
+  .exp-filter[aria-pressed='true'] span { color: rgb(255 255 255 / .75); }
+</style>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-exp-filters]');
+  const items = [...document.querySelectorAll<HTMLElement>('.exp-item')];
+  bar?.querySelectorAll<HTMLButtonElement>('.exp-filter').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const value = btn.dataset.filter!;
+      bar.querySelectorAll('.exp-filter').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      items.forEach((item) => { item.hidden = value !== 'all' && item.dataset.sector !== value; });
+    });
+  });
+</script>
