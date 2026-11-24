@@ -24,11 +24,11 @@ const breadcrumbLd = {
 <BaseLayout title={page.title} description={page.description} path={page.path} noindex={noindex} jsonLd={[breadcrumbLd]}>
   <main>
     {banner ? (
-      <header class="relative overflow-hidden bg-gradient-to-br from-primary via-[#0B2D5B] to-secondary pb-14 pt-28 text-white sm:pb-20 sm:pt-36">
+      <header class={`relative overflow-hidden bg-gradient-to-br from-primary via-[#0B2D5B] to-secondary text-white ${Astro.slots.has('aside') ? 'pb-8 pt-24 sm:pb-10 sm:pt-28' : 'pb-14 pt-28 sm:pb-20 sm:pt-36'}`}>
         <div class="cfd-grid pointer-events-none absolute inset-0 opacity-10" aria-hidden="true"></div>
         <div class="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-accent/20 blur-[100px]" aria-hidden="true"></div>
         <div class="site-container relative">
-          <nav aria-label="Breadcrumb" class="mb-6 text-sm text-slate-300">
+          <nav aria-label="Breadcrumb" class={`text-sm text-slate-300 ${Astro.slots.has('aside') ? 'mb-3' : 'mb-6'}`}>
             <ol class="flex flex-wrap items-center gap-2">
               <li><a href="/" class="hover:text-white">Home</a></li>
               {section && <li aria-hidden="true">/</li>}
@@ -37,7 +37,7 @@ const breadcrumbLd = {
               <li aria-current="page" class="font-semibold text-white">{page.label}</li>
             </ol>
           </nav>
-          <div class={Astro.slots.has('aside') ? 'grid items-center gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]' : ''}>
+          <div class={Astro.slots.has('aside') ? 'grid items-center gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-10' : ''}>
             <div class="min-w-0">
               <span class="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">{badge ?? (isIndustry ? 'Industry solutions' : 'Engineering capability')}</span>
               <h1 class="mt-4 max-w-4xl font-heading text-[clamp(2rem,4.8vw,3.3rem)] font-bold leading-[1.12] text-white">{page.h1}</h1>
