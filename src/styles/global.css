@@ -107,9 +107,9 @@ input, select, textarea { max-width: 100%; }
 .site-header { position: fixed; inset-inline: 0; top: 0; z-index: 50; padding: 0; pointer-events: none; }
 .site-pill {
   pointer-events: auto; width: 100%; padding: .55rem max(1rem, calc((100% - 80rem) / 2 + 1rem));
-  border: 0; border-bottom: 1px solid rgb(255 255 255 / .16); border-radius: 0;
+  border: 0; border-radius: 0;
   background: rgb(7 27 58 / .58);
-  box-shadow: 0 8px 24px rgb(7 27 58 / .18);
+  box-shadow: 0 6px 20px rgb(7 27 58 / .12); transition: background-color .3s, box-shadow .3s;
   backdrop-filter: blur(16px) saturate(1.25); -webkit-backdrop-filter: blur(16px) saturate(1.25);
 }
 .site-header .brand-name, .site-header .menu-btn { color: #fff; }
@@ -121,6 +121,16 @@ input, select, textarea { max-width: 100%; }
 .site-header .nav-link[aria-current='page'] {
   color: #fff; text-shadow: 0 0 12px rgb(255 160 70 / .55);
   background: radial-gradient(ellipse 80% 100% at 50% 0%, rgb(255 107 0 / .28), transparent 75%);
+}
+
+/* Over a light section the bar turns white-ish with dark text; over a dark section it is navy with white text. */
+.site-header[data-theme='light'] .site-pill { background: rgb(255 255 255 / .72); box-shadow: 0 6px 20px rgb(7 27 58 / .08); }
+.site-header[data-theme='light'] .brand-name, .site-header[data-theme='light'] .menu-btn { color: var(--color-primary); }
+.site-header[data-theme='light'] .nav-link { color: #334155; }
+.site-header[data-theme='light'] .nav-link:hover { color: var(--color-accent); background: rgb(7 27 58 / .05); }
+.site-header[data-theme='light'] .nav-link[aria-current='page'] {
+  color: var(--color-accent-dark); text-shadow: none;
+  background: radial-gradient(ellipse 80% 100% at 50% 0%, rgb(255 107 0 / .16), transparent 75%);
 }
 /* The lamp: a bar on the top edge of the pill and a cone of light falling onto the item. */
 .lamp { position: absolute; inset: -.5rem 0 0 0; pointer-events: none; opacity: 0; transition: opacity .3s; }
