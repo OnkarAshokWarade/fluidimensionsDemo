@@ -21,77 +21,67 @@ const steps = [
   ['We agree a practical way forward', 'This might be a technical discussion, a proposal or a pointer to the right resource.'],
 ];
 ---
-<PageLayout page={contactPage} banner badge="Get in touch" lead="Tell us about the problem you are trying to solve. An engineer, not a call centre, reads every message.">
-  <!-- 1. Contact information -->
-  <section aria-labelledby="reach-heading">
-    <p class="font-heading text-xs font-bold uppercase tracking-[0.18em] text-accent">Contact information</p>
-    <h2 id="reach-heading" class="mt-2 font-heading text-2xl font-bold text-primary sm:text-3xl">Ways to reach us</h2>
-    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {info.map((item) => (
-        <a href={item.href} class="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-accent/50 hover:shadow-xl">
-          <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-secondary text-white shadow-md"><Icon name={item.icon} class="h-6 w-6" aria-hidden="true" /></span>
-          <span class="mt-5 font-heading text-xs font-bold uppercase tracking-wider text-slate-500">{item.label}</span>
-          <span class="mt-1 break-words font-heading text-lg font-bold text-primary">{item.value}</span>
-          <span class="mt-2 font-body text-sm leading-snug text-slate-500">{item.note}</span>
-          <Icon name="ion:arrow-forward" class="absolute right-5 top-5 h-4 w-4 text-slate-300 transition group-hover:translate-x-1 group-hover:text-accent" aria-hidden="true" />
-        </a>
-      ))}
-    </div>
-  </section>
+<PageLayout page={contactPage} banner compact badge="Get in touch" lead="Tell us about the problem you are trying to solve. An engineer, not a call centre, reads every message.">
+  <div class="grid items-start gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-10">
+    <!-- Left: ways to reach us + what happens next -->
+    <div class="order-2 space-y-6 lg:sticky lg:top-24 lg:order-1">
+      <section aria-labelledby="reach-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <h2 id="reach-heading" class="font-heading text-lg font-bold text-primary">Ways to reach us</h2>
+        <ul class="mt-4 divide-y divide-slate-100">
+          {info.map((item) => (
+            <li>
+              <a href={item.href} class="group flex items-center gap-4 py-3.5 transition first:pt-0 last:pb-0">
+                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-secondary text-white"><Icon name={item.icon} class="h-5 w-5" aria-hidden="true" /></span>
+                <span class="min-w-0 flex-1">
+                  <span class="block font-heading text-sm font-bold text-primary group-hover:text-accent">{item.label}: <span class="font-semibold">{item.value}</span></span>
+                  <span class="mt-0.5 block font-body text-xs leading-snug text-slate-500">{item.note}</span>
+                </span>
+                <Icon name="ion:arrow-forward" class="h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-1 group-hover:text-accent" aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-  <!-- 2. What would you like to do? -->
-  <section aria-labelledby="choose-heading" class="mt-16 sm:mt-20">
-    <div class="rounded-3xl bg-gradient-to-br from-primary via-[#0B2D5B] to-secondary p-6 sm:p-10">
-      <div class="max-w-2xl">
-        <p class="font-heading text-xs font-bold uppercase tracking-[0.18em] text-accent">Start here</p>
-        <h2 id="choose-heading" class="mt-2 font-heading text-2xl font-bold text-white sm:text-3xl">What would you like to do?</h2>
-        <p class="mt-3 font-body text-base leading-7 text-slate-300">Pick the option that fits best so your message reaches the right person.</p>
-      </div>
-      <div role="tablist" aria-label="Enquiry type" id="enquiry-tabs" class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {contactForms.map((form, index) => (
-          <a href={`#${form.id}`} role="tab" id={`tab-${form.id}`} aria-controls={form.id} aria-selected={index === 0 ? 'true' : 'false'} class="group relative flex flex-col rounded-2xl border border-white/15 bg-white/[0.07] p-6 text-white backdrop-blur-sm transition hover:-translate-y-1 hover:bg-white/15 aria-selected:border-accent aria-selected:bg-white aria-selected:text-primary aria-selected:shadow-2xl">
-            <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/20 text-accent transition group-aria-selected:bg-accent group-aria-selected:text-white"><Icon name={icons[form.type]} class="h-6 w-6" aria-hidden="true" /></span>
-            <span class="mt-5 font-heading text-base font-bold leading-snug">{form.tab}</span>
-            <span class="mt-2 font-body text-sm leading-snug text-slate-300 group-aria-selected:text-slate-600">{form.intro}</span>
-            <span class="mt-auto inline-flex items-center gap-1.5 pt-5 font-heading text-xs font-semibold uppercase tracking-wider text-accent">Write to us <Icon name="ion:arrow-down" class="h-3.5 w-3.5" aria-hidden="true" /></span>
-          </a>
-        ))}
-      </div>
+      <section aria-labelledby="next-heading" class="rounded-2xl border border-slate-200 bg-sky-50 p-5 sm:p-6">
+        <h2 id="next-heading" class="font-heading text-lg font-bold text-primary">What happens next</h2>
+        <ol class="mt-4 space-y-4">
+          {steps.map(([title, text], i) => (
+            <li class="flex gap-3.5">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent font-heading text-sm font-bold text-white">{i + 1}</span>
+              <span><span class="block font-heading text-sm font-bold text-primary">{title}</span><span class="mt-0.5 block font-body text-xs leading-relaxed text-slate-600">{text}</span></span>
+            </li>
+          ))}
+        </ol>
+        <p class="mt-5 rounded-lg bg-amber-50 p-3 font-body text-xs leading-relaxed text-amber-900">We respect confidentiality. Please avoid sharing proprietary documents, sensitive process data or confidential customer information until appropriate confidentiality arrangements are in place.</p>
+      </section>
     </div>
 
-    <div class="mx-auto mt-8 max-w-3xl">
+    <!-- Right: enquiry type tabs + form -->
+    <section aria-labelledby="choose-heading" class="order-1 min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg lg:order-2">
+      <div class="bg-gradient-to-br from-primary via-[#0B2D5B] to-secondary px-5 pb-0 pt-5 sm:px-7 sm:pt-6">
+        <h2 id="choose-heading" class="font-heading text-lg font-bold text-white sm:text-xl">What would you like to do?</h2>
+        <div role="tablist" aria-label="Enquiry type" id="enquiry-tabs" class="-mx-1 mt-4 flex gap-1 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {contactForms.map((form, index) => (
+            <a href={`#${form.id}`} role="tab" id={`tab-${form.id}`} aria-controls={form.id} aria-selected={index === 0 ? 'true' : 'false'} class="flex shrink-0 items-center gap-2 rounded-t-xl border border-b-0 border-transparent px-4 py-3 font-heading text-sm font-semibold text-white/80 transition hover:bg-white/10 hover:text-white aria-selected:border-white aria-selected:bg-white aria-selected:text-primary">
+              <Icon name={icons[form.type]} class="h-4 w-4" aria-hidden="true" />{form.tab}
+            </a>
+          ))}
+        </div>
+      </div>
       {contactForms.map((form) => (
-        <section id={form.id} role="tabpanel" aria-labelledby={`tab-${form.id}`} data-panel class="scroll-mt-28 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg [&:not(:first-child)]:mt-8">
-          <div class="flex items-start gap-4 border-b border-slate-200 bg-sky-50 px-6 py-6 sm:px-9">
-            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent text-white"><Icon name={icons[form.type]} class="h-5 w-5" aria-hidden="true" /></span>
-            <div>
-              <h3 class="font-heading text-xl font-bold text-primary">{form.title}</h3>
-              <p class="mt-1 font-body text-sm leading-relaxed text-slate-600">{form.intro}</p>
-            </div>
+        <section id={form.id} role="tabpanel" aria-labelledby={`tab-${form.id}`} data-panel class="scroll-mt-24 [&:not(:first-of-type)]:border-t [&:not(:first-of-type)]:border-slate-200">
+          <div class="border-b border-slate-200 bg-sky-50 px-5 py-4 sm:px-7">
+            <h3 class="font-heading text-lg font-bold text-primary">{form.title}</h3>
+            <p class="mt-1 font-body text-sm leading-relaxed text-slate-600">{form.intro}</p>
           </div>
-          <div class="p-6 sm:p-9">
+          <div class="p-5 sm:p-7">
             <EnquiryForm id={form.id} type={form.type} fields={form.fields} submit={form.submit} successTitle={form.type === 'careers' ? 'Application received' : 'Enquiry received'} />
           </div>
         </section>
       ))}
-    </div>
-  </section>
-
-  <!-- 3. What happens next -->
-  <section aria-labelledby="next-heading" class="mt-16 sm:mt-20">
-    <h2 id="next-heading" class="text-center font-heading text-2xl font-bold text-primary sm:text-3xl">What happens next</h2>
-    <ol class="relative mt-10 grid gap-8 md:grid-cols-3">
-      <div class="pointer-events-none absolute left-[16%] right-[16%] top-6 hidden border-t-2 border-dashed border-slate-300 md:block" aria-hidden="true"></div>
-      {steps.map(([title, text], i) => (
-        <li class="relative text-center">
-          <span class="relative z-10 mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent font-heading text-lg font-bold text-white shadow-lg ring-8 ring-white">{i + 1}</span>
-          <h3 class="mt-4 font-heading text-base font-bold text-primary">{title}</h3>
-          <p class="mx-auto mt-2 max-w-xs font-body text-sm leading-relaxed text-slate-500">{text}</p>
-        </li>
-      ))}
-    </ol>
-    <p class="mx-auto mt-12 max-w-3xl rounded-xl bg-amber-50 p-4 text-center font-body text-sm leading-relaxed text-amber-900">We respect confidentiality. Please avoid sharing proprietary documents, sensitive process data or confidential customer information until appropriate confidentiality arrangements are in place.</p>
-  </section>
+    </section>
+  </div>
 </PageLayout>
 
 <script>
@@ -100,7 +90,7 @@ const steps = [
   const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-panel]'));
   const select = (id: string, updateHash: boolean) => {
     const target = panels.find((panel) => panel.id === id) ?? panels[0];
-    panels.forEach((panel) => { panel.hidden = panel !== target; panel.classList.remove('[&:not(:first-child)]:mt-8'); });
+    panels.forEach((panel) => { panel.hidden = panel !== target; });
     tabs.forEach((tab) => tab.setAttribute('aria-selected', String(tab.getAttribute('aria-controls') === target.id)));
     if (updateHash) history.replaceState(null, '', `#${target.id}`);
   };
