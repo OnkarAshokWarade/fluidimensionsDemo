@@ -46,11 +46,11 @@ export const SIEMENS=[
  ["Design Engineering Tools","Tools that support product development, design evaluation and integrated engineering workflows.","Siemens engineering simulation portfolio"]
 ];
 export const ENGAGE=[
- ["Software licensing & technology enquiries","We help customers explore relevant Siemens engineering software and how different solutions may address their requirements."],
- ["Technical training","Training in engineering software, structured around fundamentals, specialised topics or application-oriented needs."],
- ["Proof-of-concept studies","Define a relevant technical problem, demonstrate the technology and evaluate its value before a wider commitment."],
- ["Engineering application support","Beyond software menus: modelling approaches, workflow development and interpretation of engineering results."],
- ["Technology integration","How simulation, process modelling, data-driven methods and custom applications can work together in one workflow."]
+ ["Software licensing & technology enquiries","We help customers explore relevant Siemens engineering software platforms and understand how different solutions may address their requirements."],
+ ["Technical training","We provide training in engineering software, helping engineers and technical teams develop the skills needed to use the tools effectively. Training can be structured around software fundamentals, specialised technical topics or application-oriented requirements."],
+ ["Proof-of-concept (POC) studies","A proof-of-concept study can help establish whether a particular software platform or engineering workflow is suitable for a customer's problem. We work with customers to define a relevant technical problem, demonstrate the application of the technology and evaluate its potential value before a wider commitment."],
+ ["Engineering application support","Our engineering background helps us go beyond software features and menus. We can engage with customers on the technical application of the tools, including modelling approaches, workflow development and interpretation of engineering results."],
+ ["Technology integration","Engineering challenges often involve multiple tools and methods. We help explore how simulation, process modelling, data-driven methods and customised software applications can work together within an engineering workflow."]
 ];
 
 /* capability pages */

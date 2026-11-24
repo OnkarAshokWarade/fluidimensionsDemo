@@ -1,79 +1,168 @@
 ---
-import PageLayout from '../layouts/PageLayout.astro';
-import Cta from '../components/pages/Cta.astro';
-import { technologiesPage } from '../data/site';
 import { Icon } from 'astro-icon/components';
+import PageLayout from '../layouts/PageLayout.astro';
+import { technologiesPage } from '../data/site';
 import { ENGAGE } from '../data/doc';
 
 const h2 = 'font-heading text-2xl font-bold text-primary sm:text-3xl';
 const eyebrow = 'text-sm font-bold uppercase tracking-widest text-accent';
-const software = [
-  { name: 'Simcenter STAR-CCM+', kind: 'CFD & multiphysics', icon: 'ion:water-outline', tone: 'sky', blurb: 'Siemens software for analysing fluid flow, heat transfer, multiphase systems and combustion in complex equipment.', uses: ['Flow distribution and pressure drop', 'Multiphase and reacting flows', 'Heat and mass transfer in equipment'], help: 'Licensing enquiries, training, proof-of-concept studies' },
-  { name: 'Simcenter 3D', kind: 'FEA & multiphysics', icon: 'ion:construct-outline', tone: 'violet', blurb: 'Structural, thermal and multiphysics analysis of components and systems under different loading and operating conditions.', uses: ['Stress, strain and deformation', 'Thermal and thermo-mechanical loading', 'Vibration and structural response'], help: 'Application support and workflow development' },
-  { name: 'Simcenter Amesim', kind: 'System simulation', icon: 'ion:git-network-outline', tone: 'emerald', blurb: 'System-level simulation of how components and subsystems behave and interact within a larger system.', uses: ['Fluid, thermal and control systems', 'Early-stage design evaluation', 'Operating-condition studies'], help: 'Training and technology integration' },
-  { name: 'Molecular modelling', kind: 'Simcenter portfolio and CULGI', icon: 'ion:flask-outline', tone: 'amber', blurb: 'Molecular-level modelling and simulation to investigate molecular properties and material behaviour, an emerging area for us.', uses: ['Molecular properties', 'Material behaviour', 'Formulation-related questions'], help: 'Technical discussion and exploratory studies' },
-  { name: 'Process modelling', kind: 'Flowsheet & process analysis', icon: 'ion:analytics-outline', tone: 'rose', blurb: 'Technologies for simulating, analysing and optimising complex process systems and operating decisions.', uses: ['Flowsheet and sensitivity studies', 'Troubleshooting', 'Integration with CFD and data models'], help: 'Discuss suitable options with our team' },
-  { name: 'Design engineering tools', kind: 'Integrated design workflows', icon: 'ion:layers-outline', tone: 'cyan', blurb: 'Tools that support product development, design evaluation and integrated engineering workflows.', uses: ['Design evaluation', 'Engineering workflows', 'Multi-tool integration'], help: 'Technology integration and adoption support' },
-];
-const toneCls = {
-  sky: ['bg-sky-600', 'border-t-sky-500', 'bg-sky-50 text-sky-900'], violet: ['bg-violet-600', 'border-t-violet-500', 'bg-violet-50 text-violet-900'],
-  emerald: ['bg-emerald-600', 'border-t-emerald-500', 'bg-emerald-50 text-emerald-900'], amber: ['bg-amber-600', 'border-t-amber-500', 'bg-amber-50 text-amber-900'],
-  rose: ['bg-rose-600', 'border-t-rose-500', 'bg-rose-50 text-rose-900'], cyan: ['bg-cyan-600', 'border-t-cyan-500', 'bg-cyan-50 text-cyan-900'],
+
+const toneCls: Record<string, { solid: string; bar: string; soft: string; border: string }> = {
+  sky: { solid: 'bg-sky-600', bar: 'border-t-sky-500', soft: 'bg-sky-50 text-sky-900', border: 'border-sky-200' },
+  emerald: { solid: 'bg-emerald-600', bar: 'border-t-emerald-500', soft: 'bg-emerald-50 text-emerald-900', border: 'border-emerald-200' },
+  violet: { solid: 'bg-violet-600', bar: 'border-t-violet-500', soft: 'bg-violet-50 text-violet-900', border: 'border-violet-200' },
+  amber: { solid: 'bg-amber-600', bar: 'border-t-amber-500', soft: 'bg-amber-50 text-amber-900', border: 'border-amber-200' },
+  rose: { solid: 'bg-rose-600', bar: 'border-t-rose-500', soft: 'bg-rose-50 text-rose-900', border: 'border-rose-200' },
+  cyan: { solid: 'bg-cyan-600', bar: 'border-t-cyan-500', soft: 'bg-cyan-50 text-cyan-900', border: 'border-cyan-200' },
 };
-const areas = [
-  ['Engineering simulation & analysis', 'CFD, FEA, multiphase flow and particle dynamics, combustion, heat and mass transfer, and multiphysics.'],
-  ['Process modelling & optimisation', 'Flowsheet modelling, sensitivity studies, troubleshooting and integration with other tools.'],
-  ['Machine learning & industrial data', 'Predictive models, monitoring, reduced-order and surrogate models.'],
-  ['Digital twins & integration', 'Physics-based, CFD, reduced-order and data-driven models connected with operational data.'],
-  ['Software development & automation', 'Custom applications, calculators, reduced-order model deployment, interfaces and workflow integration.'],
-  ['Molecular modelling', 'An emerging area developed through our association with CULGI.'],
+
+const intro = [
+  'We combine engineering expertise with advanced simulation, process modelling, machine learning, data intelligence and software development to help industries understand complex processes, improve equipment performance and make better engineering decisions.',
+  'As a Siemens software channel partner, we work with a broad portfolio of engineering technologies covering computational fluid dynamics, finite element analysis, molecular modelling, process modelling, system simulation and engineering design.',
+  'Our work goes beyond individual software tools. We bring engineering knowledge, technology platforms and customised solutions together to address practical industrial challenges.',
 ];
+
+const areas = [
+  { id: 'simulation', tone: 'sky', icon: 'ion:analytics-outline', title: 'Engineering Simulation & Analysis',
+    lead: 'Engineering simulation helps organisations understand complex physical behaviour, evaluate design alternatives and make informed decisions before committing to physical changes.',
+    label: 'FluiDimensions works across a range of engineering simulation disciplines, including',
+    items: ['Computational Fluid Dynamics (CFD)', 'Finite Element Analysis (FEA)', 'Multiphase flow and particle dynamics', 'Combustion and reacting flows', 'Heat and mass transfer', 'Structural, thermal and multiphysics analysis'],
+    close: 'Our focus is not simply on running simulations. It is on understanding the engineering problem, selecting appropriate modelling approaches and interpreting results in the context of actual equipment and process behaviour.',
+    link: ['/engineering-simulation/', 'Explore our engineering simulation capabilities'] },
+  { id: 'process', tone: 'emerald', icon: 'ion:flask-outline', title: 'Process Modelling & Optimisation',
+    lead: 'Process modelling provides a framework for understanding complex process systems, evaluating operating scenarios and improving process performance.',
+    label: 'We bring together chemical engineering knowledge, process understanding and modelling tools to support',
+    items: ['Process simulation and flowsheet modelling', 'Equipment and process performance evaluation', 'Process optimisation and sensitivity studies', 'Operating-condition assessment', 'Process design and troubleshooting', 'Integration of process models with other engineering tools'],
+    close: 'We help customers use process models not just as design tools, but as practical aids for engineering analysis and decision-making.',
+    link: ['/chemical-engineering-process-consulting/', 'Explore our Chemical Engineering and Process Consulting capabilities'] },
+  { id: 'data', tone: 'violet', icon: 'ion:git-network-outline', title: 'Machine Learning & Industrial Data Intelligence',
+    lead: 'Industrial data can provide valuable insights into process behaviour, equipment performance and operational trends. Machine learning and data-driven methods can help turn this information into useful predictions and decisions.',
+    label: 'FluiDimensions works on data-driven engineering applications such as',
+    items: ['Predictive modelling of process and equipment performance', 'Identification of operating patterns and deviations', 'Process monitoring and performance indicators', 'Data-driven optimisation', 'Reduced-order models and surrogate models', 'Engineering applications combining simulation results and operational data'],
+    close: 'We focus on applying these methods to meaningful engineering and industrial problems, rather than treating data analytics as an end in itself.',
+    link: ['/machine-learning-data-intelligence/', 'Explore our Machine Learning & Data Intelligence capabilities'] },
+  { id: 'twins', tone: 'amber', icon: 'ion:layers-outline', title: 'Digital Twins & Engineering Integration',
+    lead: 'A digital twin can bring together engineering models, simulation, operational data and software applications to provide a more connected understanding of an industrial asset or process.',
+    label: 'FluiDimensions works with technologies and approaches involving',
+    items: ['Physics-based engineering models', 'CFD and multiphysics simulations', 'Process models and reduced-order models', 'Data-driven models and machine learning', 'Operational data and monitoring systems', 'Custom software interfaces and engineering workflows'],
+    close: 'The objective is to connect engineering understanding with operational information and support better analysis, prediction and decision-making. The level of integration can be tailored to customer requirements, from standalone engineering models to more connected digital solutions.' },
+  { id: 'software', tone: 'rose', icon: 'ion:hardware-chip-outline', title: 'Engineering Software Development & Automation',
+    lead: 'Many engineering challenges require more than an off-the-shelf software workflow. FluiDimensions develops customised applications and automation solutions to make engineering methods more accessible, repeatable and useful.',
+    label: 'Our work includes',
+    items: ['Custom engineering software applications', 'Automation of simulation and analysis workflows', 'Engineering calculators and design tools', 'Reduced-order model deployment', 'Custom graphical user interfaces', 'Integration of engineering software and data workflows'],
+    close: 'These solutions help engineering teams automate repetitive tasks, evaluate alternatives more efficiently and make advanced engineering methods more accessible.',
+    link: ['/software-automation/', 'Explore our Software & Automation capabilities'] },
+];
+
+const siemens = [
+  { tone: 'sky', icon: 'ion:water-outline', title: 'Computational Fluid Dynamics (CFD)', text: 'Software for analysing fluid flow, heat transfer, multiphase systems, combustion and other complex flow phenomena.', explore: ['Siemens Simcenter STAR-CCM+', 'https://www.siemens.com/en-us/products/simcenter/fluids-thermal-simulation/star-ccm/'] },
+  { tone: 'violet', icon: 'ion:construct-outline', title: 'Finite Element Analysis (FEA) & Multiphysics', text: 'Tools for structural, thermal and multiphysics analysis to evaluate component and system behaviour under different loading and operating conditions.', explore: ['Siemens Simcenter 3D', 'https://www.siemens.com/en-us/products/simcenter/mechanical-simulation/simcenter-3d/'] },
+  { tone: 'amber', icon: 'ion:flask-outline', title: 'Molecular Modelling', text: 'Software for molecular-level modelling and simulation, supporting the investigation of molecular properties, material behaviour and related applications.', explore: ['Siemens Simcenter portfolio', 'https://www.siemens.com/en-us/products/simcenter/offerings/'] },
+  { tone: 'emerald', icon: 'ion:analytics-outline', title: 'Process Modelling', text: 'Process modelling technologies for simulation, analysis and optimisation of complex process systems.', discuss: 'Discuss process modelling software options with our team.' },
+  { tone: 'rose', icon: 'ion:git-network-outline', title: 'System Simulation: AMESIM', text: 'System simulation tools for modelling and analysing the behaviour and interaction of components and subsystems across engineering applications.', explore: ['Siemens Simcenter Amesim', 'https://www.siemens.com/en-us/products/simcenter/systems-simulation/amesim/'] },
+  { tone: 'cyan', icon: 'ion:layers-outline', title: 'Design Engineering Tools', text: 'Engineering design tools that support product development, design evaluation and integrated engineering workflows.', explore: ['Siemens engineering simulation portfolio', 'https://www.siemens.com/en-us/solutions/engineering-simulation/'] },
+];
+const engageIcons = ['ion:document-text-outline', 'ion:school-outline', 'ion:rocket-outline', 'ion:headset-outline', 'ion:swap-horizontal-outline'];
+const toc = [['areas', 'Technologies & solutions'], ['siemens', 'Siemens software'], ['adopt', 'Adopt & apply'], ['together', 'Bringing it together']];
 ---
-<PageLayout page={technologiesPage} banner badge="Software & training" chips={['Simulation software', 'Training', 'Proof of concept', 'Application support']} lead="Technology creates value when it is applied with a clear understanding of the engineering problem. As a Siemens software channel partner, we help organisations explore and adopt engineering software through licensing enquiries, training, proof-of-concept studies, application support and integration.">
-  <section id="software" class="scroll-mt-28">
-    <p class={eyebrow}>Software we serve</p>
-    <h2 class={`${h2} mt-2`}>Engineering software available through FluiDimensions</h2>
-    <p class="mt-3 max-w-3xl font-body text-base leading-relaxed text-slate-600">As a Siemens software channel partner we help you choose, learn and apply the right tool for the problem, not just supply a licence.</p>
-    <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {software.map((sw) => { const c = toneCls[sw.tone]; return (
-        <li class={`flex flex-col rounded-2xl border border-t-4 border-slate-200 bg-white p-6 shadow-sm ${c[1]}`}>
-          <div class="flex items-center gap-3">
-            <span class={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white ${c[0]}`}><Icon name={sw.icon} class="h-6 w-6" aria-hidden="true" /></span>
-            <div><h3 class="font-heading text-base font-bold leading-tight text-primary">{sw.name}</h3><span class={`mt-1 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${c[2]}`}>{sw.kind}</span></div>
+<PageLayout page={technologiesPage} banner badge="Software & training" chips={['Simulation', 'Process modelling', 'Machine learning', 'Digital twins', 'Siemens software', 'Training']} lead="Bringing Engineering Knowledge and Technology Together to Solve Complex Industrial Challenges. We believe technology creates value when it is applied with a clear understanding of the engineering problem.">
+  <!-- Intro -->
+  <section class="grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-start">
+    <div class="space-y-4 font-body text-base leading-relaxed text-slate-700">
+      {intro.map((p) => <p>{p}</p>)}
+      <p class="font-semibold text-primary">Whether you are looking for an engineering solution, evaluating software for your organisation or developing your team's technical capabilities, FluiDimensions can help you explore the possibilities.</p>
+    </div>
+    <aside class="rounded-2xl border border-sky-200 bg-sky-50 p-6" aria-label="On this page">
+      <p class="text-xs font-bold uppercase tracking-widest text-secondary">On this page</p>
+      <ul class="mt-3 space-y-2">
+        {toc.map(([id, label]) => <li><a href={`#${id}`} class="flex items-center gap-2 font-heading text-sm font-semibold text-primary hover:text-accent"><Icon name="ion:arrow-forward" class="h-4 w-4 text-accent" aria-hidden="true" />{label}</a></li>)}
+      </ul>
+      <a href="/contact/#training-enquiries" class="mt-5 inline-flex min-h-11 items-center rounded-lg bg-accent px-5 font-heading text-sm font-bold text-white hover:bg-accent-dark">Software &amp; training enquiry</a>
+    </aside>
+  </section>
+
+  <!-- Technologies & solutions -->
+  <section id="areas" class="mt-20 scroll-mt-28">
+    <p class={eyebrow}>Engineering technologies &amp; solutions</p>
+    <h2 class={`${h2} mt-2`}>Five areas where we apply technology to real problems</h2>
+    <div class="mt-8 space-y-6">
+      {areas.map((a) => { const c = toneCls[a.tone]; return (
+        <article id={a.id} class={`scroll-mt-28 overflow-hidden rounded-2xl border border-t-4 bg-white shadow-sm ${c.border} ${c.bar}`}>
+          <div class="grid gap-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            <div class="p-6 sm:p-8">
+              <div class="flex items-center gap-3">
+                <span class={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white ${c.solid}`}><Icon name={a.icon} class="h-6 w-6" aria-hidden="true" /></span>
+                <h3 class="font-heading text-xl font-bold leading-tight text-primary">{a.title}</h3>
+              </div>
+              <p class="mt-4 font-body text-base leading-relaxed text-slate-700">{a.lead}</p>
+              <p class="mt-4 font-body text-sm leading-relaxed text-slate-600">{a.close}</p>
+              {a.link && <a href={a.link[0]} class="mt-5 inline-flex items-center gap-1 font-heading text-sm font-bold text-secondary hover:text-accent">{a.link[1]} <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" /></a>}
+            </div>
+            <div class={`p-6 sm:p-8 ${c.soft.split(' ')[0]}`}>
+              <p class="text-xs font-bold uppercase tracking-widest text-slate-600">{a.label}</p>
+              <ul class="mt-4 grid gap-2.5">
+                {a.items.map((item) => <li class="flex items-start gap-2.5 rounded-lg border border-white bg-white/80 px-3 py-2.5 font-body text-sm text-slate-800"><Icon name="ion:checkmark-circle" class="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />{item}</li>)}
+              </ul>
+            </div>
           </div>
-          <p class="mt-4 font-body text-sm leading-relaxed text-slate-600">{sw.blurb}</p>
-          <p class="mt-4 text-xs font-bold uppercase tracking-widest text-slate-500">Typical uses</p>
-          <ul class="mt-2 space-y-1.5 font-body text-sm text-slate-700">{sw.uses.map((u) => <li class="flex gap-2"><Icon name="ion:checkmark-circle" class="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />{u}</li>)}</ul>
-          <p class="mt-auto border-t border-slate-200 pt-4 font-body text-sm text-slate-600"><span class="font-semibold text-primary">How we help: </span>{sw.help}</p>
+        </article>); })}
+    </div>
+  </section>
+
+  <!-- Siemens -->
+  <section id="siemens" class="mt-20 scroll-mt-28">
+    <p class={eyebrow}>Siemens engineering software</p>
+    <h2 class={`${h2} mt-2`}>Access to advanced engineering technologies through FluiDimensions</h2>
+    <p class="mt-3 max-w-3xl font-body text-base leading-relaxed text-slate-600">As a Siemens software channel partner, FluiDimensions helps organisations access and adopt Siemens engineering software across several technology areas. Our engagement spans simulation, analysis, modelling and design tools used by engineering teams across industries.</p>
+    <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {siemens.map((s) => { const c = toneCls[s.tone]; return (
+        <li class={`flex flex-col rounded-2xl border border-t-4 border-slate-200 bg-white p-6 shadow-sm ${c.bar}`}>
+          <span class={`flex h-11 w-11 items-center justify-center rounded-xl text-white ${c.solid}`}><Icon name={s.icon} class="h-6 w-6" aria-hidden="true" /></span>
+          <h3 class="mt-4 font-heading text-base font-bold leading-tight text-primary">{s.title}</h3>
+          <p class="mt-2 flex-1 font-body text-sm leading-relaxed text-slate-600">{s.text}</p>
+          {s.explore
+            ? <a href={s.explore[1]} target="_blank" rel="noopener noreferrer" class={`mt-4 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold hover:underline ${c.soft}`}>Explore: {s.explore[0]} <Icon name="ion:open-outline" class="h-3.5 w-3.5" aria-hidden="true" /><span class="sr-only">(opens in a new tab)</span></a>
+            : <a href="/contact/#training-enquiries" class={`mt-4 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold hover:underline ${c.soft}`}>{s.discuss} <Icon name="ion:arrow-forward" class="h-3.5 w-3.5" aria-hidden="true" /></a>}
         </li>); })}
     </ul>
-    <p class="mt-5 text-sm text-slate-500">For product features, specifications and the latest information, please refer to the respective Siemens product pages.</p>
+    <p class="mt-5 text-sm text-slate-500">For detailed product features, technical specifications and the latest information, please refer to the respective Siemens product pages.</p>
   </section>
 
-  <section class="mt-20">
-    <p class={eyebrow}>Technology areas</p>
-    <h2 class={`${h2} mt-2`}>Applied with engineering understanding</h2>
-    <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {areas.map(([t, d]) => <li class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{d}</p></li>)}
-    </ul>
-  </section>
-
-  <section class="mt-20">
+  <!-- Adopt, apply, get value -->
+  <section id="adopt" class="mt-20 scroll-mt-28">
     <p class={eyebrow}>More than software supply</p>
-    <h2 class={`${h2} mt-2`}>Helping you adopt, apply and get value</h2>
-    <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {ENGAGE.map(([t, d]) => <li class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h3 class="font-heading text-base font-bold text-primary">{t}</h3><p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{d}</p></li>)}
-    </ul>
+    <h2 class={`${h2} mt-2`}>Helping you adopt, apply and get value from engineering software</h2>
+    <p class="mt-3 max-w-3xl font-body text-base leading-relaxed text-slate-600">Selecting software is only one part of successful technology adoption. Teams also need to understand how to use it, establish appropriate workflows and apply it to real engineering problems. FluiDimensions supports customers through several forms of engagement.</p>
+    <ol class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {ENGAGE.map(([t, d], i) => { const c = toneCls[['sky', 'emerald', 'violet', 'amber', 'rose'][i % 5]]; return (
+        <li class={`rounded-2xl border bg-white p-6 shadow-sm ${c.border}`}>
+          <span class={`flex h-11 w-11 items-center justify-center rounded-xl text-white ${c.solid}`}><Icon name={engageIcons[i]} class="h-6 w-6" aria-hidden="true" /></span>
+          <h3 class="mt-4 font-heading text-base font-bold text-primary">{t}</h3>
+          <p class="mt-2 font-body text-sm leading-relaxed text-slate-600">{d}</p>
+        </li>); })}
+    </ol>
   </section>
 
-  <section class="mt-20 max-w-3xl">
-    <p class={eyebrow}>Bringing technologies together</p>
-    <h2 class={`${h2} mt-2`}>Integrated engineering solutions, not isolated software tools</h2>
-    <p class="mt-5 font-body text-base leading-relaxed text-slate-600">A CFD model may provide detailed insight into equipment behaviour. A process model may help assess the wider process impact. A reduced-order model may make results faster to evaluate across operating conditions. A customised application may then make the workflow accessible to a larger engineering team. FluiDimensions brings these technologies together with engineering understanding to develop solutions around the problem being addressed.</p>
+  <!-- Bringing together -->
+  <section id="together" class="mt-20 scroll-mt-28 overflow-hidden rounded-3xl bg-primary px-6 py-12 text-white sm:px-12 sm:py-14">
+    <p class="text-sm font-bold uppercase tracking-widest text-accent">Bringing technologies together</p>
+    <h2 class="mt-3 max-w-3xl font-heading text-[clamp(1.5rem,3.4vw,2.4rem)] font-bold leading-tight">Integrated engineering solutions, not isolated software tools</h2>
+    <p class="mt-4 max-w-3xl font-body text-base leading-8 text-slate-300">The real value of engineering technology often comes from combining different approaches.</p>
+    <ol class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {[['CFD model', 'Detailed insight into equipment behaviour.'], ['Process model', 'Assesses the wider process impact.'], ['Reduced-order model', 'Makes results faster to evaluate across operating conditions.'], ['Custom application', 'Makes the workflow accessible to a larger engineering team.']].map(([t, d], i) => (
+        <li class="rounded-xl border border-white/20 bg-white/10 p-5"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-accent font-heading text-sm font-bold">{i + 1}</span><h3 class="mt-3 font-heading text-base font-bold">{t}</h3><p class="mt-1 font-body text-sm text-slate-300">{d}</p></li>
+      ))}
+    </ol>
+    <p class="mt-8 max-w-3xl font-body text-base leading-8 text-slate-300">FluiDimensions brings these technologies together with engineering understanding to develop solutions around the problem being addressed. This integrated approach is central to our work across process industries, energy, oil and gas, pharmaceuticals, cement and other industrial sectors.</p>
   </section>
 
-  <div class="mt-20 grid gap-5 md:grid-cols-2">
-    <div class="rounded-2xl bg-primary p-8 text-white"><h2 class="font-heading text-xl font-bold">Discuss an engineering challenge</h2><p class="mt-3 text-sm leading-relaxed text-slate-300">Have a process, equipment or engineering problem you would like to explore?</p><a href="/contact/#business-enquiries" class="mt-6 inline-flex min-h-11 items-center rounded-lg bg-accent px-6 font-heading text-sm font-semibold text-white hover:bg-accent-dark">Start a conversation</a></div>
-    <div class="rounded-2xl border border-slate-200 bg-sky-50 p-8"><h2 class="font-heading text-xl font-bold text-primary">Enquire about Siemens software &amp; training</h2><p class="mt-3 text-sm leading-relaxed text-slate-600">Looking for information about licensing, training or a proof-of-concept? Talk to our team about your requirements.</p><a href="/contact/#training-enquiries" class="mt-6 inline-flex min-h-11 items-center rounded-lg border border-secondary px-6 font-heading text-sm font-semibold text-secondary hover:bg-white">Software &amp; training enquiry</a></div>
-  </div>
+  <!-- CTA -->
+  <section class="mt-20">
+    <h2 class={h2}>Let's explore the right technology for your needs</h2>
+    <p class="mt-3 max-w-3xl font-body text-base leading-relaxed text-slate-600">Whether you are looking for an engineering software platform, technical training, a proof-of-concept study or a customised engineering technology solution, we would be happy to discuss your requirements.</p>
+    <div class="mt-6 grid gap-5 md:grid-cols-2">
+      <div class="rounded-2xl bg-primary p-8 text-white"><h3 class="font-heading text-xl font-bold">Discuss an engineering challenge</h3><p class="mt-3 text-sm leading-relaxed text-slate-300">Have a process, equipment or engineering problem you would like to explore? Let's discuss how engineering technologies can help.</p><a href="/contact/#business-enquiries" class="mt-6 inline-flex min-h-11 items-center rounded-lg bg-accent px-6 font-heading text-sm font-semibold text-white hover:bg-accent-dark">Start a conversation</a></div>
+      <div class="rounded-2xl border border-sky-200 bg-sky-50 p-8"><h3 class="font-heading text-xl font-bold text-primary">Enquire about Siemens software &amp; training</h3><p class="mt-3 text-sm leading-relaxed text-slate-600">Looking for information about Siemens engineering software, licensing, training or a proof-of-concept? Talk to our team about your requirements.</p><a href="/contact/#training-enquiries" class="mt-6 inline-flex min-h-11 items-center rounded-lg border border-secondary px-6 font-heading text-sm font-semibold text-secondary hover:bg-white">Software &amp; training enquiry</a></div>
+    </div>
+  </section>
 </PageLayout>
