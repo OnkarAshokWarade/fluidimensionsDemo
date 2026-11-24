@@ -1,8 +1,8 @@
 ---
 // Illustrative 3D flow in a stirred reactor tank (kinematic model, not project data). Borderless, no controls.
 ---
-<figure class="reactor-viz relative" data-reactor-viz>
-  <div class="relative aspect-[3/4] max-h-[44rem] min-h-[24rem] w-full">
+<figure class="reactor-viz relative w-full" data-reactor-viz>
+  <div class="relative aspect-[4/5] max-h-[34rem] min-h-[20rem] w-full max-w-[28rem] mx-auto lg:mx-0 lg:ml-auto">
     <canvas class="block h-full w-full cursor-grab touch-pan-y" role="img" aria-label="Animated 3D visualisation of fluid circulating in a stirred reactor tank with a rotating impeller and baffles, coloured by velocity"></canvas>
     <p data-reactor-fallback class="absolute inset-0 hidden place-content-center p-6 text-center text-sm text-slate-300">The 3D view is not available in this browser.</p>
   </div>
@@ -35,7 +35,7 @@
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     const scene = new Scene();
-    const camera = new PerspectiveCamera(36, 3 / 4, 0.1, 100);
+    const camera = new PerspectiveCamera(36, 4 / 5, 0.1, 100);
 
     const R = 1.6, H = 4.4, ZB = -H / 2, ZT = H / 2, Z0 = -0.6, RI = 0.55;
     const stops: [number, number[]][] = [[0, [30, 64, 230]], [.22, [0, 170, 255]], [.42, [0, 220, 130]], [.6, [140, 230, 40]], [.78, [255, 200, 0]], [1, [255, 40, 20]]];
@@ -141,7 +141,7 @@
     let dragAz = 0, dragEl = 0, dragging = false, lastX = 0, lastY = 0, t = 0, last = performance.now(), visible = true;
     const playing = !reduce;
     const draw = () => {
-      const a = 0.5 * Math.sin(t * 0.18) + dragAz, el = 0.34 + dragEl, d = 13.2;
+      const a = 0.5 * Math.sin(t * 0.18) + dragAz, el = 0.34 + dragEl, d = 8.6;
       camera.position.set(d * Math.sin(a) * Math.cos(el), 0.1 + d * Math.sin(el), d * Math.cos(a) * Math.cos(el));
       camera.lookAt(0, 0.1, 0);
       renderer.render(scene, camera);
