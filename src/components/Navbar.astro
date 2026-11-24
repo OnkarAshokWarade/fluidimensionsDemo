@@ -127,6 +127,8 @@ const slug = (label: string) => label.toLowerCase().replace(/\W+/g, '-');
   backdrop.addEventListener('click', () => setMenu(false));
   panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
   window.addEventListener('resize', () => { if (window.innerWidth >= 1280 && menuOpen) setMenu(false); });
+  // Restored from the back/forward cache with the menu open: never leave the page scroll-locked.
+  window.addEventListener('pageshow', (event) => { if (event.persisted && menuOpen) setMenu(false); });
   panel.querySelectorAll<HTMLButtonElement>('.m-group-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       const open = btn.getAttribute('aria-expanded') !== 'true';
