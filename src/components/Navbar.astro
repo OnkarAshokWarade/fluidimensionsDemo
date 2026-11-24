@@ -7,6 +7,23 @@ const isHome = pathname === '/';
 const isActive = (to: string) => (to === '/' ? isHome : pathname.startsWith(to.replace(/\/$/, '')));
 const groupActive = (item: any) => item.children?.some((child: any) => isActive(child.path));
 const slug = (label: string) => label.toLowerCase().replace(/\W+/g, '-');
+// Compact dropdown tiles: an icon and a short name per page (falls back to the page label).
+const tileMeta: Record<string, { icon: string; short?: string }> = {
+  '/engineering-simulation/': { icon: 'ion:analytics-outline', short: 'Simulation' },
+  '/chemical-engineering-process-consulting/': { icon: 'ion:flask-outline', short: 'Process Consulting' },
+  '/engineering-design/': { icon: 'ion:construct-outline', short: 'Design' },
+  '/machine-learning-data-intelligence/': { icon: 'ion:stats-chart-outline', short: 'Machine Learning' },
+  '/software-automation/': { icon: 'ion:code-slash-outline', short: 'Software & Automation' },
+  '/industries/chemical-process/': { icon: 'ion:flask-outline', short: 'Chemical & Process' },
+  '/industries/pharmaceuticals/': { icon: 'ion:medkit-outline', short: 'Pharma' },
+  '/industries/cement/': { icon: 'ion:business-outline' },
+  '/industries/steel-metals/': { icon: 'ion:hammer-outline', short: 'Steel & Metals' },
+  '/industries/oil-gas/': { icon: 'ion:water-outline', short: 'Oil & Gas' },
+  '/industries/automotive/': { icon: 'ion:car-outline' },
+  '/industries/aerospace/': { icon: 'ion:airplane-outline' },
+  '/industries/marine/': { icon: 'ion:boat-outline' },
+  '/industries/food-beverage/': { icon: 'ion:restaurant-outline', short: 'Food & Beverage' },
+};
 ---
 <header class="site-header" data-solid={isHome ? 'false' : 'true'} data-home={isHome ? 'true' : 'false'} id="site-header">
   <nav class="site-pill flex items-center justify-between gap-3" aria-label="Primary navigation">
@@ -27,11 +44,20 @@ const slug = (label: string) => label.toLowerCase().replace(/\W+/g, '-');
             {item.label}
             <Icon name="ion:chevron-down" class="dd-chevron h-3.5 w-3.5 transition-transform" aria-hidden="true" />
           </button>
-          <div id={`dd-${slug(item.label)}`} class="dd-panel absolute left-0 top-full z-50 hidden pt-3">
-            <ul class="w-80 rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl">
-              {item.children.map((child) => (
-                <li><a href={child.path} aria-current={isActive(child.path) ? 'page' : undefined} class:list={['flex min-h-11 items-center rounded-xl px-4 font-body text-sm font-medium transition hover:bg-slate-50 hover:text-accent', isActive(child.path) ? 'text-accent' : 'text-slate-700']}>{child.label}</a></li>
-              ))}
+          <div id={`dd-${slug(item.label)}`} class="dd-panel absolute left-1/2 top-full z-50 hidden -translate-x-1/2 pt-2.5">
+            <ul class="grid w-[18.75rem] grid-cols-3 gap-1.5 rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl">
+              {item.children.map((child) => {
+                const meta = tileMeta[child.path];
+                const active = isActive(child.path);
+                return (
+                  <li>
+                    <a href={child.path} aria-current={active ? 'page' : undefined} class:list={['group flex aspect-square flex-col items-center justify-center gap-1.5 rounded-xl p-1.5 text-center font-heading text-[0.6875rem] font-semibold leading-tight transition', active ? 'bg-accent/10 text-accent' : 'bg-slate-50 text-primary hover:-translate-y-0.5 hover:bg-primary hover:text-white']}>
+                      <Icon name={meta?.icon ?? 'ion:cube-outline'} class:list={['h-5 w-5 transition', active ? 'text-accent' : 'text-secondary group-hover:text-accent']} aria-hidden="true" />
+                      <span>{meta?.short ?? child.label}</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </li>
