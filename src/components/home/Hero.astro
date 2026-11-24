@@ -11,7 +11,7 @@ const stats = [
   ['1', 'integrated approach'],
 ];
 ---
-<section id="home" aria-labelledby="hero-heading" class="relative isolate overflow-hidden bg-primary lg:h-[min(100svh,920px)] lg:min-h-[640px]">
+<section id="home" aria-labelledby="hero-heading" class="relative isolate overflow-hidden bg-primary lg:h-[min(100svh,920px)] lg:min-h-[740px] xl:min-h-[640px]">
   <TerrainViz />
   <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-primary via-primary/65 to-primary/10 lg:bg-gradient-to-r lg:from-primary lg:via-primary/90 lg:via-30% lg:to-transparent lg:to-60%" aria-hidden="true"></div>
 
@@ -31,16 +31,15 @@ const stats = [
     </div>
   </div>
 
-  <div class="site-container relative z-10 pb-6 lg:absolute lg:inset-x-0 lg:bottom-8 lg:pb-0">
-    <div class="max-w-[40rem]"><HeroCapabilities /></div>
+  <div class="site-container relative z-10 flex flex-col gap-5 pb-8 lg:absolute lg:inset-x-0 lg:bottom-8 lg:pb-0 xl:flex-row xl:items-end xl:justify-between">
+    <div class="w-full max-w-[40rem]"><HeroCapabilities /></div>
+    <ul class="grid w-full max-w-md grid-cols-3 gap-3 xl:w-[28.5rem] xl:max-w-none xl:shrink-0" aria-label="At a glance" data-stats>
+      {stats.map(([value, label]) => (
+        <li class="rounded-xl border border-white/15 bg-primary/70 px-4 py-3.5 backdrop-blur-md">
+          <span class="block font-heading text-3xl font-bold leading-none text-accent tabular-nums">{value}</span>
+          <span class="mt-1.5 block font-body text-xs leading-snug text-slate-300">{label}</span>
+        </li>
+      ))}
+    </ul>
   </div>
-
-  <div class="site-container relative z-10 pb-8 lg:contents"><ul class="grid max-w-md grid-cols-3 gap-3 lg:absolute lg:bottom-8 lg:right-[max(1.5rem,calc((100%-84rem)/2+3rem))] lg:w-[28.5rem] lg:max-w-none" aria-label="At a glance" data-stats>
-    {stats.map(([value, label]) => (
-      <li class="rounded-xl border border-white/15 bg-primary/70 px-4 py-3.5 backdrop-blur-md">
-        <span class="block font-heading text-3xl font-bold leading-none text-accent tabular-nums">{value}</span>
-        <span class="mt-1.5 block font-body text-xs leading-snug text-slate-300">{label}</span>
-      </li>
-    ))}
-  </ul></div>
 </section>
