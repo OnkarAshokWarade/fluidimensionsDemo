@@ -1,0 +1,117 @@
+---
+// Illustrative 3D gas and dust flow in a cyclone separator (kinematic model, not project data). Borderless, no controls.
+---
+<figure class="cyclone-viz relative w-full" data-cyclone-viz>
+  <div data-stage class="relative mx-auto aspect-[4/5] max-h-[34rem] min-h-[20rem] w-full max-w-[28rem] lg:-my-6 lg:ml-auto lg:mr-0 lg:max-h-[28rem] lg:min-h-0">
+    <canvas class="block h-full w-full cursor-grab touch-pan-y" role="img" aria-label="Animated 3D view of gas spiralling inside a cyclone separator while collected dust falls to the hopper, coloured by gas speed"></canvas>
+    <p data-fallback hidden class="absolute inset-0 grid place-content-center p-6 text-center text-sm text-slate-300">The 3D view is not available in this browser.</p>
+  </div>
+  <figcaption class="mx-auto flex max-w-[28rem] flex-wrap items-center gap-x-4 gap-y-1 pt-2 text-xs text-slate-300 lg:ml-auto lg:mr-0">
+    <span class="inline-flex items-center gap-1.5">Gas speed <span class="inline-block h-2 w-20 rounded-full" style="background:linear-gradient(90deg,#1E40E6,#00AAFF 22%,#00DC82 42%,#8CE628 60%,#FFC800 78%,#FF2814)"></span></span>
+    <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-full" style="background:#FFB23F"></span>Collected dust</span>
+    <span>Illustrative, not project data.</span>
+  </figcaption>
+</figure>
+
+<script>
+  // @ts-nocheck
+  import * as THREE from 'three';
+  const root = document.querySelector('[data-cyclone-viz]');
+  if (root) (function(){
+  // Typical operating point: 18 m/s inlet, cut size about 5 µm.
+  var state={V:18,eta:function(dp){return 1/(1+Math.pow(5/dp,2));}};
+  /* ---------- 3D view ---------- */
+  var stage=root.querySelector('[data-stage]'),canvas=root.querySelector('canvas');
+  
+  var renderer;try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});}catch(e){root.querySelector('[data-fallback]').hidden=false;return;}
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(36,4/3,0.1,100);
+  var CR=1.0,CZ0=0.2,CZ1=1.6,CZB=-1.7,CRB=0.22,VF=0.42,VFZ=0.55;
+  function wallR(z){return z>=CZ0?CR:CRB+(CR-CRB)*(z-CZB)/(CZ0-CZB);}
+  var V2=THREE.Vector2,mat=function(c,o){return new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,side:THREE.DoubleSide,depthWrite:false});};
+  var prof=[new V2(CR,CZ1),new V2(CR,CZ0),new V2(CRB,CZB)];
+  scene.add(new THREE.Mesh(new THREE.LatheGeometry(prof,48),mat(0x1D63C8,.1)));
+  scene.add(new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.LatheGeometry(prof,20)),new THREE.LineBasicMaterial({color:0x5C7FB0,transparent:true,opacity:.35,depthWrite:false})));
+  scene.add(new THREE.Mesh(new THREE.LatheGeometry([new V2(VF,CZ1+.55),new V2(VF,VFZ)],28),mat(0x2A4A7A,.5)));
+  var ring=[];for(var i=0;i<=64;i++){var a=i/64*Math.PI*2;ring.push(new THREE.Vector3(CR*Math.cos(a),CZ1,CR*Math.sin(a)));}
+  scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(ring),new THREE.LineBasicMaterial({color:0x7FB0F0})));
+  var inlet=new THREE.Mesh(new THREE.BoxGeometry(1.1,.5,.4),mat(0xFF6B00,.5));inlet.position.set(CR+.35,CZ1-.35,-.55);scene.add(inlet);
+  var hop=new THREE.Mesh(new THREE.CylinderGeometry(CRB,CRB,.3,24,1,true),mat(0x2A4A7A,.6));hop.position.y=CZB-.1;scene.add(hop);
+  var grid=new THREE.GridHelper(4,16,0x2A4A7A,0x1B3560);grid.position.y=CZB-.25;scene.add(grid);
+
+  var stops=[[0,[30,64,230]],[.22,[0,170,255]],[.42,[0,220,130]],[.6,[140,230,40]],[.78,[255,200,0]],[1,[255,40,20]]];
+  function cmap(t){t=Math.max(0,Math.min(1,t));for(var i=1;i<stops.length;i++){if(t<=stops[i][0]){var a=stops[i-1],b=stops[i],k=(t-a[0])/(b[0]-a[0]);return[0,1,2].map(function(n){return a[1][n]+(b[1][n]-a[1][n])*k;});}}return stops[stops.length-1][1];}
+
+  /* gas tracers with fading trails */
+  var N=420,T=14,pos=new Float32Array(N*3),spd=new Float32Array(N),hist=new Float32Array(N*T*3),st=[];
+  var segPos=new Float32Array(N*(T-1)*6),segCol=new Float32Array(N*(T-1)*6),geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(segPos,3).setUsage(THREE.DynamicDrawUsage));
+  geo.setAttribute('color',new THREE.BufferAttribute(segCol,3).setUsage(THREE.DynamicDrawUsage));
+  var lines=new THREE.LineSegments(geo,new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:.95}));lines.frustumCulled=false;lines.renderOrder=2;scene.add(lines);
+  function spawnGas(p,anywhere){
+    var s={},th=Math.random()*Math.PI*2,z,r;
+    if(anywhere&&Math.random()<.35){z=CZ0+Math.random()*1.4;r=.08+Math.random()*.25;s.ph=1;}
+    else{z=anywhere?CZB+.2+Math.random()*(CZ1-CZB-.4):CZ1-.2-Math.random()*.25;r=wallR(z)*(.75+Math.random()*.2);s.ph=0;}
+    s.turn=CZB+.1+Math.random()*1.1;s.r=r;s.th=th;st[p]=s;
+    pos[p*3]=r*Math.cos(th);pos[p*3+1]=z;pos[p*3+2]=r*Math.sin(th);
+    for(var q=0;q<T;q++)for(var n=0;n<3;n++)hist[(p*T+q)*3+n]=pos[p*3+n];
+  }
+  for(var p=0;p<N;p++)spawnGas(p,true);
+
+  /* dust particles: each has a size; collected or not follows the efficiency curve */
+  var MD=170,dpos=new Float32Array(MD*3),dcol=new Float32Array(MD*3),dst=[];
+  var dgeo=new THREE.BufferGeometry();dgeo.setAttribute('position',new THREE.BufferAttribute(dpos,3).setUsage(THREE.DynamicDrawUsage));dgeo.setAttribute('color',new THREE.BufferAttribute(dcol,3).setUsage(THREE.DynamicDrawUsage));
+  var dots=new THREE.Points(dgeo,new THREE.PointsMaterial({size:.07,vertexColors:true,transparent:true,opacity:.95,depthWrite:false}));dots.frustumCulled=false;dots.renderOrder=3;scene.add(dots);
+  function spawnDust(i,anywhere){
+    var dp=Math.pow(10,Math.random()*Math.log10(60)),caught=Math.random()<state.eta(dp);
+    var z=anywhere?CZB+.3+Math.random()*(CZ1-CZB-.5):CZ1-.25-Math.random()*.2,r=wallR(z)*.86;
+    dst[i]={r:r,th:Math.random()*Math.PI*2,z:z,ph:0,caught:caught,turn:CZB+.2+Math.random()*1.2};
+    var c=caught?[1,.70,.25]:[1,1,1];dcol[i*3]=c[0];dcol[i*3+1]=c[1];dcol[i*3+2]=c[2];
+  }
+  for(var i2=0;i2<MD;i2++)spawnDust(i2,true);
+
+  var bg=[7/255,27/255,58/255];
+  function step(dt,t){
+    var k=state.V/18;
+    for(var p=0;p<N;p++){
+      var s=st[p],z=pos[p*3+1],r=s.r,vz,vr,vth,alive=true;
+      if(s.ph===0){vr=(wallR(z)*.84-r)*2;vth=3*k*Math.pow(CR/Math.max(r,.25),.5);vz=-.62*k;if(z<=s.turn)s.ph=1;if(z<=CZB+.02)alive=false;}
+      else{vr=(.14+.05*Math.sin(t*1.3+p)-r)*3;vth=6.2*k*Math.pow(.2/Math.max(r,.1),.9);vz=1.5*k;if(z>=CZ1+.5)alive=false;}
+      if(!alive){spawnGas(p,false);continue;}
+      spd[p]=Math.sqrt(vr*vr+vth*vth+vz*vz)/k;
+      r+=vr*dt;if(r<.04)r=.04;if(s.ph===1&&z>VFZ&&r>VF-.05)r=VF-.06;
+      s.th+=vth/Math.max(r,.12)*dt;s.r=r;z+=vz*dt;
+      pos[p*3]=r*Math.cos(s.th);pos[p*3+1]=z;pos[p*3+2]=r*Math.sin(s.th);
+      for(var q=T-1;q>0;q--)for(var n=0;n<3;n++)hist[(p*T+q)*3+n]=hist[(p*T+q-1)*3+n];
+      hist[p*T*3]=pos[p*3];hist[p*T*3+1]=pos[p*3+1];hist[p*T*3+2]=pos[p*3+2];
+    }
+    var w=0;
+    for(var p2=0;p2<N;p2++){var c=cmap(spd[p2]/7);for(var q2=0;q2<T-1;q2++)for(var e=0;e<2;e++){var f=Math.pow(1-(q2+e)/(T-1),1.4),a=(p2*T+q2+e)*3;segPos[w]=hist[a];segPos[w+1]=hist[a+1];segPos[w+2]=hist[a+2];for(var n2=0;n2<3;n2++)segCol[w+n2]=bg[n2]+(c[n2]/255-bg[n2])*f;w+=3;}}
+    geo.attributes.position.needsUpdate=true;geo.attributes.color.needsUpdate=true;
+    for(var i=0;i<MD;i++){
+      var d=dst[i];
+      if(d.ph===0){d.r+=(wallR(d.z)*(d.caught?.93:.84)-d.r)*2*dt;d.th+=2.6*k/Math.max(d.r,.2)*dt;d.z-=(d.caught?.75:.6)*k*dt;if(!d.caught&&d.z<=d.turn)d.ph=1;if(d.z<=CZB-.15){spawnDust(i,false);continue;}}
+      else{d.r+=(.16-d.r)*3*dt;d.th+=5*k/Math.max(d.r,.12)*dt;d.z+=1.4*k*dt;if(d.z>=CZ1+.5){spawnDust(i,false);continue;}}
+      if(d.z<CZB+.02)d.r=Math.min(d.r,CRB*.8);
+      dpos[i*3]=d.r*Math.cos(d.th);dpos[i*3+1]=d.z;dpos[i*3+2]=d.r*Math.sin(d.th);
+    }
+    dgeo.attributes.position.needsUpdate=true;dgeo.attributes.color.needsUpdate=true;
+  }
+
+  var dragAz=0,dragEl=0,dragging=false,lx=0,ly=0,t=0,last=performance.now(),visible=true;
+  function draw(){var a=.55*Math.sin(t*.18)+dragAz,el=.22+dragEl,dd=7.2;camera.position.set(dd*Math.sin(a)*Math.cos(el),-.1+dd*Math.sin(el),dd*Math.cos(a)*Math.cos(el));camera.lookAt(0,-.1,0);renderer.render(scene,camera);}
+  canvas.addEventListener('pointerdown',function(e){dragging=true;lx=e.clientX;ly=e.clientY;canvas.setPointerCapture(e.pointerId);});
+  canvas.addEventListener('pointermove',function(e){if(!dragging)return;dragAz-=(e.clientX-lx)*.006;dragEl=Math.max(-.3,Math.min(.9,dragEl+(e.clientY-ly)*.004));lx=e.clientX;ly=e.clientY;if(reduce)draw();});
+  canvas.addEventListener('pointerup',function(){dragging=false;});canvas.addEventListener('pointercancel',function(){dragging=false;});
+  function resize(){var w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=w/h<0.9?42:36;camera.updateProjectionMatrix();draw();}
+  if('ResizeObserver' in window)new ResizeObserver(resize).observe(stage);
+  if('IntersectionObserver' in window)new IntersectionObserver(function(e){visible=e[0].isIntersecting;last=performance.now();}).observe(stage);
+  resize();
+  for(var j=0;j<140;j++){t+=.03;step(.03,t);}draw();
+    function loop(now){var dt=Math.min((now-last)/1000,.05);last=now;if(visible&&!document.hidden&&!reduce){t+=dt;step(dt,t);if(!dragging){dragAz*=.995;dragEl*=.995;}draw();}requestAnimationFrame(loop);}
+  requestAnimationFrame(function(n){last=n;requestAnimationFrame(loop);});
+
+
+  })();
+</script>
