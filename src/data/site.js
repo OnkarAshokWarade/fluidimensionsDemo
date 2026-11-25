@@ -27,9 +27,9 @@ export const capabilityPages = [
     h1: 'Engineering Simulation',
     title: `Engineering Simulation Services: CFD & FEA${suffix}`,
     description:
-      'CFD, FEA and multiphysics analysis to understand complex flow, thermal, structural and equipment behaviour in industrial processes.',
+      'CFD, FEA, multiphase, combustion and multiphysics simulation to understand complex physical processes and improve equipment and process performance.',
     intro:
-      'CFD, FEA and multiphysics analysis to understand complex flow, thermal, structural and equipment behaviour.',
+      'Understanding Complex Physical Processes. Improving Engineering Performance.',
   },
   {
     path: '/machine-learning-data-intelligence/',

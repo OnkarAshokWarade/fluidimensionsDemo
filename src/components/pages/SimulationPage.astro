@@ -1,0 +1,304 @@
+---
+// Engineering Simulation page body. Content lives in src/data/simulation.js.
+import { Icon } from 'astro-icon/components';
+import Cta from './Cta.astro';
+import { CONTACT_BUSINESS } from '../../data/site';
+import { simIntro, simWhy, simCapabilities, simApproach, simNeeds, simDeliver, simDecisions, simIndustries, simRelated, simFaq, simCta } from '../../data/simulation';
+
+const tones = [
+  { num: 'bg-sky-600', head: 'bg-sky-50', border: 'border-sky-200', bar: 'border-t-sky-500', text: 'text-sky-700' },
+  { num: 'bg-emerald-600', head: 'bg-emerald-50', border: 'border-emerald-200', bar: 'border-t-emerald-500', text: 'text-emerald-700' },
+  { num: 'bg-violet-600', head: 'bg-violet-50', border: 'border-violet-200', bar: 'border-t-violet-500', text: 'text-violet-700' },
+  { num: 'bg-amber-600', head: 'bg-amber-50', border: 'border-amber-200', bar: 'border-t-amber-500', text: 'text-amber-700' },
+  { num: 'bg-rose-600', head: 'bg-rose-50', border: 'border-rose-200', bar: 'border-t-rose-500', text: 'text-rose-700' },
+  { num: 'bg-cyan-600', head: 'bg-cyan-50', border: 'border-cyan-200', bar: 'border-t-cyan-500', text: 'text-cyan-700' },
+];
+const tone = (i: number) => tones[i % tones.length];
+
+const toc = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'why', label: 'Why simulation' },
+  ...simCapabilities.map((c) => ({ id: c.id, label: c.short })),
+  { id: 'approach', label: 'Our approach' },
+  { id: 'information', label: 'Information we need' },
+  { id: 'deliver', label: 'What we deliver' },
+  { id: 'decisions', label: 'Engineering decisions' },
+  { id: 'industries', label: 'Across industries' },
+  { id: 'related', label: 'Related capabilities' },
+  { id: 'faq', label: 'FAQ' },
+];
+
+// Tabs per capability; each tab is shown stacked when JavaScript is off.
+const tabsFor = (c: (typeof simCapabilities)[number]) => [
+  ...(c.problems ? [{ key: 'problems', label: 'Problems we address', icon: 'ion:alert-circle-outline' }] : []),
+  ...(c.examples ? [{ key: 'examples', label: 'Examples', icon: 'ion:layers-outline' }] : []),
+  ...(c.steps ? [{ key: 'how', label: 'How it works', icon: 'ion:options-outline' }] : []),
+  { key: 'inputs', label: 'Information required', icon: 'ion:clipboard-outline' },
+  { key: 'outputs', label: 'Outputs & deliverables', icon: 'ion:document-text-outline' },
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: simFaq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+};
+
+const h2 = 'font-heading text-2xl font-bold text-primary sm:text-3xl';
+const eyebrow = 'text-sm font-bold uppercase tracking-widest text-accent';
+const body = 'font-body text-base leading-relaxed text-slate-700';
+const check = 'flex gap-2.5';
+---
+<script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
+<div class="grid grid-cols-1 gap-10 lg:grid-cols-[230px_minmax(0,1fr)] lg:gap-12">
+  <aside class="min-w-0 lg:sticky lg:top-28 lg:self-start">
+    <p class="mb-3 hidden text-xs font-bold uppercase tracking-widest text-slate-500 lg:block">On this page</p>
+    <ul class="flex gap-2 overflow-x-auto pb-2 lg:block lg:space-y-1 lg:border-l-2 lg:border-slate-300 lg:pb-0" aria-label="On this page">
+      {toc.map((entry) => (
+        <li class="shrink-0"><a href={`#${entry.id}`} class="block whitespace-nowrap rounded-full border border-slate-300 bg-white px-4 py-1.5 text-sm font-medium text-slate-700 transition hover:border-accent hover:text-accent lg:-ml-[2px] lg:whitespace-normal lg:rounded-none lg:border-0 lg:border-l-2 lg:border-transparent lg:bg-transparent lg:px-4 lg:py-1.5 lg:hover:border-accent">{entry.label}</a></li>
+      ))}
+    </ul>
+  </aside>
+
+  <div class="min-w-0 space-y-16">
+    <!-- Overview -->
+    <section id="overview" class="scroll-mt-28 rounded-2xl border border-sky-200 bg-sky-50 p-6 sm:p-8">
+      <h2 class={eyebrow}>Overview</h2>
+      <div class={`${body} mt-3 space-y-3`}>{simIntro.paragraphs.map((p) => <p>{p}</p>)}</div>
+      <ol class="mt-6 flex flex-wrap items-center gap-2" aria-label="Our approach in four words">
+        {simIntro.tagline.map((word, i) => (
+          <li class="flex items-center gap-2">
+            <span class={`rounded-full px-3.5 py-1.5 font-heading text-sm font-bold text-white ${tone(i).num}`}>{word}</span>
+            {i < simIntro.tagline.length - 1 && <Icon name="ion:arrow-forward" class="h-4 w-4 text-slate-400" aria-hidden="true" />}
+          </li>
+        ))}
+      </ol>
+      <div class="mt-7 flex flex-col gap-3 min-[480px]:flex-row">
+        <a href={CONTACT_BUSINESS} class="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-accent px-6 font-heading text-sm font-semibold text-white shadow-md transition hover:bg-accent-dark">Discuss an Engineering Challenge <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" /></a>
+        <a href="/#capabilities" class="inline-flex min-h-12 items-center justify-center rounded-lg border border-primary/25 bg-white px-6 font-heading text-sm font-semibold text-primary transition hover:border-accent hover:text-accent">Explore Our Engineering Capabilities</a>
+      </div>
+    </section>
+
+    <!-- Why simulation -->
+    <section id="why" class="scroll-mt-28">
+      <p class={eyebrow}>Why simulation</p>
+      <h2 class={`${h2} mt-2`}>{simWhy.heading}</h2>
+      <div class={`${body} mt-4 max-w-3xl space-y-3`}>{simWhy.paragraphs.map((p) => <p>{p}</p>)}</div>
+      <div class="mt-6 rounded-2xl border border-slate-300 bg-white p-6 shadow-sm">
+        <p class="font-heading text-base font-bold text-primary">{simWhy.helpIntro}</p>
+        <ul class="mt-4 grid gap-x-8 gap-y-2.5 font-body text-sm text-slate-700 md:grid-cols-2">
+          {simWhy.help.map((x) => <li class={check}><Icon name="ion:checkmark-circle" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" aria-hidden="true" />{x}</li>)}
+        </ul>
+      </div>
+      <p class="mt-4 flex gap-3 rounded-xl border border-slate-300 bg-slate-100 p-4 font-body text-sm text-slate-700"><Icon name="ion:information-circle-outline" class="mt-0.5 h-5 w-5 shrink-0 text-secondary" aria-hidden="true" />{simWhy.note}</p>
+    </section>
+
+    <!-- Capabilities -->
+    <section aria-labelledby="caps-heading">
+      <p class={eyebrow}>Capabilities</p>
+      <h2 id="caps-heading" class={`${h2} mt-2`}>Our Engineering Simulation Capabilities</h2>
+      <div class="mt-8 space-y-8">
+        {simCapabilities.map((c, i) => {
+          const tabs = tabsFor(c);
+          return (
+            <article id={c.id} class="scroll-mt-28 overflow-hidden rounded-2xl border border-slate-300 bg-white shadow-sm" data-sim-tabs>
+              <header class={`flex items-center gap-4 border-b px-6 py-5 ${tone(i).head} ${tone(i).border}`}>
+                <span class={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl font-heading text-lg font-bold text-white ${tone(i).num}`}>{i + 1}</span>
+                <div class="min-w-0">
+                  <h3 class="font-heading text-xl font-bold text-primary">{c.title}</h3>
+                  <p class="font-body text-sm font-medium text-slate-600">{c.subtitle}</p>
+                </div>
+                <Icon name={c.icon} class={`ml-auto hidden h-8 w-8 shrink-0 sm:block ${tone(i).text}`} aria-hidden="true" />
+              </header>
+              <div class="p-6 sm:p-8">
+                <div class={`${body} space-y-3`}>{c.paragraphs.map((p) => <p>{p}</p>)}</div>
+
+                <div role="tablist" aria-label={`${c.short} details`} class="-mx-1 mt-7 flex gap-1.5 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-tablist hidden>
+                  {tabs.map((t, j) => (
+                    <button type="button" role="tab" id={`${c.id}-tab-${t.key}`} aria-controls={`${c.id}-${t.key}`} aria-selected={j === 0 ? 'true' : 'false'} class="flex shrink-0 items-center gap-2 rounded-lg border border-slate-300 bg-white px-3.5 py-2 font-heading text-xs font-semibold text-slate-700 transition hover:border-accent hover:text-accent aria-selected:border-primary aria-selected:bg-primary aria-selected:text-white sm:text-sm">
+                      <Icon name={t.icon} class="h-4 w-4" aria-hidden="true" />{t.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div class="mt-4 space-y-5">
+                  {c.problems && (
+                    <div id={`${c.id}-problems`} role="tabpanel" aria-labelledby={`${c.id}-tab-problems`} data-panel class="rounded-xl border border-amber-200 bg-amber-50 p-5">
+                      <p class="font-heading text-sm font-bold text-amber-900">Engineering problems we address</p>
+                      <ul class="mt-3 grid gap-x-6 gap-y-2 font-body text-sm text-slate-700 md:grid-cols-2">{c.problems.map((x) => <li class={check}><Icon name="ion:chevron-forward" class="mt-0.5 h-4 w-4 shrink-0 text-amber-600" aria-hidden="true" />{x}</li>)}</ul>
+                    </div>
+                  )}
+                  {c.examples && (
+                    <div id={`${c.id}-examples`} role="tabpanel" aria-labelledby={`${c.id}-tab-examples`} data-panel class="space-y-4 rounded-xl border border-sky-200 bg-sky-50 p-5">
+                      <p class="font-heading text-sm font-bold text-sky-900">{c.examplesTitle}</p>
+                      <ul class="grid gap-x-6 gap-y-2 font-body text-sm text-slate-700 md:grid-cols-2">{c.examples.map((x) => <li class={check}><Icon name="ion:chevron-forward" class="mt-0.5 h-4 w-4 shrink-0 text-sky-600" aria-hidden="true" />{x}</li>)}</ul>
+                      {c.couplingNote && <p class="rounded-lg bg-white p-4 font-body text-sm leading-relaxed text-slate-700">{c.couplingNote}</p>}
+                    </div>
+                  )}
+                  {c.steps && (
+                    <div id={`${c.id}-how`} role="tabpanel" aria-labelledby={`${c.id}-tab-how`} data-panel class="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                      <p class="font-heading text-sm font-bold text-primary">{c.howTitle}</p>
+                      {c.howIntro && <p class="mt-1 font-body text-sm text-slate-600">{c.howIntro}</p>}
+                      <ol class="mt-4 grid gap-3 md:grid-cols-2">
+                        {c.steps.map(([label, text], k) => (
+                          <li class="flex gap-3 rounded-lg bg-white p-3.5 shadow-sm">
+                            <span class={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full font-heading text-xs font-bold text-white ${tone(i).num}`}>{k + 1}</span>
+                            <span class="font-body text-sm leading-relaxed text-slate-700">{label && <strong class="block font-heading text-primary">{label}</strong>}{text}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  )}
+                  <div id={`${c.id}-inputs`} role="tabpanel" aria-labelledby={`${c.id}-tab-inputs`} data-panel class="rounded-xl border border-violet-200 bg-violet-50 p-5">
+                    <p class="font-heading text-sm font-bold text-violet-900">{c.inputsTitle}</p>
+                    {c.inputsIntro && <p class="mt-1 font-body text-sm text-slate-600">{c.inputsIntro}</p>}
+                    <ul class="mt-3 grid gap-x-6 gap-y-2 font-body text-sm text-slate-700 md:grid-cols-2">{c.inputs.map((x) => <li class={check}><Icon name="ion:chevron-forward" class="mt-0.5 h-4 w-4 shrink-0 text-violet-600" aria-hidden="true" />{x}</li>)}</ul>
+                    {c.inputsNote && <p class="mt-4 rounded-lg bg-white p-4 font-body text-sm leading-relaxed text-slate-700">{c.inputsNote}</p>}
+                  </div>
+                  <div id={`${c.id}-outputs`} role="tabpanel" aria-labelledby={`${c.id}-tab-outputs`} data-panel class="rounded-xl border border-emerald-200 bg-emerald-50 p-5">
+                    <p class="font-heading text-sm font-bold text-emerald-900">{c.outputsTitle}</p>
+                    {c.outputsIntro && <p class="mt-1 font-body text-sm text-slate-600">{c.outputsIntro}</p>}
+                    <ul class="mt-3 grid gap-x-6 gap-y-2 font-body text-sm text-slate-700 md:grid-cols-2">{c.outputs.map((x) => <li class={check}><Icon name="ion:checkmark-circle" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" aria-hidden="true" />{x}</li>)}</ul>
+                    {c.outputsNote && <p class="mt-4 rounded-lg bg-white p-4 font-body text-sm leading-relaxed text-slate-700">{c.outputsNote}</p>}
+                  </div>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Approach -->
+    <section id="approach" class="scroll-mt-28">
+      <p class={eyebrow}>Our approach</p>
+      <h2 class={`${h2} mt-2`}>{simApproach.heading}</h2>
+      <div class={`${body} mt-4 max-w-3xl space-y-3`}>{simApproach.paragraphs.map((p) => <p>{p}</p>)}</div>
+      <ol class="mt-8 grid gap-5 md:grid-cols-2">
+        {simApproach.steps.map(([title, paras], i) => (
+          <li class={`rounded-2xl border border-slate-300 border-t-4 bg-white p-6 shadow-sm ${tone(i).bar}`}>
+            <div class="flex items-center gap-3"><span class={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-heading text-sm font-bold text-white ${tone(i).num}`}>{i + 1}</span><h3 class="font-heading text-base font-bold text-primary">{title}</h3></div>
+            <div class="mt-3 space-y-2 font-body text-sm leading-relaxed text-slate-600">{(paras as string[]).map((p) => <p>{p}</p>)}</div>
+          </li>
+        ))}
+      </ol>
+      <p class="mt-5 flex gap-3 rounded-xl border border-slate-300 bg-slate-100 p-4 font-body text-sm text-slate-700"><Icon name="ion:information-circle-outline" class="mt-0.5 h-5 w-5 shrink-0 text-secondary" aria-hidden="true" />{simApproach.note}</p>
+    </section>
+
+    <!-- Information we need -->
+    <section id="information" class="scroll-mt-28">
+      <p class={eyebrow}>Getting started</p>
+      <h2 class={`${h2} mt-2`}>{simNeeds.heading}</h2>
+      <div class={`${body} mt-4 max-w-3xl space-y-3`}>{simNeeds.paragraphs.map((p) => <p>{p}</p>)}</div>
+      <div class="mt-6 overflow-x-auto rounded-2xl border border-slate-300 bg-white shadow-sm">
+        <table class="w-full min-w-[34rem] text-left text-sm">
+          <thead class="bg-primary text-xs font-bold uppercase tracking-wider text-white"><tr><th scope="col" class="px-5 py-3.5">Information</th><th scope="col" class="px-5 py-3.5">Examples</th></tr></thead>
+          <tbody class="divide-y divide-slate-200">
+            {simNeeds.rows.map(([info, ex], i) => <tr class={i % 2 ? 'bg-sky-50/60' : ''}><th scope="row" class="px-5 py-4 font-semibold text-primary">{info}</th><td class="px-5 py-4 text-slate-700">{ex}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-5 space-y-3">{simNeeds.notes.map((n) => <p class="flex gap-3 rounded-xl border border-slate-300 bg-slate-100 p-4 font-body text-sm text-slate-700"><Icon name="ion:information-circle-outline" class="mt-0.5 h-5 w-5 shrink-0 text-secondary" aria-hidden="true" />{n}</p>)}</div>
+    </section>
+
+    <!-- What we deliver -->
+    <section id="deliver" class="scroll-mt-28 rounded-2xl bg-primary px-6 py-10 text-white sm:px-10">
+      <p class="text-sm font-bold uppercase tracking-widest text-accent">Deliverables</p>
+      <h2 class="mt-2 font-heading text-2xl font-bold sm:text-3xl">{simDeliver.heading}</h2>
+      <div class="mt-4 max-w-3xl space-y-2 font-body text-base leading-relaxed text-slate-300">{simDeliver.paragraphs.map((p) => <p>{p}</p>)}</div>
+      <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {simDeliver.items.map((x) => <li class="flex gap-2.5 rounded-xl border border-white/15 bg-white/10 p-4 font-body text-sm text-slate-100"><Icon name="ion:checkmark-circle" class="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />{x}</li>)}
+      </ul>
+      <div class="mt-6 space-y-2 font-body text-sm leading-relaxed text-slate-300">{simDeliver.notes.map((n) => <p>{n}</p>)}</div>
+    </section>
+
+    <!-- Engineering decisions -->
+    <section id="decisions" class="scroll-mt-28">
+      <p class={eyebrow}>Impact</p>
+      <h2 class={`${h2} mt-2`}>{simDecisions.heading}</h2>
+      <div class={`${body} mt-4 max-w-3xl space-y-3`}>{simDecisions.paragraphs.map((p) => <p>{p}</p>)}</div>
+      <p class="mt-6 font-heading text-base font-bold text-primary">{simDecisions.supportIntro}</p>
+      <ul class="mt-3 flex flex-wrap gap-2.5">
+        {simDecisions.support.map((x, i) => <li class={`rounded-full border px-4 py-2 font-heading text-sm font-semibold text-primary ${tone(i).head} ${tone(i).border}`}>{x.replace(/\.$/, '')}</li>)}
+      </ul>
+      <p class="mt-5 flex gap-3 rounded-xl border border-slate-300 bg-slate-100 p-4 font-body text-sm text-slate-700"><Icon name="ion:information-circle-outline" class="mt-0.5 h-5 w-5 shrink-0 text-secondary" aria-hidden="true" />{simDecisions.note}</p>
+    </section>
+
+    <!-- Industries -->
+    <section id="industries" class="scroll-mt-28">
+      <p class={eyebrow}>Industries</p>
+      <h2 class={`${h2} mt-2`}>{simIndustries.heading}</h2>
+      <p class={`${body} mt-4 max-w-3xl`}>{simIndustries.intro}</p>
+      <ul class="mt-6 grid gap-5 md:grid-cols-2">
+        {simIndustries.items.map(([title, text, to, icon], i) => (
+          <li><a href={to} class={`group flex h-full gap-4 rounded-2xl border border-slate-300 border-t-4 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${tone(i).bar}`}>
+            <span class={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white ${tone(i).num}`}><Icon name={icon} class="h-5 w-5" aria-hidden="true" /></span>
+            <span><span class="block font-heading text-base font-bold text-primary group-hover:text-accent">{title}</span><span class="mt-1.5 block font-body text-sm leading-relaxed text-slate-600">{text}</span></span>
+          </a></li>
+        ))}
+      </ul>
+      <a href="/#industries" class="mt-5 inline-flex items-center gap-1.5 font-heading text-sm font-semibold text-secondary hover:text-accent">{simIndustries.outro} <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" /></a>
+    </section>
+
+    <!-- Related -->
+    <section id="related" class="scroll-mt-28">
+      <p class={eyebrow}>Related capabilities</p>
+      <h2 class={`${h2} mt-2`}>{simRelated.heading}</h2>
+      <p class={`${body} mt-4 max-w-3xl`}>{simRelated.intro}</p>
+      <ul class="mt-6 grid gap-5 md:grid-cols-2">
+        {simRelated.items.map(([title, text, to], i) => (
+          <li><a href={to} class={`group flex h-full flex-col rounded-2xl border border-slate-300 border-t-4 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${tone(i + 2).bar}`}>
+            <span class="font-heading text-base font-bold text-primary group-hover:text-accent">{title}</span>
+            <span class="mt-2 flex-1 font-body text-sm leading-relaxed text-slate-600">{text}</span>
+            <span class="mt-4 inline-flex items-center gap-1 font-heading text-sm font-bold text-secondary group-hover:text-accent">Learn more <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" /></span>
+          </a></li>
+        ))}
+      </ul>
+      <a href="/#capabilities" class="mt-5 inline-flex items-center gap-1.5 font-heading text-sm font-semibold text-secondary hover:text-accent">{simRelated.outro} <Icon name="ion:arrow-forward" class="h-4 w-4" aria-hidden="true" /></a>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="scroll-mt-28">
+      <p class={eyebrow}>FAQ</p>
+      <h2 class={`${h2} mt-2`}>Frequently Asked Questions</h2>
+      <div class="mt-6 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-300 bg-white shadow-sm">
+        {simFaq.map(([q, a], i) => (
+          <details class="group" open={i === 0}>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 font-heading text-base font-semibold text-primary transition hover:bg-slate-50 [&::-webkit-details-marker]:hidden">
+              {q}
+              <Icon name="ion:chevron-down" class="h-5 w-5 shrink-0 text-slate-400 transition group-open:rotate-180 group-open:text-accent" aria-hidden="true" />
+            </summary>
+            <p class="px-6 pb-5 font-body text-sm leading-relaxed text-slate-700">
+              {i === simFaq.length - 1 ? <>The software and numerical methods are selected according to the application and project requirements. Visit our <a href="/engineering-technologies-software/" class="font-semibold text-secondary underline underline-offset-2 hover:text-accent">Engineering Technologies &amp; Software</a> section to learn more about the engineering platforms and tools we work with.</> : a}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </div>
+</div>
+<Cta heading={simCta.heading} text={simCta.text} label={simCta.label} />
+
+<script>
+  // Progressive enhancement: without JS every detail block is shown stacked; with JS each capability gets tabs.
+  document.querySelectorAll<HTMLElement>('[data-sim-tabs]').forEach((card) => {
+    const list = card.querySelector<HTMLElement>('[data-tablist]');
+    if (!list) return;
+    const tabs = Array.from(list.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panels = Array.from(card.querySelectorAll<HTMLElement>('[data-panel]'));
+    const select = (tab: HTMLButtonElement) => {
+      tabs.forEach((t) => { const on = t === tab; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; });
+      panels.forEach((p) => { p.hidden = p.id !== tab.getAttribute('aria-controls'); });
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        next.focus(); select(next);
+      });
+    });
+    list.hidden = false;
+    select(tabs[0]);
+  });
+</script>
