@@ -10,16 +10,25 @@
 
 <script>
   // @ts-nocheck
-  import * as THREE from 'three';
+  
+  // Load three.js only when the animation is about to be seen, and after the page has painted.
+  const whenNear = (el, cb) => {
+    let done = false;
+    const go = () => { if (done) return; done = true; const idle = window.requestIdleCallback; if (idle) idle(cb, { timeout: 1500 }); else setTimeout(cb, 200); };
+    if (!('IntersectionObserver' in window)) return go();
+    const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: '200px' });
+    io.observe(el);
+  };
+
   const root = document.querySelector('[data-cyclone-viz]');
-  if (root) (function(){
+  if (root) whenNear(root, async () => { const THREE = await import('three'); (function(){
   // Typical operating point: 18 m/s inlet, cut size about 5 µm.
   var state={V:18,eta:function(dp){return 1/(1+Math.pow(5/dp,2));}};
   /* ---------- 3D view ---------- */
   var stage=root.querySelector('[data-stage]'),canvas=root.querySelector('canvas');
   
   var renderer;try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});}catch(e){root.querySelector('[data-fallback]').hidden=false;return;}
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(36,4/3,0.1,100);
   var CR=1.0,CZ0=0.2,CZ1=1.6,CZB=-1.7,CRB=0.22,VF=0.42,VFZ=0.55;
@@ -108,5 +117,5 @@
   requestAnimationFrame(function(n){last=n;requestAnimationFrame(loop);});
 
 
-  })();
+  })(); });
 </script>

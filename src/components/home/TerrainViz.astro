@@ -6,72 +6,86 @@
 </div>
 
 <script>
-  import {
-    WebGLRenderer, Scene, PerspectiveCamera, InstancedMesh, BoxGeometry, MeshStandardMaterial,
-    AmbientLight, DirectionalLight, Fog, Object3D, Color, DynamicDrawUsage,
-  } from 'three';
+  import type { WebGLRenderer } from 'three';
 
-  const root = document.querySelector<HTMLElement>('[data-terrain]');
-  if (root) {
-    let renderer: WebGLRenderer | null = null;
-    try { renderer = new WebGLRenderer({ canvas: root.querySelector('canvas')!, antialias: true, alpha: true }); } catch { /* gradient background remains */ }
-    if (renderer) init(renderer, root);
-  }
+  // Load three.js only when the animation is about to be seen, and after the page has painted.
+  const whenNear = (el: Element, cb: () => void) => {
+    let done = false;
+    const go = () => { if (done) return; done = true; const idle = (window as any).requestIdleCallback; if (idle) idle(cb, { timeout: 1500 }); else setTimeout(cb, 200); };
+    if (!('IntersectionObserver' in window)) return go();
+    const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: '200px' });
+    io.observe(el);
+  };
 
-  function init(renderer: WebGLRenderer, stage: HTMLElement) {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    const scene = new Scene();
-    scene.fog = new Fog(0x071B3A, 9, 24);
-    const camera = new PerspectiveCamera(36, 1, 0.1, 60);
-    scene.add(new AmbientLight(0x8fb4ff, 0.75));
-    const sun = new DirectionalLight(0xffffff, 1.1); sun.position.set(-4, 8, 5); scene.add(sun);
-
-    const n = 38, sp = 0.46, count = n * n;
-    const geo = new BoxGeometry(1, 1, 1); geo.translate(0, 0.5, 0);
-    const mesh = new InstancedMesh(geo, new MeshStandardMaterial({ roughness: 0.5, metalness: 0.2 }), count);
-    mesh.instanceMatrix.setUsage(DynamicDrawUsage);
-    mesh.frustumCulled = false;
-    scene.add(mesh);
-    const d = new Object3D(), col = new Color();
-    const c0 = new Color(0x0F4C81), c1 = new Color(0x3fb4ff), c2 = new Color(0xFF6B00);
-
-    let t = 0, last = performance.now(), visible = true;
-
-    const draw = () => {
-      let k = 0;
-      for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
-        const x = (i - n / 2) * sp, z = (j - n / 2) * sp, r = Math.hypot(x, z);
-        const pulse = Math.max(0, Math.sin(r * 1.6 - t * 2.2)) ** 6 * 1.4;
-        const h = Math.max(0.06, 0.25 + (Math.sin(x * 0.9 + t * 0.8) + Math.cos(z * 0.8 - t * 0.6) + Math.sin((x + z) * 0.5 - t)) * 0.28 + Math.exp(-r * r * 0.12) * 1.5 + pulse * 0.35);
-        d.position.set(x, 0, z); d.scale.set(sp * 0.78, h, sp * 0.78); d.updateMatrix(); mesh.setMatrixAt(k, d.matrix);
-        const q = Math.min(h / 2.2, 1);
-        if (q < 0.5) col.copy(c0).lerp(c1, q * 2); else col.copy(c1).lerp(c2, (q - 0.5) * 2);
-        mesh.setColorAt(k, col); k++;
-      }
-      mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor!.needsUpdate = true;
-      const a = t * 0.12;
-      camera.position.set(Math.sin(a) * 10, 6.5, Math.cos(a) * 10);
-      camera.lookAt(0, 0.4, 0);
-      renderer.render(scene, camera);
-    };
-
-    const resize = () => {
-      const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h; camera.updateProjectionMatrix();
-      // Desktop: shift the scene right so the headline sits over calm background, not over the tallest towers.
-      if (w >= 1024) camera.setViewOffset(w, h, -w * 0.16, 0, w, h); else camera.clearViewOffset();
-      draw();
-    };
-    new ResizeObserver(resize).observe(stage);
-    new IntersectionObserver((e) => { visible = e[0].isIntersecting; last = performance.now(); }).observe(stage);
-    resize();
-    const loop = (now: number) => {
-      const dt = Math.min((now - last) / 1000, 0.05); last = now;
-      if (visible && !document.hidden) { if (!reduce) t += dt; draw(); }
-      requestAnimationFrame(loop);
-    };
-    requestAnimationFrame((now) => { last = now; requestAnimationFrame(loop); });
-  }
+  const lazyRoot = document.querySelector<HTMLElement>('[data-terrain]');
+  if (lazyRoot) whenNear(lazyRoot, async () => {
+    const { WebGLRenderer, Scene, PerspectiveCamera, InstancedMesh, BoxGeometry, MeshStandardMaterial, AmbientLight, DirectionalLight, Fog, Object3D, Color, DynamicDrawUsage } = await import('three');
+  
+    
+  
+    const root = document.querySelector<HTMLElement>('[data-terrain]');
+    if (root) {
+      let renderer: WebGLRenderer | null = null;
+      try { renderer = new WebGLRenderer({ canvas: root.querySelector('canvas')!, antialias: true, alpha: true }); } catch { /* gradient background remains */ }
+      if (renderer) init(renderer, root);
+    }
+  
+    function init(renderer: WebGLRenderer, stage: HTMLElement) {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+      const scene = new Scene();
+      scene.fog = new Fog(0x071B3A, 9, 24);
+      const camera = new PerspectiveCamera(36, 1, 0.1, 60);
+      scene.add(new AmbientLight(0x8fb4ff, 0.75));
+      const sun = new DirectionalLight(0xffffff, 1.1); sun.position.set(-4, 8, 5); scene.add(sun);
+  
+      const n = 38, sp = 0.46, count = n * n;
+      const geo = new BoxGeometry(1, 1, 1); geo.translate(0, 0.5, 0);
+      const mesh = new InstancedMesh(geo, new MeshStandardMaterial({ roughness: 0.5, metalness: 0.2 }), count);
+      mesh.instanceMatrix.setUsage(DynamicDrawUsage);
+      mesh.frustumCulled = false;
+      scene.add(mesh);
+      const d = new Object3D(), col = new Color();
+      const c0 = new Color(0x0F4C81), c1 = new Color(0x3fb4ff), c2 = new Color(0xFF6B00);
+  
+      let t = 0, last = performance.now(), visible = true;
+  
+      const draw = () => {
+        let k = 0;
+        for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+          const x = (i - n / 2) * sp, z = (j - n / 2) * sp, r = Math.hypot(x, z);
+          const pulse = Math.max(0, Math.sin(r * 1.6 - t * 2.2)) ** 6 * 1.4;
+          const h = Math.max(0.06, 0.25 + (Math.sin(x * 0.9 + t * 0.8) + Math.cos(z * 0.8 - t * 0.6) + Math.sin((x + z) * 0.5 - t)) * 0.28 + Math.exp(-r * r * 0.12) * 1.5 + pulse * 0.35);
+          d.position.set(x, 0, z); d.scale.set(sp * 0.78, h, sp * 0.78); d.updateMatrix(); mesh.setMatrixAt(k, d.matrix);
+          const q = Math.min(h / 2.2, 1);
+          if (q < 0.5) col.copy(c0).lerp(c1, q * 2); else col.copy(c1).lerp(c2, (q - 0.5) * 2);
+          mesh.setColorAt(k, col); k++;
+        }
+        mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor!.needsUpdate = true;
+        const a = t * 0.12;
+        camera.position.set(Math.sin(a) * 10, 6.5, Math.cos(a) * 10);
+        camera.lookAt(0, 0.4, 0);
+        renderer.render(scene, camera);
+      };
+  
+      const resize = () => {
+        const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h; camera.updateProjectionMatrix();
+        // Desktop: shift the scene right so the headline sits over calm background, not over the tallest towers.
+        if (w >= 1024) camera.setViewOffset(w, h, -w * 0.16, 0, w, h); else camera.clearViewOffset();
+        draw();
+      };
+      new ResizeObserver(resize).observe(stage);
+      new IntersectionObserver((e) => { visible = e[0].isIntersecting; last = performance.now(); }).observe(stage);
+      resize();
+      const loop = (now: number) => {
+        const dt = Math.min((now - last) / 1000, 0.05); last = now;
+        if (visible && !document.hidden) { if (!reduce) t += dt; draw(); }
+        requestAnimationFrame(loop);
+      };
+      requestAnimationFrame((now) => { last = now; requestAnimationFrame(loop); });
+    }
+  
+  });
 </script>
