@@ -169,7 +169,7 @@
       new ResizeObserver(resize).observe(stage);
       new IntersectionObserver((e) => { visible = e[0].isIntersecting; last = performance.now(); }).observe(stage);
       resize();
-      for (let i = 0; i < 60; i++) { t += 0.05; step(0.05, t); }
+      for (let i = 0; i < 24; i++) { t += 0.1; step(0.1, t); }
       draw();
       const loop = (now: number) => {
         const dt = Math.min((now - last) / 1000, 0.05); last = now;

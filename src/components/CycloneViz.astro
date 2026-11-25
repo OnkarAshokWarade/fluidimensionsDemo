@@ -114,7 +114,7 @@
   if('ResizeObserver' in window)new ResizeObserver(resize).observe(stage);
   if('IntersectionObserver' in window)new IntersectionObserver(function(e){visible=e[0].isIntersecting;last=performance.now();}).observe(stage);
   resize();
-  for(var j=0;j<60;j++){t+=.05;step(.05,t);}draw();
+  for(var j=0;j<24;j++){t+=.1;step(.1,t);}draw();
     function loop(now){var dt=Math.min((now-last)/1000,.05);last=now;if(visible&&!document.hidden&&!reduce){t+=dt;step(dt,t);if(!dragging){dragAz*=.995;dragEl*=.995;}draw();}requestAnimationFrame(loop);}
   requestAnimationFrame(function(n){last=n;requestAnimationFrame(loop);});
 
