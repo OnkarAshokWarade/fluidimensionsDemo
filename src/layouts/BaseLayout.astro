@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Seo from '../components/Seo.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import BackToTop from '../components/BackToTop.astro';
 
 interface Props {
   title: string;
@@ -31,10 +32,11 @@ const gscToken = import.meta.env.PUBLIC_GSC_VERIFICATION;
     {jsonLd.map((data) => <script type="application/ld+json" set:html={JSON.stringify(data).replace(/</g, '\u003c')} />)}
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
-  <body class="bg-brand-bg text-dark antialiased selection:bg-accent selection:text-white">
+  <body id="top" class="bg-brand-bg text-dark antialiased selection:bg-accent selection:text-white">
     <Navbar />
     <slot />
     <Footer />
+    <BackToTop />
     <script>
       // Scroll-reveal: add .is-visible once an element enters the viewport.
       const items = document.querySelectorAll('.reveal');

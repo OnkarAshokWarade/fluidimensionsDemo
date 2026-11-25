@@ -16,7 +16,7 @@ const socials = [
 ---
 <footer class="relative overflow-hidden border-t border-white/5 bg-primary text-white">
   <div class="cfd-grid pointer-events-none absolute inset-0 opacity-5"></div>
-  <div class="site-container relative z-10 pb-6 pt-12 sm:pb-6 sm:pt-12">
+  <div class="site-container relative z-10 pb-20 pt-12 sm:pb-6 sm:pt-12">
     <div class="mb-8 grid grid-cols-2 gap-x-5 gap-y-6 lg:mb-8 lg:grid-cols-5 lg:gap-6">
       <div class="col-span-2 min-w-0 lg:pr-8">
         <a href="/" class="mb-4 flex w-fit items-center gap-3 rounded-lg" aria-label="FluiDimensions home">
@@ -37,9 +37,9 @@ const socials = [
         </div>
       ))}
     </div>
-    <div class="flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-5 text-center sm:flex-row sm:text-left">
+    <div class="flex flex-col items-center gap-4 border-t border-white/5 pt-5 text-center sm:flex-row sm:justify-start sm:gap-8 sm:text-left">
       <div class="flex flex-col items-center gap-2 text-xs leading-5 text-slate-500 sm:flex-row sm:gap-5"><span>© {new Date().getFullYear()} FluiDimensions. All rights reserved.</span><a href="/privacy-policy/" class="inline-flex min-h-11 items-center lg:min-h-0 transition hover:text-white lg:min-h-0 lg:py-1">Privacy Policy</a></div>
-      <div class="flex gap-3">
+      <div class="flex gap-3 sm:order-first">
         {socials.map((social) => (
           <a href={social.href} target="_blank" rel="noreferrer" aria-label={`FluiDimensions on ${social.label}`} class="transition hover:-translate-y-0.5">
             <span class:list={['inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr text-white shadow-md', social.tone]}><Icon name={social.icon} class="h-[18px] w-[18px]" aria-hidden="true" /></span>

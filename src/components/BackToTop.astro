@@ -1,0 +1,37 @@
+---
+// "Back to top" button on every page. Appears after the visitor scrolls down; scrolls smoothly to the top.
+import { Icon } from 'astro-icon/components';
+---
+<a
+  href="#top"
+  id="back-to-top"
+  data-hidden="true"
+  class="group fixed bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] right-[max(1.25rem,env(safe-area-inset-right,0px))] z-40 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary py-2 pl-2 pr-4 font-heading text-sm font-semibold text-white shadow-lg shadow-primary/30 ring-1 ring-white/15 transition duration-300 hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent data-[hidden=true]:pointer-events-none data-[hidden=true]:translate-y-4 data-[hidden=true]:opacity-0"
+  aria-label="Back to top"
+>
+  <span class="flex h-7 w-7 items-center justify-center rounded-full bg-accent transition group-hover:bg-white group-hover:text-accent">
+    <Icon name="ion:arrow-up" class="h-4 w-4" aria-hidden="true" />
+  </span>
+  Back to top
+</a>
+
+<script>
+  const btn = document.getElementById('back-to-top');
+  if (btn) {
+    const sync = () => {
+      const show = window.scrollY > window.innerHeight * 0.6;
+      btn.dataset.hidden = show ? 'false' : 'true';
+      btn.tabIndex = show ? 0 : -1;
+    };
+    sync();
+    window.addEventListener('scroll', sync, { passive: true });
+    btn.addEventListener('click', (event) => {
+      event.preventDefault();
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      // Move keyboard focus back to the start of the page.
+      const target = document.querySelector<HTMLElement>('#site-header a, main');
+      target?.focus({ preventScroll: true });
+    });
+  }
+</script>
