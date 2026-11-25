@@ -11,17 +11,19 @@
 <script>
   // @ts-nocheck
   
+  // Start downloading three.js right away so the animation can appear without delay.
+  const threeReady = import('three');
   // Load three.js only when the animation is about to be seen, and after the page has painted.
   const whenNear = (el, cb) => {
     let done = false;
-    const go = () => { if (done) return; done = true; const idle = window.requestIdleCallback; if (idle) idle(cb, { timeout: 1500 }); else setTimeout(cb, 200); };
+    const go = () => { if (done) return; done = true; cb(); };
     if (!('IntersectionObserver' in window)) return go();
-    const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: '200px' });
+    const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: '400px' });
     io.observe(el);
   };
 
   const root = document.querySelector('[data-cyclone-viz]');
-  if (root) whenNear(root, async () => { const THREE = await import('three'); (function(){
+  if (root) whenNear(root, async () => { const THREE = await threeReady; (function(){
   // Typical operating point: 18 m/s inlet, cut size about 5 µm.
   var state={V:18,eta:function(dp){return 1/(1+Math.pow(5/dp,2));}};
   /* ---------- 3D view ---------- */
@@ -112,7 +114,7 @@
   if('ResizeObserver' in window)new ResizeObserver(resize).observe(stage);
   if('IntersectionObserver' in window)new IntersectionObserver(function(e){visible=e[0].isIntersecting;last=performance.now();}).observe(stage);
   resize();
-  for(var j=0;j<140;j++){t+=.03;step(.03,t);}draw();
+  for(var j=0;j<60;j++){t+=.05;step(.05,t);}draw();
     function loop(now){var dt=Math.min((now-last)/1000,.05);last=now;if(visible&&!document.hidden&&!reduce){t+=dt;step(dt,t);if(!dragging){dragAz*=.995;dragEl*=.995;}draw();}requestAnimationFrame(loop);}
   requestAnimationFrame(function(n){last=n;requestAnimationFrame(loop);});
 

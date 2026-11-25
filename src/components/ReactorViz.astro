@@ -11,18 +11,20 @@
 <script>
   import type { WebGLRenderer } from 'three';
 
+  // Start downloading three.js right away so the animation can appear without delay.
+  const threeReady = import('three');
   // Load three.js only when the animation is about to be seen, and after the page has painted.
   const whenNear = (el: Element, cb: () => void) => {
     let done = false;
-    const go = () => { if (done) return; done = true; const idle = (window as any).requestIdleCallback; if (idle) idle(cb, { timeout: 1500 }); else setTimeout(cb, 200); };
+    const go = () => { if (done) return; done = true; cb(); };
     if (!('IntersectionObserver' in window)) return go();
-    const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: '200px' });
+    const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: '400px' });
     io.observe(el);
   };
 
   const lazyRoot = document.querySelector<HTMLElement>('[data-reactor-viz]');
   if (lazyRoot) whenNear(lazyRoot, async () => {
-    const { WebGLRenderer, Scene, PerspectiveCamera, Mesh, MeshBasicMaterial, CylinderGeometry, CircleGeometry, BoxGeometry, Group, Line, LineSegments, LineBasicMaterial, BufferGeometry, BufferAttribute, DynamicDrawUsage, Vector3, DoubleSide, GridHelper } = await import('three');
+    const { WebGLRenderer, Scene, PerspectiveCamera, Mesh, MeshBasicMaterial, CylinderGeometry, CircleGeometry, BoxGeometry, Group, Line, LineSegments, LineBasicMaterial, BufferGeometry, BufferAttribute, DynamicDrawUsage, Vector3, DoubleSide, GridHelper } = await threeReady;
   
     
   
@@ -167,7 +169,7 @@
       new ResizeObserver(resize).observe(stage);
       new IntersectionObserver((e) => { visible = e[0].isIntersecting; last = performance.now(); }).observe(stage);
       resize();
-      for (let i = 0; i < 140; i++) { t += 0.03; step(0.03, t); }
+      for (let i = 0; i < 60; i++) { t += 0.05; step(0.05, t); }
       draw();
       const loop = (now: number) => {
         const dt = Math.min((now - last) / 1000, 0.05); last = now;
