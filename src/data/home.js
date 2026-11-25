@@ -1,6 +1,6 @@
 // Homepage copy, drawn from the FluiDimensions company document (websitecentral_aboutus_vision.docx)
 // and the Homepage Content & Design Blueprint. Keep claims factual; confirm project details before publishing.
-import { industryPages, technologiesPage, cafePage, CONTACT_PATH } from './site';
+import { industryPages, technologiesPage, cafePage, CONTACT_PATH, CONTACT } from './site';
 import { APPROACH, PROOF, VALUES } from './doc';
 
 export const hero = {
@@ -96,7 +96,17 @@ export const organizationJsonLd = (siteUrl) => ({
       logo: `${siteUrl}/logo.png`,
       slogan: 'Understand. Optimise. Innovate.',
       description: 'Engineering solutions and digital innovation partner for industrial process and equipment challenges.',
-      // TODO(confirm): add address, email and sameAs profile URLs once confirmed.
+      email: CONTACT.email,
+      telephone: CONTACT.phone,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: CONTACT.address.street,
+        addressLocality: CONTACT.address.locality,
+        addressRegion: CONTACT.address.region,
+        postalCode: CONTACT.address.postalCode,
+        addressCountry: CONTACT.address.country,
+      },
+      // TODO(confirm): add sameAs profile URLs (LinkedIn etc.) once confirmed.
     },
     { '@type': 'WebSite', '@id': `${siteUrl}/#website`, url: `${siteUrl}/`, name: 'FluiDimensions', publisher: { '@id': `${siteUrl}/#organization` } },
   ],

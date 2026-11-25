@@ -17,6 +17,22 @@ export const SITE = {
 
 export const CONTACT_PATH = '/contact/';
 
+// Company contact details, shown on the Contact page, in the footer and in search-engine data.
+export const CONTACT = {
+  email: 'vivek@fluidimensions.com',
+  phone: '+91 98100 13940',
+  phoneHref: 'tel:+919810013940',
+  address: {
+    lines: ['66, Gulmohar, off Pancard Club Road', 'Veerbhadra Nagar, Baner', 'Pune, Maharashtra 411069'],
+    street: '66, Gulmohar, off Pancard Club Road, Veerbhadra Nagar, Baner',
+    locality: 'Pune',
+    region: 'Maharashtra',
+    postalCode: '411069',
+    country: 'IN',
+  },
+  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=66+Gulmohar+Pancard+Club+Road+Veerbhadra+Nagar+Baner+Pune+411069',
+};
+
 const suffix = ` | ${SITE.name}`;
 
 // Engineering capability pages (the "Engineering" dropdown).

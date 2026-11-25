@@ -1,11 +1,12 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { CONTACT } from '../data/site';
 interface Field { name: string; label: string; type: string; required?: boolean; options?: string[][]; placeholder?: string; autocomplete?: string; accept?: string; rows?: number; hint?: string; group?: string }
 interface Props { id: string; type: string; fields: Field[]; submit: string; successTitle?: string; successText?: string }
 const { id, type, fields, submit, successTitle = 'Thank you', successText = 'Your message has been received. We will get back to you as soon as we can.' } = Astro.props;
 // Forms post to a form service (Formspree, Web3Forms, ...). Set PUBLIC_FORM_ENDPOINT in Vercel.
 const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
-const fallbackEmail = import.meta.env.PUBLIC_CONTACT_EMAIL || '';
+const fallbackEmail = import.meta.env.PUBLIC_CONTACT_EMAIL || CONTACT.email;
 // Web3Forms-style access key (public by design). Leave empty for services that do not need one.
 const accessKey = import.meta.env.PUBLIC_FORM_ACCESS_KEY || '';
 

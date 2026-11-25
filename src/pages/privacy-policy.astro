@@ -1,11 +1,11 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-import { privacyPage } from '../data/site';
+import { privacyPage, CONTACT } from '../data/site';
 
 // DRAFT policy written to match what this site actually does. It is not legal advice: have it reviewed
 // (see docs/content-review-checklist.md) and keep it in step with any change to forms, analytics or hosting.
 const updated = '23 November 2026';
-const email = import.meta.env.PUBLIC_CONTACT_EMAIL || '';
+const email = import.meta.env.PUBLIC_CONTACT_EMAIL || CONTACT.email;
 
 const sections = [
   {

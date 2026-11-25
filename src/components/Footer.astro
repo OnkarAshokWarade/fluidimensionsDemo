@@ -1,6 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { capabilityPages, industryPages } from '../data/site';
+import { capabilityPages, industryPages, CONTACT } from '../data/site';
 
 const columns = [
   { title: 'Company', links: [['Home', '/'], ['About Us', '/about-us/'], ['Technologies & Software', '/engineering-technologies-software/'], ['Engineering Cafe', '/engineering-cafe/'], ['Blog', '/blog/'], ['Contact', '/contact/']] },
@@ -27,6 +27,11 @@ const socials = [
           </div>
         </a>
         <p class="max-w-sm text-sm leading-6 text-slate-400">Integrated engineering consulting and technology-driven solutions to help industries understand complex processes, improve equipment performance and solve challenging engineering problems.</p>
+        <ul class="mt-5 space-y-2.5 text-sm text-slate-300" aria-label="Contact details">
+          <li><a href={CONTACT.mapsUrl} target="_blank" rel="noopener noreferrer" class="group flex gap-3 transition hover:text-white"><Icon name="ion:location-outline" class="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" /><address class="not-italic leading-6">{CONTACT.address.lines.map((line) => <span class="block">{line}</span>)}</address></a></li>
+          <li><a href={CONTACT.phoneHref} class="inline-flex min-h-11 items-center gap-3 transition hover:text-white lg:min-h-0"><Icon name="ion:call-outline" class="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />{CONTACT.phone}</a></li>
+          <li><a href={`mailto:${CONTACT.email}`} class="inline-flex min-h-11 items-center gap-3 break-all transition hover:text-white lg:min-h-0"><Icon name="ion:mail-outline" class="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />{CONTACT.email}</a></li>
+        </ul>
       </div>
       {columns.map((column) => (
         <div class={column.title === 'Industries' ? 'col-span-2 lg:col-span-1' : ''}>
