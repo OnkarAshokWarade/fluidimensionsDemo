@@ -2,7 +2,6 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import DocPage from '../components/pages/DocPage.astro';
 import SimulationPage from '../components/pages/SimulationPage.astro';
-import CycloneViz from '../components/CycloneViz.astro';
 import { contentPages, capabilityPages, industryPages } from '../data/site';
 
 export function getStaticPaths() {
@@ -47,6 +46,5 @@ const chipsById: Record<string, string[]> = {
 const id = isCap ? capIds[page.path] : indIds[page.path.split('/')[2]];
 ---
 <PageLayout page={page} banner={isCap || isInd} chips={chipsById[id] ?? []}>
-  {id === 'cement' && <CycloneViz slot="aside" />}
   {id === 'simulation' ? <SimulationPage /> : (isCap || isInd) && <DocPage kind={kind} id={id} />}
 </PageLayout>

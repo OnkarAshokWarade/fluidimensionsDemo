@@ -2,7 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import PageLayout from '../layouts/PageLayout.astro';
 import Cta from '../components/pages/Cta.astro';
-import ReactorViz from '../components/ReactorViz.astro';
+import SimCarousel from '../components/SimCarousel.astro';
 import { aboutPage, industryPages } from '../data/site';
 import { APPROACH, VALUES, CAPS } from '../data/doc';
 import { visionSection } from '../data/home';
@@ -31,7 +31,18 @@ const eyebrow = 'text-sm font-bold uppercase tracking-widest text-accent';
 const h2 = 'font-heading text-2xl font-bold text-primary sm:text-3xl';
 ---
 <PageLayout page={aboutPage} banner badge="About us" chips={['Chemical engineering', 'Modelling & simulation', 'Machine learning', 'Digital technologies', 'Process consulting']} lead="We bring together engineering expertise, advanced modelling and simulation, machine learning and digital technologies to solve complex technical challenges and develop practical engineering solutions.">
-  <ReactorViz slot="aside" />
+  <SimCarousel slot="aside" />
+  <div slot="intro" class="max-w-2xl">
+    <p class="font-heading text-xs font-semibold uppercase tracking-widest text-sky-300">How we work</p>
+    <ol class="mt-3 grid gap-2.5 sm:grid-cols-2">
+      {APPROACH.map(([title], i) => (
+        <li class="flex items-center gap-3 rounded-xl border border-white/15 bg-white/5 px-3.5 py-2.5 backdrop-blur">
+          <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-400/20 font-heading text-xs font-bold text-sky-200">{i + 1}</span>
+          <span class="font-heading text-sm font-semibold text-white">{title}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
   <!-- Fact tiles -->
   <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
     {facts.map(([icon, title, sub], i) => (

@@ -1,0 +1,109 @@
+---
+// About Us banner: carousel of illustrative 3D CFD simulations.
+// Same structure as a Bootstrap "carousel-overlay": slides with their own intervals, and an overlay bar
+// with Previous, indicator dots and Next. Only the visible slide renders, so hidden ones cost nothing.
+import { Icon } from 'astro-icon/components';
+import ReactorViz from './ReactorViz.astro';
+import CycloneViz from './CycloneViz.astro';
+import Sim3D from './Sim3D.astro';
+
+const slides = [
+  { key: 'reactor', title: 'Stirred tank reactor', industry: 'Chemical & Pharma', interval: 10000 },
+  { key: 'cyclone', title: 'Cyclone separator', industry: 'Cement', interval: 8000 },
+  { key: 'separator', title: 'Three-phase separator', industry: 'Oil & Gas', interval: 8000, label: 'Animated 3D horizontal three-phase separator: gas flows along the top, water droplets settle through the oil layer, oil droplets rise through the water and oil spills over a weir.' },
+  { key: 'kiln', title: 'Rotary kiln burner flame', industry: 'Cement', interval: 8000, label: 'Animated 3D rotary cement kiln with the burner flame along its axis, coloured from white-hot to dark red, over the clinker bed.' },
+  { key: 'bubble', title: 'Bubble column reactor', industry: 'Chemical process', interval: 8000, label: 'Animated 3D bubble column: bubbles rise from a ring sparger in a meandering plume while liquid circulates up the core and down the walls, coloured by speed.' },
+] as const;
+---
+<div class="sim-carousel mx-auto flex w-full max-w-[28rem] flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-2xl lg:-my-6 lg:ml-auto lg:mr-0" data-carousel role="region" aria-roledescription="carousel" aria-label="3D CFD simulations" tabindex="0">
+  <!-- Animation area: nothing is overlaid, so the 3D view is never covered -->
+  <div class="relative aspect-square w-full">
+    {slides.map((s, i) => (
+      <div class="sim-slide absolute inset-0" data-slide={i} data-interval={s.interval} data-active={i === 0 ? '' : undefined} hidden={i !== 0} role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${slides.length}: ${s.title}`}>
+        {s.key === 'reactor' && <ReactorViz fill />}
+        {s.key === 'cyclone' && <CycloneViz fill />}
+        {(s.key === 'separator' || s.key === 'kiln' || s.key === 'bubble') && <Sim3D kind={s.key} label={s.label} />}
+      </div>
+    ))}
+  </div>
+
+  <!-- Footer: simulation name on the left, controls on the right (carousel-overlay-controls layout) -->
+  <div class="carousel-overlay-controls flex items-center justify-between gap-3 border-t border-white/10 bg-primary/60 px-4 py-3 backdrop-blur sm:px-5">
+    <div class="min-w-0" aria-live="polite">
+      {slides.map((s, i) => (
+        <p data-caption={i} hidden={i !== 0} class="min-w-0">
+          <span class="block font-heading text-[0.62rem] font-semibold uppercase tracking-widest text-sky-300">{s.industry}</span>
+          <span class="block truncate font-heading text-sm font-bold text-white sm:text-base">{s.title}</span>
+        </p>
+      ))}
+    </div>
+    <div class="flex shrink-0 items-center gap-1 rounded-full bg-white/5 p-1 ring-1 ring-white/10">
+      <button type="button" data-prev class="flex h-9 w-9 items-center justify-center rounded-full text-white transition hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300">
+        <Icon name="ion:chevron-back" class="h-4 w-4" aria-hidden="true" /><span class="sr-only">Previous</span>
+      </button>
+      <div class="hidden items-center min-[400px]:flex" data-indicators>
+        {slides.map((s, i) => (
+          <button type="button" data-to={i} aria-current={i === 0 ? 'true' : 'false'} aria-label={`Slide ${i + 1}: ${s.title}`} class="group flex h-9 items-center px-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300">
+            <span class="block h-2 w-2 rounded-full bg-white/40 transition-all duration-300 group-hover:bg-white/70 group-aria-[current=true]:w-6 group-aria-[current=true]:bg-sky-300"></span>
+          </button>
+        ))}
+      </div>
+      <button type="button" data-next class="flex h-9 w-9 items-center justify-center rounded-full text-white transition hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300">
+        <Icon name="ion:chevron-forward" class="h-4 w-4" aria-hidden="true" /><span class="sr-only">Next</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sim-slide { opacity: 0; transform: translateX(var(--from, 8%)) scale(0.97); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .sim-slide[data-active] { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .sim-slide { transition: none; } }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-slide]'));
+    const dots = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-to]'));
+    const caps = Array.from(root.querySelectorAll<HTMLElement>('[data-caption]'));
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let cur = 0, timer = 0, hovered = false, onScreen = true;
+
+    const schedule = () => {
+      window.clearTimeout(timer);
+      if (reduce || hovered || !onScreen || document.hidden) return;
+      timer = window.setTimeout(() => go(cur + 1, 1), Number(slides[cur].dataset.interval) || 8000);
+    };
+    const go = (n: number, dir?: number) => {
+      n = (n + slides.length) % slides.length;
+      if (n === cur) return;
+      const from = slides[cur], to = slides[n], d = dir ?? (n > cur ? 1 : -1);
+      to.style.setProperty('--from', `${8 * d}%`);
+      to.hidden = false;
+      requestAnimationFrame(() => requestAnimationFrame(() => to.setAttribute('data-active', '')));
+      from.style.setProperty('--from', `${-8 * d}%`);
+      from.removeAttribute('data-active');
+      window.setTimeout(() => { if (!from.hasAttribute('data-active')) from.hidden = true; }, reduce ? 0 : 700);
+      cur = n;
+      dots.forEach((b, i) => b.setAttribute('aria-current', String(i === n)));
+      caps.forEach((c, i) => { c.hidden = i !== n; });
+      schedule();
+    };
+
+    root.querySelector('[data-prev]')!.addEventListener('click', () => go(cur - 1, -1));
+    root.querySelector('[data-next]')!.addEventListener('click', () => go(cur + 1, 1));
+    dots.forEach((b, i) => b.addEventListener('click', () => go(i)));
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, -1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, 1); }
+    });
+    // Pause while the visitor is looking at or interacting with a simulation.
+    root.addEventListener('pointerenter', () => { hovered = true; schedule(); });
+    root.addEventListener('pointerleave', () => { hovered = false; schedule(); });
+    root.addEventListener('focusin', () => { hovered = true; schedule(); });
+    root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget as Node)) { hovered = false; schedule(); } });
+    document.addEventListener('visibilitychange', schedule);
+    new IntersectionObserver((e) => { onScreen = e[0].isIntersecting; schedule(); }).observe(root);
+    schedule();
+  });
+</script>

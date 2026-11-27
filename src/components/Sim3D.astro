@@ -1,0 +1,22 @@
+---
+// One 3D simulation that fills its positioned parent. kind: separator | kiln | bubble (see src/lib/sims3d.js).
+interface Props { kind: 'separator' | 'kiln' | 'bubble'; label: string }
+const { kind, label } = Astro.props;
+---
+<div class="absolute inset-0" data-sim3d={kind}>
+  <canvas class="block h-full w-full cursor-grab touch-pan-y" role="img" aria-label={label}></canvas>
+</div>
+
+<script>
+  import { mountSim3D } from '../lib/sims3d.js';
+  // Load three.js only when a simulation is about to be shown.
+  document.querySelectorAll<HTMLElement>('[data-sim3d]').forEach((stage) => {
+    const io = new IntersectionObserver(async (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      io.disconnect();
+      const THREE = await import('three');
+      mountSim3D(stage, THREE, stage.dataset.sim3d);
+    }, { rootMargin: '200px' });
+    io.observe(stage);
+  });
+</script>
